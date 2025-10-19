@@ -14,7 +14,7 @@ namespace hitsApplication.ViewModels
             [Required(ErrorMessage = "Телефон обязателен")]
             [Display(Name = "Номер телефона")]
             [RegularExpression(@"^(\+7|7|8)?[\s\-]?\(?[0-9]{3}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$",
-                ErrorMessage = "Введите корректный российский номер телефона")]
+                ErrorMessage = "Введите корректный номер телефона")]
             public string Phone { get; set; } = string.Empty;
 
             [Display(Name = "Комментарий к заказу")]

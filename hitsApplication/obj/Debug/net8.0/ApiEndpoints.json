@@ -6,7 +6,13 @@
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
-    "Parameters": [],
+    "Parameters": [
+      {
+        "Name": "authorization",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
     "ReturnTypes": []
   },
   {
@@ -21,6 +27,32 @@
         "Name": "request",
         "Type": "hitsApplication.Models.DTOs.Requests.AddToCartRequest",
         "IsRequired": true
+      },
+      {
+        "Name": "authorization",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "hitsApplication.Controllers.CartController",
+    "Method": "AddToCartAndSendToJava",
+    "RelativePath": "api/Cart/add-and-send-to-java",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "hitsApplication.Models.DTOs.Requests.AddToCartRequest",
+        "IsRequired": true
+      },
+      {
+        "Name": "authorization",
+        "Type": "System.String",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
@@ -35,8 +67,13 @@
     "Parameters": [
       {
         "Name": "dishId",
-        "Type": "System.Int32",
+        "Type": "System.String",
         "IsRequired": true
+      },
+      {
+        "Name": "authorization",
+        "Type": "System.String",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
@@ -48,7 +85,77 @@
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
-    "Parameters": [],
+    "Parameters": [
+      {
+        "Name": "authorization",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "hitsApplication.Controllers.CartController",
+    "Method": "CreateOrderInJava",
+    "RelativePath": "api/Cart/create-order-in-java",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "authorization",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "hitsApplication.Controllers.CartController",
+    "Method": "DebugCart",
+    "RelativePath": "api/Cart/debug-cart",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "authorization",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "hitsApplication.Controllers.CartController",
+    "Method": "DebugToken",
+    "RelativePath": "api/Cart/debug-token",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "authorization",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "hitsApplication.Controllers.CartController",
+    "Method": "GetCartFull",
+    "RelativePath": "api/Cart/get-cart-full",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "authorization",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
     "ReturnTypes": []
   },
   {
@@ -61,8 +168,13 @@
     "Parameters": [
       {
         "Name": "dishId",
-        "Type": "System.Int32",
+        "Type": "System.String",
         "IsRequired": true
+      },
+      {
+        "Name": "authorization",
+        "Type": "System.String",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
@@ -74,7 +186,29 @@
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
-    "Parameters": [],
+    "Parameters": [
+      {
+        "Name": "authorization",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "hitsApplication.Controllers.CartController",
+    "Method": "TestTokenParse",
+    "RelativePath": "api/Cart/test-parse",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "hitsApplication.Controllers.TokenTestRequest",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": []
   },
   {
@@ -89,6 +223,11 @@
         "Name": "request",
         "Type": "hitsApplication.Models.DTOs.Requests.UpdateQuantityRequest",
         "IsRequired": true
+      },
+      {
+        "Name": "authorization",
+        "Type": "System.String",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []

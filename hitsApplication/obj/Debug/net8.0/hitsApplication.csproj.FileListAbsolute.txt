@@ -33,3 +33,8 @@ C:\Users\rkadl\source\repos\hitsApplication\hitsApplication\obj\Debug\net8.0\ref
 C:\Users\rkadl\source\repos\hitsApplication\hitsApplication\obj\Debug\net8.0\hitsApplication.pdb
 C:\Users\rkadl\source\repos\hitsApplication\hitsApplication\obj\Debug\net8.0\hitsApplication.genruntimeconfig.cache
 C:\Users\rkadl\source\repos\hitsApplication\hitsApplication\obj\Debug\net8.0\ref\hitsApplication.dll
+C:\Users\rkadl\source\repos\hitsApplication\hitsApplication\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\rkadl\source\repos\hitsApplication\hitsApplication\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\rkadl\source\repos\hitsApplication\hitsApplication\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\rkadl\source\repos\hitsApplication\hitsApplication\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\rkadl\source\repos\hitsApplication\hitsApplication\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
