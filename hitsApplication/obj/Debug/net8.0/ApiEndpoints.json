@@ -38,27 +38,6 @@
   },
   {
     "ContainingType": "hitsApplication.Controllers.CartController",
-    "Method": "AddToCartAndSendToJava",
-    "RelativePath": "api/Cart/add-and-send-to-java",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "request",
-        "Type": "hitsApplication.Models.DTOs.Requests.AddToCartRequest",
-        "IsRequired": true
-      },
-      {
-        "Name": "authorization",
-        "Type": "System.String",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "hitsApplication.Controllers.CartController",
     "Method": "IsInCart",
     "RelativePath": "api/Cart/check/{dishId}",
     "HttpMethod": "GET",
@@ -96,12 +75,17 @@
   },
   {
     "ContainingType": "hitsApplication.Controllers.CartController",
-    "Method": "CreateOrderInJava",
-    "RelativePath": "api/Cart/create-order-in-java",
+    "Method": "CreateOrderFromCart",
+    "RelativePath": "api/Cart/create-order",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
+      {
+        "Name": "request",
+        "Type": "hitsApplication.Models.DTOs.Requests.CreateOrderRequest",
+        "IsRequired": true
+      },
       {
         "Name": "authorization",
         "Type": "System.String",
@@ -130,22 +114,6 @@
     "ContainingType": "hitsApplication.Controllers.CartController",
     "Method": "DebugToken",
     "RelativePath": "api/Cart/debug-token",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "authorization",
-        "Type": "System.String",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "hitsApplication.Controllers.CartController",
-    "Method": "GetCartFull",
-    "RelativePath": "api/Cart/get-cart-full",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,

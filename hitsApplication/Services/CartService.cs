@@ -11,7 +11,9 @@ namespace hitsApplication.Services
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ILogger<CartService> _logger;
 
-        public CartService(IHttpContextAccessor httpContextAccessor, ILogger<CartService> logger)
+        public CartService(
+            IHttpContextAccessor httpContextAccessor,
+            ILogger<CartService> logger)
         {
             _httpContextAccessor = httpContextAccessor;
             _logger = logger;
@@ -130,27 +132,6 @@ namespace hitsApplication.Services
 
                 var result = MapToResponse(cart, includeItems: true);
                 result.UserId = userId;
-
-                if (request.CreateOrder && !string.IsNullOrEmpty(request.PhoneNumber) && !string.IsNullOrEmpty(request.Address))
-                {
-                    var orderCreated = CreateOrder(userId, request.PhoneNumber, request.Address,
-                        request.PaymentMethod, request.Comment);
-
-                    if (orderCreated)
-                    {
-                        result.PhoneNumber = request.PhoneNumber;
-                        result.Address = request.Address;
-                        result.PaymentMethod = request.PaymentMethod;
-                        result.Comment = request.Comment;
-
-                        ClearCart(userId);
-                    }
-                    else
-                    {
-                        result.Success = false;
-                        result.ErrorMessage = "Ошибка при создании заказа";
-                    }
-                }
 
                 return result;
             }
@@ -271,29 +252,56 @@ namespace hitsApplication.Services
             }
         }
 
-        private bool CreateOrder(string userId, string phoneNumber, string address, string paymentMethod, string comment)
+        public async Task<OrderCreationResponse> CreateOrderFromCart(string userId, CreateOrderRequest request)
         {
             try
             {
                 if (string.IsNullOrEmpty(userId) ||
-                    string.IsNullOrEmpty(phoneNumber) ||
-                    string.IsNullOrEmpty(address) ||
-                    string.IsNullOrEmpty(paymentMethod))
-                    return false;
+                    string.IsNullOrEmpty(request.PhoneNumber) ||
+                    string.IsNullOrEmpty(request.Address) ||
+                    string.IsNullOrEmpty(request.PaymentMethod))
+                {
+                    return new OrderCreationResponse
+                    {
+                        Success = false,
+                        ErrorMessage = "Не все обязательные поля заполнены"
+                    };
+                }
 
                 var cart = GetCartEntity(userId);
 
                 if (cart.Items.Count == 0)
-                    return false;
+                {
+                    return new OrderCreationResponse
+                    {
+                        Success = false,
+                        ErrorMessage = "Корзина пуста"
+                    };
+                }
 
-                _logger.LogInformation("Order created for user {UserId} with total {Total}", userId, cart.Total);
+                // Здесь бд ,ну мб не понадобится 
 
-                return true;
+                // Пока просто логируем создание заказа
+                _logger.LogInformation(
+                    "Order created for user {UserId}. Items: {ItemCount}, Total: {Total}, Phone: {Phone}, Address: {Address}",
+                    userId, cart.Items.Count, cart.Total, request.PhoneNumber, request.Address);
+
+                ClearCart(userId);
+
+                return new OrderCreationResponse
+                {
+                    Success = true,
+                    Message = "Заказ успешно создан"
+                };
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error creating order for user {UserId}", userId);
-                return false;
+                _logger.LogError(ex, "Error creating order from cart for user {UserId}", userId);
+                return new OrderCreationResponse
+                {
+                    Success = false,
+                    ErrorMessage = $"Ошибка при создании заказа: {ex.Message}"
+                };
             }
         }
     }

@@ -12,9 +12,5 @@
         public bool IsEmpty => ItemCount == 0;
         public bool HasItems => ItemCount > 0;
 
-        public string? PhoneNumber { get; set; }
-        public string? Address { get; set; }
-        public string? PaymentMethod { get; set; }
-        public string? Comment { get; set; }
     }
 }

@@ -12,5 +12,6 @@ namespace hitsApplication.Services.Interfaces
         CartSummaryResponse ClearCart(string userId);
         CartSummaryResponse GetCartSummary(string userId);
         bool IsInCart(string userId, string dishId);
+        Task<OrderCreationResponse> CreateOrderFromCart(string userId, CreateOrderRequest request);
     }
 }
