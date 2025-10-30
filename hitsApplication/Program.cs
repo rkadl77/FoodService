@@ -2,9 +2,14 @@
 using hitsApplication.Services;
 using hitsApplication.Services.Interfaces;
 using hitsApplication.Filters;
+using hitsApplication.Data; 
+using Microsoft.EntityFrameworkCore; 
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddCors(options =>
 {
@@ -40,7 +45,6 @@ builder.Services.AddSwaggerGen(c =>
         BearerFormat = "JWT"
     });
 
-
     c.OperationFilter<BasketIdOperationFilter>();
 });
 
@@ -62,6 +66,12 @@ builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 builder.Services.AddScoped<RequireAuthorizationAttribute>();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    dbContext.Database.Migrate();
+}
 
 app.UseSwagger();
 app.UseSwaggerUI(c =>

@@ -2,6 +2,8 @@
 using hitsApplication.Models.DTOs.Requests;
 using hitsApplication.Models.DTOs.Responses;
 using hitsApplication.Models.Entities;
+using hitsApplication.Data;
+using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 using System.Text;
 
@@ -12,46 +14,32 @@ namespace hitsApplication.Services
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ILogger<CartService> _logger;
         private readonly HttpClient _httpClient;
+        private readonly ApplicationDbContext _context;
 
         public CartService(
             IHttpContextAccessor httpContextAccessor,
             ILogger<CartService> logger,
-            IHttpClientFactory httpClientFactory)
+            IHttpClientFactory httpClientFactory,
+            ApplicationDbContext context)
         {
             _httpContextAccessor = httpContextAccessor;
             _logger = logger;
             _httpClient = httpClientFactory.CreateClient();
+            _context = context;
         }
 
-        private ISession Session => _httpContextAccessor.HttpContext?.Session ??
-            throw new InvalidOperationException("Session is not available");
-
-        private string GetCartSessionKey(string basketId)
+        private string GetSessionId()
         {
-            return $"ShoppingCart_{basketId}";
-        }
+            var session = _httpContextAccessor.HttpContext?.Session;
+            var sessionId = session?.GetString("CartSessionId");
 
-        private Cart GetCartEntity(string basketId)
-        {
-            try
+            if (string.IsNullOrEmpty(sessionId))
             {
-                var cartKey = GetCartSessionKey(basketId);
-                var cartJson = Session.GetString(cartKey);
-                return string.IsNullOrEmpty(cartJson)
-                    ? new Cart()
-                    : JsonSerializer.Deserialize<Cart>(cartJson) ?? new Cart();
+                sessionId = Guid.NewGuid().ToString();
+                session?.SetString("CartSessionId", sessionId);
             }
-            catch (Exception)
-            {
-                return new Cart();
-            }
-        }
 
-        private void SaveCartEntity(string basketId, Cart cart)
-        {
-            var cartKey = GetCartSessionKey(basketId);
-            var cartJson = JsonSerializer.Serialize(cart);
-            Session.SetString(cartKey, cartJson);
+            return sessionId;
         }
 
         private string GenerateBasketId()
@@ -59,15 +47,17 @@ namespace hitsApplication.Services
             return $"basket_{Guid.NewGuid().ToString("N").Substring(0, 12)}";
         }
 
-        private CartSummaryResponse MapToResponse(Cart cart, string basketId, bool includeItems = true)
+        private CartSummaryResponse MapToResponse(List<CartItem> cartItems, string basketId, bool includeItems = true)
         {
+            var cart = new Cart { Items = cartItems };
+
             return new CartSummaryResponse
             {
                 Success = true,
                 BasketId = basketId,
                 ItemCount = cart.TotalItems,
                 Total = cart.Total,
-                Items = includeItems ? cart.Items.Select(item => new CartItemResponse
+                Items = includeItems ? cartItems.Select(item => new CartItemResponse
                 {
                     DishId = item.DishId.ToString(),
                     Name = item.Name,
@@ -90,16 +80,13 @@ namespace hitsApplication.Services
             };
         }
 
-        public CartSummaryResponse GetCart(string basketId = null)
+        public async Task<CartSummaryResponse> GetCart(string basketId = null)
         {
             try
             {
                 if (string.IsNullOrEmpty(basketId))
                 {
                     basketId = GenerateBasketId();
-                    var newCart = new Cart();
-                    SaveCartEntity(basketId, newCart);
-
                     return new CartSummaryResponse
                     {
                         Success = true,
@@ -110,8 +97,12 @@ namespace hitsApplication.Services
                     };
                 }
 
-                var cart = GetCartEntity(basketId);
-                return MapToResponse(cart, basketId, includeItems: true);
+                var sessionId = GetSessionId();
+                var cartItems = await _context.CartItems
+                    .Where(x => x.SessionId == sessionId)
+                    .ToListAsync();
+
+                return MapToResponse(cartItems, basketId, includeItems: true);
             }
             catch (Exception ex)
             {
@@ -120,7 +111,7 @@ namespace hitsApplication.Services
             }
         }
 
-        public CartSummaryResponse AddToCart(string basketId, AddToCartRequest request)
+        public async Task<CartSummaryResponse> AddToCart(string basketId, AddToCartRequest request)
         {
             try
             {
@@ -130,29 +121,39 @@ namespace hitsApplication.Services
                 if (request.Quantity < 1)
                     return ErrorResponse("Количество должно быть не менее 1");
 
-                var cart = GetCartEntity(basketId);
-
-                var dishIdString = request.DishId.ToString();
-                var existingItem = cart.Items.FirstOrDefault(item => item.DishId.ToString() == dishIdString);
+                var sessionId = GetSessionId();
+                var existingItem = await _context.CartItems
+                    .FirstOrDefaultAsync(x => x.SessionId == sessionId && x.DishId == request.DishId);
 
                 if (existingItem != null)
                 {
                     existingItem.Quantity += request.Quantity;
+                    existingItem.UpdatedAt = DateTime.UtcNow;
                 }
                 else
                 {
-                    cart.Items.Add(new CartItem
+                    var newItem = new CartItem
                     {
+                        Id = Guid.NewGuid(),
+                        SessionId = sessionId,
                         DishId = request.DishId,
                         Name = request.Name,
                         Price = request.Price,
                         ImageUrl = request.ImageUrl,
-                        Quantity = request.Quantity
-                    });
+                        Quantity = request.Quantity,
+                        CreatedAt = DateTime.UtcNow,
+                        UpdatedAt = DateTime.UtcNow
+                    };
+                    _context.CartItems.Add(newItem);
                 }
 
-                SaveCartEntity(basketId, cart);
-                return MapToResponse(cart, basketId, includeItems: true);
+                await _context.SaveChangesAsync();
+
+                var cartItems = await _context.CartItems
+                    .Where(x => x.SessionId == sessionId)
+                    .ToListAsync();
+
+                return MapToResponse(cartItems, basketId, includeItems: true);
             }
             catch (Exception ex)
             {
@@ -161,22 +162,31 @@ namespace hitsApplication.Services
             }
         }
 
-        public CartSummaryResponse RemoveFromCart(string basketId, string dishId)
+        public async Task<CartSummaryResponse> RemoveFromCart(string basketId, string dishId)
         {
             try
             {
                 if (string.IsNullOrEmpty(basketId))
                     return ErrorResponse("Basket ID is required");
 
-                var cart = GetCartEntity(basketId);
-                var itemToRemove = cart.Items.FirstOrDefault(item => item.DishId.ToString() == dishId);
+                if (!Guid.TryParse(dishId, out var dishGuid))
+                    return ErrorResponse("Неверный формат DishId");
+
+                var sessionId = GetSessionId();
+                var itemToRemove = await _context.CartItems
+                    .FirstOrDefaultAsync(x => x.SessionId == sessionId && x.DishId == dishGuid);
 
                 if (itemToRemove == null)
                     return ErrorResponse("Товар не найден в корзине");
 
-                cart.Items.Remove(itemToRemove);
-                SaveCartEntity(basketId, cart);
-                return MapToResponse(cart, basketId, includeItems: true);
+                _context.CartItems.Remove(itemToRemove);
+                await _context.SaveChangesAsync();
+
+                var cartItems = await _context.CartItems
+                    .Where(x => x.SessionId == sessionId)
+                    .ToListAsync();
+
+                return MapToResponse(cartItems, basketId, includeItems: true);
             }
             catch (Exception ex)
             {
@@ -185,7 +195,7 @@ namespace hitsApplication.Services
             }
         }
 
-        public CartSummaryResponse UpdateQuantity(string basketId, string dishId, int quantity)
+        public async Task<CartSummaryResponse> UpdateQuantity(string basketId, string dishId, int quantity)
         {
             try
             {
@@ -195,15 +205,25 @@ namespace hitsApplication.Services
                 if (quantity < 1)
                     return ErrorResponse("Количество должно быть не менее 1");
 
-                var cart = GetCartEntity(basketId);
-                var item = cart.Items.FirstOrDefault(item => item.DishId.ToString() == dishId);
+                if (!Guid.TryParse(dishId, out var dishGuid))
+                    return ErrorResponse("Неверный формат DishId");
+
+                var sessionId = GetSessionId();
+                var item = await _context.CartItems
+                    .FirstOrDefaultAsync(x => x.SessionId == sessionId && x.DishId == dishGuid);
 
                 if (item == null)
                     return ErrorResponse("Товар не найден в корзине");
 
                 item.Quantity = quantity;
-                SaveCartEntity(basketId, cart);
-                return MapToResponse(cart, basketId, includeItems: true);
+                item.UpdatedAt = DateTime.UtcNow;
+                await _context.SaveChangesAsync();
+
+                var cartItems = await _context.CartItems
+                    .Where(x => x.SessionId == sessionId)
+                    .ToListAsync();
+
+                return MapToResponse(cartItems, basketId, includeItems: true);
             }
             catch (Exception ex)
             {
@@ -212,15 +232,20 @@ namespace hitsApplication.Services
             }
         }
 
-        public CartSummaryResponse ClearCart(string basketId)
+        public async Task<CartSummaryResponse> ClearCart(string basketId)
         {
             try
             {
                 if (string.IsNullOrEmpty(basketId))
                     return ErrorResponse("Basket ID is required");
 
-                var cartKey = GetCartSessionKey(basketId);
-                Session.Remove(cartKey);
+                var sessionId = GetSessionId();
+                var itemsToRemove = await _context.CartItems
+                    .Where(x => x.SessionId == sessionId)
+                    .ToListAsync();
+
+                _context.CartItems.RemoveRange(itemsToRemove);
+                await _context.SaveChangesAsync();
 
                 return new CartSummaryResponse
                 {
@@ -238,15 +263,19 @@ namespace hitsApplication.Services
             }
         }
 
-        public CartSummaryResponse GetCartSummary(string basketId)
+        public async Task<CartSummaryResponse> GetCartSummary(string basketId)
         {
             try
             {
                 if (string.IsNullOrEmpty(basketId))
                     return ErrorResponse("Basket ID is required");
 
-                var cart = GetCartEntity(basketId);
-                return MapToResponse(cart, basketId, includeItems: false);
+                var sessionId = GetSessionId();
+                var cartItems = await _context.CartItems
+                    .Where(x => x.SessionId == sessionId)
+                    .ToListAsync();
+
+                return MapToResponse(cartItems, basketId, includeItems: false);
             }
             catch (Exception ex)
             {
@@ -255,15 +284,16 @@ namespace hitsApplication.Services
             }
         }
 
-        public bool IsInCart(string basketId, string dishId)
+        public async Task<bool> IsInCart(string basketId, string dishId)
         {
             try
             {
-                if (string.IsNullOrEmpty(basketId))
+                if (string.IsNullOrEmpty(basketId) || !Guid.TryParse(dishId, out var dishGuid))
                     return false;
 
-                var cart = GetCartEntity(basketId);
-                return cart.Items.Any(item => item.DishId.ToString() == dishId);
+                var sessionId = GetSessionId();
+                return await _context.CartItems
+                    .AnyAsync(x => x.SessionId == sessionId && x.DishId == dishGuid);
             }
             catch (Exception ex)
             {
@@ -313,9 +343,12 @@ namespace hitsApplication.Services
                     };
                 }
 
-                var cart = GetCartEntity(basketId);
+                var sessionId = GetSessionId();
+                var cartItems = await _context.CartItems
+                    .Where(x => x.SessionId == sessionId)
+                    .ToListAsync();
 
-                if (cart.Items.Count == 0)
+                if (cartItems.Count == 0)
                 {
                     return new OrderCreationResponse
                     {
@@ -333,26 +366,17 @@ namespace hitsApplication.Services
                     "Способ оплаты: {PaymentMethod}\n" +
                     "Комментарий: {Comment}\n" +
                     "Количество позиций: {ItemCount}\n" +
-                    "Общая сумма: {Total} руб.\n" +
-                    "Состав заказа:\n{OrderItems}",
-                    userId,
-                    basketId,
-                    request.PhoneNumber,
-                    request.Address,
-                    request.PaymentMethod,
-                    request.Comment ?? "нет комментария",
-                    cart.Items.Count,
-                    cart.Total,
-                    string.Join("\n", cart.Items.Select((item, index) =>
-                        $"{index + 1}. {item.Name} - {item.Quantity} x {item.Price} руб. = {item.Subtotal} руб."))
+                    "Общая сумма: {Total} руб.",
+                    userId, basketId, request.PhoneNumber, request.Address,
+                    request.PaymentMethod, request.Comment ?? "нет комментария",
+                    cartItems.Count, cartItems.Sum(x => x.Price * x.Quantity)
                 );
 
-                var javaSuccess = await SendOrderToJavaService(basketId, userId, request, cart);
+                var javaSuccess = await SendOrderToJavaService(basketId, userId, request, cartItems);
 
                 if (javaSuccess)
                 {
-                    ClearCart(basketId);
-
+                    await ClearCart(basketId);
                     return new OrderCreationResponse
                     {
                         Success = true,
@@ -379,14 +403,11 @@ namespace hitsApplication.Services
             }
         }
 
-        private async Task<bool> SendOrderToJavaService(string basketId, string userId, CreateOrderRequest request, Cart cart)
+        private async Task<bool> SendOrderToJavaService(string basketId, string userId, CreateOrderRequest request, List<CartItem> cartItems)
         {
             try
             {
-                _logger.LogInformation("METHOD STARTED - SendOrderToJavaService");
-
                 var authorizationHeader = _httpContextAccessor.HttpContext?.Request.Headers["Authorization"].FirstOrDefault();
-
                 if (string.IsNullOrEmpty(authorizationHeader))
                 {
                     _logger.LogError("No authorization token found in current request");
@@ -398,16 +419,14 @@ namespace hitsApplication.Services
                     authorizationHeader = "Bearer " + authorizationHeader;
                 }
 
-                _logger.LogInformation("Authorization header prepared");
-
                 var javaOrderRequest = new
                 {
                     success = true,
                     errorMessage = (string?)null,
                     userId = Guid.Parse(userId),
-                    itemCount = cart.Items.Count,
-                    total = (double)cart.Total,
-                    items = cart.Items.Select(item => new
+                    itemCount = cartItems.Count,
+                    total = (double)cartItems.Sum(x => x.Price * x.Quantity),
+                    items = cartItems.Select(item => new
                     {
                         id = item.DishId,
                         name = item.Name,
@@ -415,45 +434,28 @@ namespace hitsApplication.Services
                         imageUrl = item.ImageUrl,
                         quantity = item.Quantity
                     }).ToList(),
-                    isEmpty = cart.Items.Count == 0,
-                    hasItems = cart.Items.Count > 0,
+                    isEmpty = cartItems.Count == 0,
+                    hasItems = cartItems.Count > 0,
                     phoneNumber = request.PhoneNumber,
                     address = request.Address,
                     paymentMethod = request.PaymentMethod,
                     comment = request.Comment
                 };
 
-                _logger.LogInformation("Java order request object created");
-
-                var options = new JsonSerializerOptions
-                {
-                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-                };
-
+                var options = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
                 var json = JsonSerializer.Serialize(javaOrderRequest, options);
-
-                _logger.LogInformation(".NET - Preparing to send order to Java");
-                _logger.LogInformation(".NET - PaymentMethod value: '{PaymentMethod}'", request.PaymentMethod);
-                _logger.LogInformation(".NET - UserId: {UserId}, Basket: {BasketId}", userId, basketId);
-                _logger.LogInformation(".NET - JSON length: {JsonLength}", json.Length);
-
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 
                 var httpRequest = new HttpRequestMessage(HttpMethod.Post, "http://localhost:8096/order/create");
                 httpRequest.Content = content;
                 httpRequest.Headers.Add("Authorization", authorizationHeader);
 
-                _logger.LogInformation("Sending order to Java service. URL: {Url}", "http://localhost:8096/order/create");
-
                 var response = await _httpClient.SendAsync(httpRequest);
-
-                _logger.LogInformation("Java service response: {StatusCode}", response.StatusCode);
 
                 if (response.IsSuccessStatusCode)
                 {
                     var responseContent = await response.Content.ReadAsStringAsync();
-                    _logger.LogInformation("Order successfully created in Java system for basket {BasketId}. Response: {Response}",
-                        basketId, responseContent);
+                    _logger.LogInformation("Order successfully created in Java system for basket {BasketId}", basketId);
                     return true;
                 }
                 else

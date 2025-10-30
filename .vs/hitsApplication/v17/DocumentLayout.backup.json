@@ -3,56 +3,12 @@
   "WorkspaceRootPath": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|c:\\users\\rkadl\\source\\repos\\hitsapplication\\hitsapplication\\services\\cartservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|solutionrelative:hitsapplication\\services\\cartservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|c:\\users\\rkadl\\source\\repos\\hitsapplication\\hitsapplication\\models\\dtos\\responses\\ordercreationresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|solutionrelative:hitsapplication\\models\\dtos\\responses\\ordercreationresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|c:\\users\\rkadl\\source\\repos\\hitsapplication\\hitsapplication\\models\\dtos\\requests\\addtocartrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|solutionrelative:hitsapplication\\models\\dtos\\requests\\addtocartrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|c:\\users\\rkadl\\source\\repos\\hitsapplication\\hitsapplication\\models\\dtos\\requests\\updatequantityrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|solutionrelative:hitsapplication\\models\\dtos\\requests\\updatequantityrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|c:\\users\\rkadl\\source\\repos\\hitsapplication\\hitsapplication\\models\\dtos\\requests\\createorderrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|solutionrelative:hitsapplication\\models\\dtos\\requests\\createorderrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|c:\\users\\rkadl\\source\\repos\\hitsapplication\\hitsapplication\\models\\dtos\\requests\\authrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|solutionrelative:hitsapplication\\models\\dtos\\requests\\authrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|c:\\users\\rkadl\\source\\repos\\hitsapplication\\hitsapplication\\controllers\\cartcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|solutionrelative:hitsapplication\\controllers\\cartcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|c:\\users\\rkadl\\source\\repos\\hitsapplication\\hitsapplication\\models\\dtos\\responses\\authresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|solutionrelative:hitsapplication\\models\\dtos\\responses\\authresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|c:\\users\\rkadl\\source\\repos\\hitsapplication\\hitsapplication\\models\\dtos\\responses\\cartitemresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|solutionrelative:hitsapplication\\models\\dtos\\responses\\cartitemresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|c:\\users\\rkadl\\source\\repos\\hitsapplication\\hitsapplication\\models\\dtos\\responses\\cartsummarydto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|solutionrelative:hitsapplication\\models\\dtos\\responses\\cartsummarydto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|c:\\users\\rkadl\\source\\repos\\hitsapplication\\hitsapplication\\filters\\basketidoperationfilter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|solutionrelative:hitsapplication\\filters\\basketidoperationfilter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|c:\\users\\rkadl\\source\\repos\\hitsapplication\\hitsapplication\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|solutionrelative:hitsapplication\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|c:\\users\\rkadl\\source\\repos\\hitsapplication\\hitsapplication\\models\\entities\\cartitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|solutionrelative:hitsapplication\\models\\entities\\cartitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -62,174 +18,33 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 11,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "AddToCartRequest.cs",
-              "DocumentMoniker": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Models\\DTOs\\Requests\\AddToCartRequest.cs",
-              "RelativeDocumentMoniker": "hitsApplication\\Models\\DTOs\\Requests\\AddToCartRequest.cs",
-              "ToolTip": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Models\\DTOs\\Requests\\AddToCartRequest.cs",
-              "RelativeToolTip": "hitsApplication\\Models\\DTOs\\Requests\\AddToCartRequest.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-30T18:00:55.553Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "AuthRequest.cs",
-              "DocumentMoniker": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Models\\DTOs\\Requests\\AuthRequest.cs",
-              "RelativeDocumentMoniker": "hitsApplication\\Models\\DTOs\\Requests\\AuthRequest.cs",
-              "ToolTip": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Models\\DTOs\\Requests\\AuthRequest.cs",
-              "RelativeToolTip": "hitsApplication\\Models\\DTOs\\Requests\\AuthRequest.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-30T18:00:53.618Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "CreateOrderRequest.cs",
-              "DocumentMoniker": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Models\\DTOs\\Requests\\CreateOrderRequest.cs",
-              "RelativeDocumentMoniker": "hitsApplication\\Models\\DTOs\\Requests\\CreateOrderRequest.cs",
-              "ToolTip": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Models\\DTOs\\Requests\\CreateOrderRequest.cs",
-              "RelativeToolTip": "hitsApplication\\Models\\DTOs\\Requests\\CreateOrderRequest.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-30T18:00:48.623Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "UpdateQuantityRequest.cs",
-              "DocumentMoniker": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Models\\DTOs\\Requests\\UpdateQuantityRequest.cs",
-              "RelativeDocumentMoniker": "hitsApplication\\Models\\DTOs\\Requests\\UpdateQuantityRequest.cs",
-              "ToolTip": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Models\\DTOs\\Requests\\UpdateQuantityRequest.cs",
-              "RelativeToolTip": "hitsApplication\\Models\\DTOs\\Requests\\UpdateQuantityRequest.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-30T18:00:47.897Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "AuthResponse.cs",
-              "DocumentMoniker": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Models\\DTOs\\Responses\\AuthResponse.cs",
-              "RelativeDocumentMoniker": "hitsApplication\\Models\\DTOs\\Responses\\AuthResponse.cs",
-              "ToolTip": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Models\\DTOs\\Responses\\AuthResponse.cs",
-              "RelativeToolTip": "hitsApplication\\Models\\DTOs\\Responses\\AuthResponse.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-30T18:00:45.699Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "CartItemResponse.cs",
-              "DocumentMoniker": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Models\\DTOs\\Responses\\CartItemResponse.cs",
-              "RelativeDocumentMoniker": "hitsApplication\\Models\\DTOs\\Responses\\CartItemResponse.cs",
-              "ToolTip": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Models\\DTOs\\Responses\\CartItemResponse.cs",
-              "RelativeToolTip": "hitsApplication\\Models\\DTOs\\Responses\\CartItemResponse.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-30T18:00:43.842Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "CartSummaryDto.cs",
-              "DocumentMoniker": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Models\\DTOs\\Responses\\CartSummaryDto.cs",
-              "RelativeDocumentMoniker": "hitsApplication\\Models\\DTOs\\Responses\\CartSummaryDto.cs",
-              "ToolTip": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Models\\DTOs\\Responses\\CartSummaryDto.cs",
-              "RelativeToolTip": "hitsApplication\\Models\\DTOs\\Responses\\CartSummaryDto.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-30T18:00:42.874Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "OrderCreationResponse.cs",
-              "DocumentMoniker": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Models\\DTOs\\Responses\\OrderCreationResponse.cs",
-              "RelativeDocumentMoniker": "hitsApplication\\Models\\DTOs\\Responses\\OrderCreationResponse.cs",
-              "ToolTip": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Models\\DTOs\\Responses\\OrderCreationResponse.cs",
-              "RelativeToolTip": "hitsApplication\\Models\\DTOs\\Responses\\OrderCreationResponse.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-30T18:00:41.557Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "BasketIdOperationFilter.cs",
-              "DocumentMoniker": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Filters\\BasketIdOperationFilter.cs",
-              "RelativeDocumentMoniker": "hitsApplication\\Filters\\BasketIdOperationFilter.cs",
-              "ToolTip": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Filters\\BasketIdOperationFilter.cs",
-              "RelativeToolTip": "hitsApplication\\Filters\\BasketIdOperationFilter.cs",
-              "ViewState": "AgIAAAkAAAAAAAAAAAAiwDoAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-30T14:58:51.607Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 0,
               "Title": "CartController.cs",
               "DocumentMoniker": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Controllers\\CartController.cs",
               "RelativeDocumentMoniker": "hitsApplication\\Controllers\\CartController.cs",
               "ToolTip": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Controllers\\CartController.cs",
               "RelativeToolTip": "hitsApplication\\Controllers\\CartController.cs",
-              "ViewState": "AgIAAEsAAAAAAAAAAAApwIYAAABfAAAAAAAAAA==",
+              "ViewState": "AgIAAEYBAAAAAAAAAADwv4cAAAAoAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-30T14:33:27.425Z",
+              "WhenOpened": "2025-10-30T19:15:15.484Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 1,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Program.cs",
               "RelativeDocumentMoniker": "hitsApplication\\Program.cs",
               "ToolTip": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Program.cs",
               "RelativeToolTip": "hitsApplication\\Program.cs",
-              "ViewState": "AgIAAE0AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAACcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-30T14:33:22.355Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "CartService.cs",
-              "DocumentMoniker": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Services\\CartService.cs",
-              "RelativeDocumentMoniker": "hitsApplication\\Services\\CartService.cs",
-              "ToolTip": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Services\\CartService.cs*",
-              "RelativeToolTip": "hitsApplication\\Services\\CartService.cs*",
-              "ViewState": "AgIAAMMBAAAAAAAAAAAAAO0BAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-30T14:33:16.465Z",
+              "WhenOpened": "2025-10-30T14:33:22.355Z",
               "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "CartItem.cs",
-              "DocumentMoniker": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Models\\Entities\\CartItem.cs",
-              "RelativeDocumentMoniker": "hitsApplication\\Models\\Entities\\CartItem.cs",
-              "ToolTip": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Models\\Entities\\CartItem.cs",
-              "RelativeToolTip": "hitsApplication\\Models\\Entities\\CartItem.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-30T14:33:11.569Z"
             }
           ]
         }

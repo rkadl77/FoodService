@@ -5,13 +5,13 @@ namespace hitsApplication.Services.Interfaces
 {
     public interface ICartService
     {
-        CartSummaryResponse GetCart(string basketId = null);
-        CartSummaryResponse AddToCart(string basketId, AddToCartRequest request);
-        CartSummaryResponse RemoveFromCart(string basketId, string dishId);
-        CartSummaryResponse UpdateQuantity(string basketId, string dishId, int quantity);
-        CartSummaryResponse ClearCart(string basketId);
-        CartSummaryResponse GetCartSummary(string basketId);
-        bool IsInCart(string basketId, string dishId);
+        Task<CartSummaryResponse> GetCart(string basketId = null);
+        Task<CartSummaryResponse> AddToCart(string basketId, AddToCartRequest request);
+        Task<CartSummaryResponse> RemoveFromCart(string basketId, string dishId);
+        Task<CartSummaryResponse> UpdateQuantity(string basketId, string dishId, int quantity);
+        Task<CartSummaryResponse> ClearCart(string basketId);
+        Task<CartSummaryResponse> GetCartSummary(string basketId);
+        Task<bool> IsInCart(string basketId, string dishId);
         Task<OrderCreationResponse> CreateOrderFromCart(string basketId, string userId, CreateOrderRequest request);
     }
 }

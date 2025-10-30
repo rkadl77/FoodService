@@ -3,12 +3,12 @@
   "WorkspaceRootPath": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|c:\\users\\rkadl\\source\\repos\\hitsapplication\\hitsapplication\\controllers\\cartcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|solutionrelative:hitsapplication\\controllers\\cartcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|c:\\users\\rkadl\\source\\repos\\hitsapplication\\hitsapplication\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|solutionrelative:hitsapplication\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|c:\\users\\rkadl\\source\\repos\\hitsapplication\\hitsapplication\\services\\interfaces\\icartservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|solutionrelative:hitsapplication\\services\\interfaces\\icartservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -23,27 +23,27 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "CartController.cs",
-              "DocumentMoniker": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Controllers\\CartController.cs",
-              "RelativeDocumentMoniker": "hitsApplication\\Controllers\\CartController.cs",
-              "ToolTip": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Controllers\\CartController.cs",
-              "RelativeToolTip": "hitsApplication\\Controllers\\CartController.cs",
-              "ViewState": "AgIAAEYBAAAAAAAAAADwv4cAAAAoAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-30T19:15:15.484Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Program.cs",
               "RelativeDocumentMoniker": "hitsApplication\\Program.cs",
               "ToolTip": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Program.cs",
               "RelativeToolTip": "hitsApplication\\Program.cs",
-              "ViewState": "AgIAACcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-30T14:33:22.355Z",
+              "WhenOpened": "2025-10-30T20:28:02.481Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ICartService.cs",
+              "DocumentMoniker": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Services\\Interfaces\\ICartService.cs",
+              "RelativeDocumentMoniker": "hitsApplication\\Services\\Interfaces\\ICartService.cs",
+              "ToolTip": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Services\\Interfaces\\ICartService.cs",
+              "RelativeToolTip": "hitsApplication\\Services\\Interfaces\\ICartService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-30T20:17:06.098Z",
               "EditorCaption": ""
             }
           ]

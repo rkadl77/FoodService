@@ -33,11 +33,11 @@ namespace hitsApplication.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetCart([FromQuery] string basketId = null)
+        public async Task<IActionResult> GetCart([FromQuery] string basketId = null)
         {
             try
             {
-                var result = _cartService.GetCart(basketId);
+                var result = await _cartService.GetCart(basketId);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -52,7 +52,7 @@ namespace hitsApplication.Controllers
         }
 
         [HttpPost("add")]
-        public IActionResult AddToCart([FromBody] AddToCartRequest request, [FromHeader] string basketId)
+        public async Task<IActionResult> AddToCart([FromBody] AddToCartRequest request, [FromHeader] string basketId)
         {
             try
             {
@@ -74,7 +74,7 @@ namespace hitsApplication.Controllers
                     });
                 }
 
-                var result = _cartService.AddToCart(basketId, request);
+                var result = await _cartService.AddToCart(basketId, request);
                 return result.Success ? Ok(result) : BadRequest(result);
             }
             catch (Exception ex)
@@ -91,8 +91,8 @@ namespace hitsApplication.Controllers
         [HttpPost("create-order")]
         [ServiceFilter(typeof(RequireAuthorizationAttribute))]
         public async Task<IActionResult> CreateOrderFromCart(
-      [FromBody] CreateOrderRequest request,
-      [FromHeader] string basketId)
+            [FromBody] CreateOrderRequest request,
+            [FromHeader] string basketId)
         {
             try
             {
@@ -150,7 +150,7 @@ namespace hitsApplication.Controllers
         }
 
         [HttpPut("update")]
-        public IActionResult UpdateQuantity([FromBody] UpdateQuantityRequest request, [FromHeader] string basketId)
+        public async Task<IActionResult> UpdateQuantity([FromBody] UpdateQuantityRequest request, [FromHeader] string basketId)
         {
             try
             {
@@ -172,7 +172,7 @@ namespace hitsApplication.Controllers
                     });
                 }
 
-                var result = _cartService.UpdateQuantity(basketId, request.DishId.ToString(), request.Quantity);
+                var result = await _cartService.UpdateQuantity(basketId, request.DishId.ToString(), request.Quantity);
                 return result.Success ? Ok(result) : BadRequest(result);
             }
             catch (Exception ex)
@@ -187,7 +187,7 @@ namespace hitsApplication.Controllers
         }
 
         [HttpDelete("remove/{dishId}")]
-        public IActionResult RemoveFromCart(string dishId, [FromHeader] string basketId)
+        public async Task<IActionResult> RemoveFromCart(string dishId, [FromHeader] string basketId)
         {
             try
             {
@@ -200,7 +200,7 @@ namespace hitsApplication.Controllers
                     });
                 }
 
-                var result = _cartService.RemoveFromCart(basketId, dishId);
+                var result = await _cartService.RemoveFromCart(basketId, dishId);
                 return result.Success ? Ok(result) : BadRequest(result);
             }
             catch (Exception ex)
@@ -215,7 +215,7 @@ namespace hitsApplication.Controllers
         }
 
         [HttpDelete("clear")]
-        public IActionResult ClearCart([FromHeader] string basketId)
+        public async Task<IActionResult> ClearCart([FromHeader] string basketId)
         {
             try
             {
@@ -228,7 +228,7 @@ namespace hitsApplication.Controllers
                     });
                 }
 
-                var result = _cartService.ClearCart(basketId);
+                var result = await _cartService.ClearCart(basketId);
                 return result.Success ? Ok(result) : BadRequest(result);
             }
             catch (Exception ex)
@@ -243,7 +243,7 @@ namespace hitsApplication.Controllers
         }
 
         [HttpGet("summary")]
-        public IActionResult GetCartSummary([FromHeader] string basketId)
+        public async Task<IActionResult> GetCartSummary([FromHeader] string basketId)
         {
             try
             {
@@ -256,7 +256,7 @@ namespace hitsApplication.Controllers
                     });
                 }
 
-                var result = _cartService.GetCartSummary(basketId);
+                var result = await _cartService.GetCartSummary(basketId);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -267,7 +267,7 @@ namespace hitsApplication.Controllers
         }
 
         [HttpGet("check/{dishId}")]
-        public IActionResult IsInCart(string dishId, [FromHeader] string basketId)
+        public async Task<IActionResult> IsInCart(string dishId, [FromHeader] string basketId)
         {
             try
             {
@@ -276,7 +276,7 @@ namespace hitsApplication.Controllers
                     return BadRequest(new { IsInCart = false, Message = "Basket ID is required" });
                 }
 
-                var isInCart = _cartService.IsInCart(basketId, dishId);
+                var isInCart = await _cartService.IsInCart(basketId, dishId);
                 return Ok(new { IsInCart = isInCart });
             }
             catch (Exception ex)
@@ -287,7 +287,7 @@ namespace hitsApplication.Controllers
         }
 
         [HttpGet("debug-cart")]
-        public IActionResult DebugCart([FromHeader] string basketId)
+        public async Task<IActionResult> DebugCart([FromHeader] string basketId)
         {
             try
             {
@@ -296,7 +296,7 @@ namespace hitsApplication.Controllers
                     return BadRequest(new { Success = false, ErrorMessage = "Basket ID is required" });
                 }
 
-                var cart = _cartService.GetCart(basketId);
+                var cart = await _cartService.GetCart(basketId);
 
                 return Ok(new
                 {
