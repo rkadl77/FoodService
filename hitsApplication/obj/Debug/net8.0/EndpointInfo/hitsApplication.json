@@ -39,15 +39,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "Basket-Id",
-            "in": "header",
-            "description": "Unique basket identifier",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
           }
         ],
         "requestBody": {
@@ -85,15 +76,6 @@
           {
             "name": "basketId",
             "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Basket-Id",
-            "in": "header",
-            "description": "Unique basket identifier",
-            "required": true,
             "schema": {
               "type": "string"
             }
@@ -139,15 +121,6 @@
           {
             "name": "basketId",
             "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Basket-Id",
-            "in": "header",
-            "description": "Unique basket identifier",
-            "required": true,
             "schema": {
               "type": "string"
             }
@@ -199,15 +172,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "Basket-Id",
-            "in": "header",
-            "description": "Unique basket identifier",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
           }
         ],
         "responses": {
@@ -229,15 +193,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "Basket-Id",
-            "in": "header",
-            "description": "Unique basket identifier",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
           }
         ],
         "responses": {
@@ -256,15 +211,6 @@
           {
             "name": "basketId",
             "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Basket-Id",
-            "in": "header",
-            "description": "Unique basket identifier",
-            "required": true,
             "schema": {
               "type": "string"
             }
@@ -297,15 +243,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "Basket-Id",
-            "in": "header",
-            "description": "Unique basket identifier",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
           }
         ],
         "responses": {
@@ -324,15 +261,6 @@
           {
             "name": "basketId",
             "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Basket-Id",
-            "in": "header",
-            "description": "Unique basket identifier",
-            "required": true,
             "schema": {
               "type": "string"
             }
