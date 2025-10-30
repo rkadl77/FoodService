@@ -89,10 +89,10 @@ namespace hitsApplication.Controllers
         }
 
         [HttpPost("create-order")]
-        [ServiceFilter(typeof(RequireAuthorizationAttribute))] 
+        [ServiceFilter(typeof(RequireAuthorizationAttribute))]
         public async Task<IActionResult> CreateOrderFromCart(
-    [FromBody] CreateOrderRequest request,
-    [FromHeader] string basketId)
+      [FromBody] CreateOrderRequest request,
+      [FromHeader] string basketId)
         {
             try
             {
@@ -124,7 +124,18 @@ namespace hitsApplication.Controllers
                     });
                 }
 
+                _logger.LogInformation("CART CONTROLLER - Creating order for basket: {BasketId}", basketId);
+                _logger.LogInformation("CART CONTROLLER - UserId: {UserId}", userId);
+                _logger.LogInformation("CART CONTROLLER - PaymentMethod received: '{PaymentMethod}'", request.PaymentMethod);
+                _logger.LogInformation("CART CONTROLLER - Phone: {Phone}, Address: {Address}",
+                    request.PhoneNumber, request.Address);
+                _logger.LogInformation("CART CONTROLLER - Comment: {Comment}", request.Comment);
+
                 var result = await _cartService.CreateOrderFromCart(basketId, userId, request);
+
+                _logger.LogInformation("CART CONTROLLER - Order creation result: {Success}, Message: {Message}",
+                    result.Success, result.ErrorMessage);
+
                 return result.Success ? Ok(result) : BadRequest(result);
             }
             catch (Exception ex)

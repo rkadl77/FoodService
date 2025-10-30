@@ -3,6 +3,7 @@ using hitsApplication.Models.DTOs.Requests;
 using hitsApplication.Models.DTOs.Responses;
 using hitsApplication.Models.Entities;
 using System.Text.Json;
+using System.Text;
 
 namespace hitsApplication.Services
 {
@@ -10,13 +11,16 @@ namespace hitsApplication.Services
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ILogger<CartService> _logger;
+        private readonly HttpClient _httpClient;
 
         public CartService(
             IHttpContextAccessor httpContextAccessor,
-            ILogger<CartService> logger)
+            ILogger<CartService> logger,
+            IHttpClientFactory httpClientFactory)
         {
             _httpContextAccessor = httpContextAccessor;
             _logger = logger;
+            _httpClient = httpClientFactory.CreateClient();
         }
 
         private ISession Session => _httpContextAccessor.HttpContext?.Session ??
@@ -343,13 +347,26 @@ namespace hitsApplication.Services
                         $"{index + 1}. {item.Name} - {item.Quantity} x {item.Price} руб. = {item.Subtotal} руб."))
                 );
 
-                ClearCart(basketId);
+                var javaSuccess = await SendOrderToJavaService(basketId, userId, request, cart);
 
-                return new OrderCreationResponse
+                if (javaSuccess)
                 {
-                    Success = true,
-                    Message = "Заказ отправлен менеджеру, с вами свяжутся по указанному телефону для подтверждения заказа"
-                };
+                    ClearCart(basketId);
+
+                    return new OrderCreationResponse
+                    {
+                        Success = true,
+                        Message = "Заказ успешно создан"
+                    };
+                }
+                else
+                {
+                    return new OrderCreationResponse
+                    {
+                        Success = false,
+                        ErrorMessage = "Ошибка при создании заказа в системе"
+                    };
+                }
             }
             catch (Exception ex)
             {
@@ -359,6 +376,98 @@ namespace hitsApplication.Services
                     Success = false,
                     ErrorMessage = $"Ошибка при создании заказа: {ex.Message}"
                 };
+            }
+        }
+
+        private async Task<bool> SendOrderToJavaService(string basketId, string userId, CreateOrderRequest request, Cart cart)
+        {
+            try
+            {
+                _logger.LogInformation("METHOD STARTED - SendOrderToJavaService");
+
+                var authorizationHeader = _httpContextAccessor.HttpContext?.Request.Headers["Authorization"].FirstOrDefault();
+
+                if (string.IsNullOrEmpty(authorizationHeader))
+                {
+                    _logger.LogError("No authorization token found in current request");
+                    return false;
+                }
+
+                if (!authorizationHeader.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase))
+                {
+                    authorizationHeader = "Bearer " + authorizationHeader;
+                }
+
+                _logger.LogInformation("Authorization header prepared");
+
+                var javaOrderRequest = new
+                {
+                    success = true,
+                    errorMessage = (string?)null,
+                    userId = Guid.Parse(userId),
+                    itemCount = cart.Items.Count,
+                    total = (double)cart.Total,
+                    items = cart.Items.Select(item => new
+                    {
+                        id = item.DishId,
+                        name = item.Name,
+                        price = (double)item.Price,
+                        imageUrl = item.ImageUrl,
+                        quantity = item.Quantity
+                    }).ToList(),
+                    isEmpty = cart.Items.Count == 0,
+                    hasItems = cart.Items.Count > 0,
+                    phoneNumber = request.PhoneNumber,
+                    address = request.Address,
+                    paymentMethod = request.PaymentMethod,
+                    comment = request.Comment
+                };
+
+                _logger.LogInformation("Java order request object created");
+
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+                };
+
+                var json = JsonSerializer.Serialize(javaOrderRequest, options);
+
+                _logger.LogInformation(".NET - Preparing to send order to Java");
+                _logger.LogInformation(".NET - PaymentMethod value: '{PaymentMethod}'", request.PaymentMethod);
+                _logger.LogInformation(".NET - UserId: {UserId}, Basket: {BasketId}", userId, basketId);
+                _logger.LogInformation(".NET - JSON length: {JsonLength}", json.Length);
+
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var httpRequest = new HttpRequestMessage(HttpMethod.Post, "http://localhost:8096/order/create");
+                httpRequest.Content = content;
+                httpRequest.Headers.Add("Authorization", authorizationHeader);
+
+                _logger.LogInformation("Sending order to Java service. URL: {Url}", "http://localhost:8096/order/create");
+
+                var response = await _httpClient.SendAsync(httpRequest);
+
+                _logger.LogInformation("Java service response: {StatusCode}", response.StatusCode);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var responseContent = await response.Content.ReadAsStringAsync();
+                    _logger.LogInformation("Order successfully created in Java system for basket {BasketId}. Response: {Response}",
+                        basketId, responseContent);
+                    return true;
+                }
+                else
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    _logger.LogError("Java API error for basket {BasketId}: {StatusCode} - {Error}",
+                        basketId, response.StatusCode, errorContent);
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error sending order to Java system for basket {BasketId}", basketId);
+                return false;
             }
         }
 
