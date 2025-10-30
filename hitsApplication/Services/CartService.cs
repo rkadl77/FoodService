@@ -251,11 +251,11 @@ namespace hitsApplication.Services
                 return false;
             }
         }
-
         public async Task<OrderCreationResponse> CreateOrderFromCart(string userId, CreateOrderRequest request)
         {
             try
             {
+
                 if (string.IsNullOrEmpty(userId) ||
                     string.IsNullOrEmpty(request.PhoneNumber) ||
                     string.IsNullOrEmpty(request.Address) ||
@@ -265,6 +265,24 @@ namespace hitsApplication.Services
                     {
                         Success = false,
                         ErrorMessage = "Не все обязательные поля заполнены"
+                    };
+                }
+
+                if (!IsValidRussianPhoneNumber(request.PhoneNumber))
+                {
+                    return new OrderCreationResponse
+                    {
+                        Success = false,
+                        ErrorMessage = "Некорректный формат номера телефона"
+                    };
+                }
+
+                if (!IsValidPaymentMethod(request.PaymentMethod))
+                {
+                    return new OrderCreationResponse
+                    {
+                        Success = false,
+                        ErrorMessage = "Некорректный способ оплаты"
                     };
                 }
 
@@ -279,30 +297,74 @@ namespace hitsApplication.Services
                     };
                 }
 
-                // Здесь бд ,ну мб не понадобится 
-
-                // Пока просто логируем создание заказа
                 _logger.LogInformation(
-                    "Order created for user {UserId}. Items: {ItemCount}, Total: {Total}, Phone: {Phone}, Address: {Address}",
-                    userId, cart.Items.Count, cart.Total, request.PhoneNumber, request.Address);
+                    "НОВЫЙ ЗАКАЗ ДЛЯ СОЗДАНИЯ В JAVA-СИСТЕМЕ\n" +
+                    "Пользователь: {UserId}\n" +
+                    "Телефон: {PhoneNumber}\n" +
+                    "Адрес: {Address}\n" +
+                    "Способ оплаты: {PaymentMethod}\n" +
+                    "Комментарий: {Comment}\n" +
+                    "Количество позиций: {ItemCount}\n" +
+                    "Общая сумма: {Total} руб.\n" +
+                    "Состав заказа:\n{OrderItems}",
+                    userId,
+                    request.PhoneNumber,
+                    request.Address,
+                    request.PaymentMethod,
+                    request.Comment ?? "нет комментария",
+                    cart.Items.Count,
+                    cart.Total,
+                    string.Join("\n", cart.Items.Select((item, index) =>
+                        $"{index + 1}. {item.Name} - {item.Quantity} x {item.Price} руб. = {item.Subtotal} руб."))
+                );
 
                 ClearCart(userId);
 
                 return new OrderCreationResponse
                 {
                     Success = true,
-                    Message = "Заказ успешно создан"
+                    Message = "Заказ отправлен менеджеру, с вами свяжутся по указанному телефону для подтверждения заказа"
                 };
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error creating order from cart for user {UserId}", userId);
+                _logger.LogError(ex, "Ошибка при создании заказа для пользователя {UserId}", userId);
                 return new OrderCreationResponse
                 {
                     Success = false,
                     ErrorMessage = $"Ошибка при создании заказа: {ex.Message}"
                 };
             }
+        }
+
+        private bool IsValidRussianPhoneNumber(string phoneNumber)
+        {
+            if (string.IsNullOrWhiteSpace(phoneNumber))
+                return false;
+
+            var cleaned = phoneNumber
+                .Replace("+", "")
+                .Replace(" ", "")
+                .Replace("-", "")
+                .Replace("(", "")
+                .Replace(")", "");
+
+            return cleaned.Length == 11 &&
+                   (cleaned.StartsWith("79") || cleaned.StartsWith("89"));
+        }
+
+        private bool IsValidPaymentMethod(string paymentMethod)
+        {
+            if (string.IsNullOrWhiteSpace(paymentMethod))
+                return false;
+
+            var validMethods = new[] {
+        "card_online",   
+        "card_courier",    
+        "cash_courier"    
+    };
+
+            return validMethods.Contains(paymentMethod);
         }
     }
 }
