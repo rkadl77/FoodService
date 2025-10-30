@@ -5,6 +5,7 @@ using hitsApplication.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Text;
 using System.Text.Json;
+using hitsApplication.Filters;
 
 namespace hitsApplication.Controllers
 {
@@ -26,35 +27,22 @@ namespace hitsApplication.Controllers
             _logger = logger;
         }
 
-        private string GetUserIdFromHeader(string authorization)
+        private string GetUserIdFromHttpContext()
         {
-            if (string.IsNullOrEmpty(authorization))
-                return null;
-
-            return _jwtTokenService.GetUserIdFromToken(authorization);
+            return HttpContext.Items["UserId"]?.ToString();
         }
 
         [HttpGet]
-        public IActionResult GetCart([FromHeader] string authorization)
+        public IActionResult GetCart([FromQuery] string basketId = null)
         {
             try
             {
-                var userId = GetUserIdFromHeader(authorization);
-                if (string.IsNullOrEmpty(userId))
-                {
-                    return Unauthorized(new CartSummaryResponse
-                    {
-                        Success = false,
-                        ErrorMessage = "Invalid or missing authorization token"
-                    });
-                }
-
-                var result = _cartService.GetCart(userId);
-                return result.Success ? Ok(result) : BadRequest(result);
+                var result = _cartService.GetCart(basketId);
+                return Ok(result);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error getting cart");
+                _logger.LogError(ex, "Error getting cart for basket {BasketId}", basketId);
                 return StatusCode(500, new CartSummaryResponse
                 {
                     Success = false,
@@ -64,7 +52,7 @@ namespace hitsApplication.Controllers
         }
 
         [HttpPost("add")]
-        public IActionResult AddToCart([FromBody] AddToCartRequest request, [FromHeader] string authorization)
+        public IActionResult AddToCart([FromBody] AddToCartRequest request, [FromHeader] string basketId)
         {
             try
             {
@@ -77,22 +65,21 @@ namespace hitsApplication.Controllers
                     });
                 }
 
-                var userId = GetUserIdFromHeader(authorization);
-                if (string.IsNullOrEmpty(userId))
+                if (string.IsNullOrEmpty(basketId))
                 {
-                    return Unauthorized(new CartSummaryResponse
+                    return BadRequest(new CartSummaryResponse
                     {
                         Success = false,
-                        ErrorMessage = "Invalid or missing authorization token"
+                        ErrorMessage = "Basket ID is required"
                     });
                 }
 
-                var result = _cartService.AddToCart(userId, request);
+                var result = _cartService.AddToCart(basketId, request);
                 return result.Success ? Ok(result) : BadRequest(result);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error adding item to cart");
+                _logger.LogError(ex, "Error adding item to cart for basket {BasketId}", basketId);
                 return BadRequest(new CartSummaryResponse
                 {
                     Success = false,
@@ -102,9 +89,10 @@ namespace hitsApplication.Controllers
         }
 
         [HttpPost("create-order")]
+        [ServiceFilter(typeof(RequireAuthorizationAttribute))] 
         public async Task<IActionResult> CreateOrderFromCart(
-            [FromBody] CreateOrderRequest request,
-            [FromHeader] string authorization)
+    [FromBody] CreateOrderRequest request,
+    [FromHeader] string basketId)
         {
             try
             {
@@ -117,22 +105,31 @@ namespace hitsApplication.Controllers
                     });
                 }
 
-                var userId = GetUserIdFromHeader(authorization);
+                if (string.IsNullOrEmpty(basketId))
+                {
+                    return BadRequest(new OrderCreationResponse
+                    {
+                        Success = false,
+                        ErrorMessage = "Basket ID is required"
+                    });
+                }
+
+                var userId = GetUserIdFromHttpContext();
                 if (string.IsNullOrEmpty(userId))
                 {
                     return Unauthorized(new OrderCreationResponse
                     {
                         Success = false,
-                        ErrorMessage = "Invalid or missing authorization token"
+                        ErrorMessage = "User ID not found in context"
                     });
                 }
 
-                var result = await _cartService.CreateOrderFromCart(userId, request);
+                var result = await _cartService.CreateOrderFromCart(basketId, userId, request);
                 return result.Success ? Ok(result) : BadRequest(result);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error creating order from cart");
+                _logger.LogError(ex, "Error creating order from cart for basket {BasketId}", basketId);
                 return StatusCode(500, new OrderCreationResponse
                 {
                     Success = false,
@@ -142,7 +139,7 @@ namespace hitsApplication.Controllers
         }
 
         [HttpPut("update")]
-        public IActionResult UpdateQuantity([FromBody] UpdateQuantityRequest request, [FromHeader] string authorization)
+        public IActionResult UpdateQuantity([FromBody] UpdateQuantityRequest request, [FromHeader] string basketId)
         {
             try
             {
@@ -155,22 +152,21 @@ namespace hitsApplication.Controllers
                     });
                 }
 
-                var userId = GetUserIdFromHeader(authorization);
-                if (string.IsNullOrEmpty(userId))
+                if (string.IsNullOrEmpty(basketId))
                 {
-                    return Unauthorized(new CartSummaryResponse
+                    return BadRequest(new CartSummaryResponse
                     {
                         Success = false,
-                        ErrorMessage = "Invalid or missing authorization token"
+                        ErrorMessage = "Basket ID is required"
                     });
                 }
 
-                var result = _cartService.UpdateQuantity(userId, request.DishId.ToString(), request.Quantity);
+                var result = _cartService.UpdateQuantity(basketId, request.DishId.ToString(), request.Quantity);
                 return result.Success ? Ok(result) : BadRequest(result);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error updating quantity");
+                _logger.LogError(ex, "Error updating quantity for basket {BasketId}", basketId);
                 return BadRequest(new CartSummaryResponse
                 {
                     Success = false,
@@ -180,26 +176,25 @@ namespace hitsApplication.Controllers
         }
 
         [HttpDelete("remove/{dishId}")]
-        public IActionResult RemoveFromCart(string dishId, [FromHeader] string authorization)
+        public IActionResult RemoveFromCart(string dishId, [FromHeader] string basketId)
         {
             try
             {
-                var userId = GetUserIdFromHeader(authorization);
-                if (string.IsNullOrEmpty(userId))
+                if (string.IsNullOrEmpty(basketId))
                 {
-                    return Unauthorized(new CartSummaryResponse
+                    return BadRequest(new CartSummaryResponse
                     {
                         Success = false,
-                        ErrorMessage = "Invalid or missing authorization token"
+                        ErrorMessage = "Basket ID is required"
                     });
                 }
 
-                var result = _cartService.RemoveFromCart(userId, dishId);
+                var result = _cartService.RemoveFromCart(basketId, dishId);
                 return result.Success ? Ok(result) : BadRequest(result);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error removing item from cart");
+                _logger.LogError(ex, "Error removing item from cart for basket {BasketId}", basketId);
                 return BadRequest(new CartSummaryResponse
                 {
                     Success = false,
@@ -209,26 +204,25 @@ namespace hitsApplication.Controllers
         }
 
         [HttpDelete("clear")]
-        public IActionResult ClearCart([FromHeader] string authorization)
+        public IActionResult ClearCart([FromHeader] string basketId)
         {
             try
             {
-                var userId = GetUserIdFromHeader(authorization);
-                if (string.IsNullOrEmpty(userId))
+                if (string.IsNullOrEmpty(basketId))
                 {
-                    return Unauthorized(new CartSummaryResponse
+                    return BadRequest(new CartSummaryResponse
                     {
                         Success = false,
-                        ErrorMessage = "Invalid or missing authorization token"
+                        ErrorMessage = "Basket ID is required"
                     });
                 }
 
-                var result = _cartService.ClearCart(userId);
+                var result = _cartService.ClearCart(basketId);
                 return result.Success ? Ok(result) : BadRequest(result);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error clearing cart");
+                _logger.LogError(ex, "Error clearing cart for basket {BasketId}", basketId);
                 return BadRequest(new CartSummaryResponse
                 {
                     Success = false,
@@ -238,63 +232,60 @@ namespace hitsApplication.Controllers
         }
 
         [HttpGet("summary")]
-        public IActionResult GetCartSummary([FromHeader] string authorization)
+        public IActionResult GetCartSummary([FromHeader] string basketId)
         {
             try
             {
-                var userId = GetUserIdFromHeader(authorization);
-                if (string.IsNullOrEmpty(userId))
+                if (string.IsNullOrEmpty(basketId))
                 {
-                    return Unauthorized(new CartSummaryResponse
+                    return BadRequest(new CartSummaryResponse
                     {
                         Success = false,
-                        ErrorMessage = "Invalid or missing authorization token"
+                        ErrorMessage = "Basket ID is required"
                     });
                 }
 
-                var result = _cartService.GetCartSummary(userId);
+                var result = _cartService.GetCartSummary(basketId);
                 return Ok(result);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error getting cart summary");
+                _logger.LogError(ex, "Error getting cart summary for basket {BasketId}", basketId);
                 return Ok(new CartSummaryResponse { Success = false });
             }
         }
 
         [HttpGet("check/{dishId}")]
-        public IActionResult IsInCart(string dishId, [FromHeader] string authorization)
+        public IActionResult IsInCart(string dishId, [FromHeader] string basketId)
         {
             try
             {
-                var userId = GetUserIdFromHeader(authorization);
-                if (string.IsNullOrEmpty(userId))
+                if (string.IsNullOrEmpty(basketId))
                 {
-                    return Unauthorized(new { IsInCart = false, Message = "Invalid or missing authorization token" });
+                    return BadRequest(new { IsInCart = false, Message = "Basket ID is required" });
                 }
 
-                var isInCart = _cartService.IsInCart(userId, dishId);
+                var isInCart = _cartService.IsInCart(basketId, dishId);
                 return Ok(new { IsInCart = isInCart });
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error checking if item is in cart");
+                _logger.LogError(ex, "Error checking if item is in cart for basket {BasketId}", basketId);
                 return Ok(new { IsInCart = false });
             }
         }
 
         [HttpGet("debug-cart")]
-        public IActionResult DebugCart([FromHeader] string authorization)
+        public IActionResult DebugCart([FromHeader] string basketId)
         {
             try
             {
-                var userId = GetUserIdFromHeader(authorization);
-                if (string.IsNullOrEmpty(userId))
+                if (string.IsNullOrEmpty(basketId))
                 {
-                    return Unauthorized(new { Success = false, ErrorMessage = "Invalid or missing authorization token" });
+                    return BadRequest(new { Success = false, ErrorMessage = "Basket ID is required" });
                 }
 
-                var cart = _cartService.GetCart(userId);
+                var cart = _cartService.GetCart(basketId);
 
                 return Ok(new
                 {
@@ -305,12 +296,12 @@ namespace hitsApplication.Controllers
                     Total = cart.Total,
                     ItemsCount = cart.Items?.Count ?? 0,
                     Items = cart.Items,
-                    UserId = userId
+                    BasketId = basketId
                 });
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error debugging cart");
+                _logger.LogError(ex, "Error debugging cart for basket {BasketId}", basketId);
                 return StatusCode(500, new { Success = false, ErrorMessage = ex.Message });
             }
         }

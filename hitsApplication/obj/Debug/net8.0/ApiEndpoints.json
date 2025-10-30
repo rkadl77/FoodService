@@ -8,7 +8,7 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "authorization",
+        "Name": "basketId",
         "Type": "System.String",
         "IsRequired": false
       }
@@ -29,7 +29,7 @@
         "IsRequired": true
       },
       {
-        "Name": "authorization",
+        "Name": "basketId",
         "Type": "System.String",
         "IsRequired": false
       }
@@ -50,7 +50,7 @@
         "IsRequired": true
       },
       {
-        "Name": "authorization",
+        "Name": "basketId",
         "Type": "System.String",
         "IsRequired": false
       }
@@ -66,7 +66,7 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "authorization",
+        "Name": "basketId",
         "Type": "System.String",
         "IsRequired": false
       }
@@ -87,7 +87,7 @@
         "IsRequired": true
       },
       {
-        "Name": "authorization",
+        "Name": "basketId",
         "Type": "System.String",
         "IsRequired": false
       }
@@ -103,7 +103,7 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "authorization",
+        "Name": "basketId",
         "Type": "System.String",
         "IsRequired": false
       }
@@ -140,7 +140,7 @@
         "IsRequired": true
       },
       {
-        "Name": "authorization",
+        "Name": "basketId",
         "Type": "System.String",
         "IsRequired": false
       }
@@ -156,7 +156,7 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "authorization",
+        "Name": "basketId",
         "Type": "System.String",
         "IsRequired": false
       }
@@ -193,7 +193,7 @@
         "IsRequired": true
       },
       {
-        "Name": "authorization",
+        "Name": "basketId",
         "Type": "System.String",
         "IsRequired": false
       }

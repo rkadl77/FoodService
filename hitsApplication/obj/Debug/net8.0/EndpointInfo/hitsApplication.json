@@ -1,7 +1,8 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "HitsApplication",
+    "title": "HitsApplication API",
+    "description": "API for cart management with guest access",
     "version": "v1"
   },
   "paths": {
@@ -9,6 +10,15 @@
       "get": {
         "tags": [
           "Cart"
+        ],
+        "parameters": [
+          {
+            "name": "basketId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -21,6 +31,24 @@
       "post": {
         "tags": [
           "Cart"
+        ],
+        "parameters": [
+          {
+            "name": "basketId",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Basket-Id",
+            "in": "header",
+            "description": "Unique basket identifier",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
         ],
         "requestBody": {
           "content": {
@@ -53,6 +81,24 @@
         "tags": [
           "Cart"
         ],
+        "parameters": [
+          {
+            "name": "basketId",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Basket-Id",
+            "in": "header",
+            "description": "Unique basket identifier",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -76,13 +122,36 @@
           "200": {
             "description": "OK"
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": [ ]
+          }
+        ]
       }
     },
     "/api/Cart/update": {
       "put": {
         "tags": [
           "Cart"
+        ],
+        "parameters": [
+          {
+            "name": "basketId",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Basket-Id",
+            "in": "header",
+            "description": "Unique basket identifier",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
         ],
         "requestBody": {
           "content": {
@@ -123,6 +192,22 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "basketId",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Basket-Id",
+            "in": "header",
+            "description": "Unique basket identifier",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -137,6 +222,24 @@
         "tags": [
           "Cart"
         ],
+        "parameters": [
+          {
+            "name": "basketId",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Basket-Id",
+            "in": "header",
+            "description": "Unique basket identifier",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -148,6 +251,24 @@
       "get": {
         "tags": [
           "Cart"
+        ],
+        "parameters": [
+          {
+            "name": "basketId",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Basket-Id",
+            "in": "header",
+            "description": "Unique basket identifier",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -169,6 +290,22 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "basketId",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Basket-Id",
+            "in": "header",
+            "description": "Unique basket identifier",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -182,6 +319,24 @@
       "get": {
         "tags": [
           "Cart"
+        ],
+        "parameters": [
+          {
+            "name": "basketId",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Basket-Id",
+            "in": "header",
+            "description": "Unique basket identifier",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -311,16 +466,11 @@
     },
     "securitySchemes": {
       "Bearer": {
-        "type": "apiKey",
+        "type": "http",
         "description": "JWT Authorization header using the Bearer scheme. Example: \"Bearer {token}\"",
-        "name": "Authorization",
-        "in": "header"
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
       }
     }
-  },
-  "security": [
-    {
-      "Bearer": [ ]
-    }
-  ]
+  }
 }

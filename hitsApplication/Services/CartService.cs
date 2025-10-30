@@ -22,16 +22,16 @@ namespace hitsApplication.Services
         private ISession Session => _httpContextAccessor.HttpContext?.Session ??
             throw new InvalidOperationException("Session is not available");
 
-        private string GetCartSessionKey(string userId)
+        private string GetCartSessionKey(string basketId)
         {
-            return $"ShoppingCart_{userId}";
+            return $"ShoppingCart_{basketId}";
         }
 
-        private Cart GetCartEntity(string userId)
+        private Cart GetCartEntity(string basketId)
         {
             try
             {
-                var cartKey = GetCartSessionKey(userId);
+                var cartKey = GetCartSessionKey(basketId);
                 var cartJson = Session.GetString(cartKey);
                 return string.IsNullOrEmpty(cartJson)
                     ? new Cart()
@@ -43,18 +43,24 @@ namespace hitsApplication.Services
             }
         }
 
-        private void SaveCartEntity(string userId, Cart cart)
+        private void SaveCartEntity(string basketId, Cart cart)
         {
-            var cartKey = GetCartSessionKey(userId);
+            var cartKey = GetCartSessionKey(basketId);
             var cartJson = JsonSerializer.Serialize(cart);
             Session.SetString(cartKey, cartJson);
         }
 
-        private CartSummaryResponse MapToResponse(Cart cart, bool includeItems = true)
+        private string GenerateBasketId()
+        {
+            return $"basket_{Guid.NewGuid().ToString("N").Substring(0, 12)}";
+        }
+
+        private CartSummaryResponse MapToResponse(Cart cart, string basketId, bool includeItems = true)
         {
             return new CartSummaryResponse
             {
                 Success = true,
+                BasketId = basketId,
                 ItemCount = cart.TotalItems,
                 Total = cart.Total,
                 Items = includeItems ? cart.Items.Select(item => new CartItemResponse
@@ -80,34 +86,47 @@ namespace hitsApplication.Services
             };
         }
 
-        public CartSummaryResponse GetCart(string userId)
+        public CartSummaryResponse GetCart(string basketId = null)
         {
             try
             {
-                if (string.IsNullOrEmpty(userId))
-                    return ErrorResponse("User ID is required");
+                if (string.IsNullOrEmpty(basketId))
+                {
+                    basketId = GenerateBasketId();
+                    var newCart = new Cart();
+                    SaveCartEntity(basketId, newCart);
 
-                var cart = GetCartEntity(userId);
-                return MapToResponse(cart, includeItems: true);
+                    return new CartSummaryResponse
+                    {
+                        Success = true,
+                        BasketId = basketId,
+                        ItemCount = 0,
+                        Total = 0,
+                        Items = new List<CartItemResponse>()
+                    };
+                }
+
+                var cart = GetCartEntity(basketId);
+                return MapToResponse(cart, basketId, includeItems: true);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error getting cart for user {UserId}", userId);
+                _logger.LogError(ex, "Error getting cart for basket {BasketId}", basketId);
                 return ErrorResponse($"Ошибка при получении корзины: {ex.Message}");
             }
         }
 
-        public CartSummaryResponse AddToCart(string userId, AddToCartRequest request)
+        public CartSummaryResponse AddToCart(string basketId, AddToCartRequest request)
         {
             try
             {
-                if (string.IsNullOrEmpty(userId))
-                    return ErrorResponse("User ID is required");
+                if (string.IsNullOrEmpty(basketId))
+                    return ErrorResponse("Basket ID is required");
 
                 if (request.Quantity < 1)
                     return ErrorResponse("Количество должно быть не менее 1");
 
-                var cart = GetCartEntity(userId);
+                var cart = GetCartEntity(basketId);
 
                 var dishIdString = request.DishId.ToString();
                 var existingItem = cart.Items.FirstOrDefault(item => item.DishId.ToString() == dishIdString);
@@ -128,84 +147,81 @@ namespace hitsApplication.Services
                     });
                 }
 
-                SaveCartEntity(userId, cart);
-
-                var result = MapToResponse(cart, includeItems: true);
-                result.UserId = userId;
-
-                return result;
+                SaveCartEntity(basketId, cart);
+                return MapToResponse(cart, basketId, includeItems: true);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error adding item to cart for user {UserId}", userId);
+                _logger.LogError(ex, "Error adding item to cart for basket {BasketId}", basketId);
                 return ErrorResponse($"Ошибка при добавлении в корзину: {ex.Message}");
             }
         }
 
-        public CartSummaryResponse RemoveFromCart(string userId, string dishId)
+        public CartSummaryResponse RemoveFromCart(string basketId, string dishId)
         {
             try
             {
-                if (string.IsNullOrEmpty(userId))
-                    return ErrorResponse("User ID is required");
+                if (string.IsNullOrEmpty(basketId))
+                    return ErrorResponse("Basket ID is required");
 
-                var cart = GetCartEntity(userId);
+                var cart = GetCartEntity(basketId);
                 var itemToRemove = cart.Items.FirstOrDefault(item => item.DishId.ToString() == dishId);
 
                 if (itemToRemove == null)
                     return ErrorResponse("Товар не найден в корзине");
 
                 cart.Items.Remove(itemToRemove);
-                SaveCartEntity(userId, cart);
-                return MapToResponse(cart, includeItems: true);
+                SaveCartEntity(basketId, cart);
+                return MapToResponse(cart, basketId, includeItems: true);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error removing item from cart for user {UserId}", userId);
+                _logger.LogError(ex, "Error removing item from cart for basket {BasketId}", basketId);
                 return ErrorResponse($"Ошибка при удалении из корзины: {ex.Message}");
             }
         }
 
-        public CartSummaryResponse UpdateQuantity(string userId, string dishId, int quantity)
+        public CartSummaryResponse UpdateQuantity(string basketId, string dishId, int quantity)
         {
             try
             {
-                if (string.IsNullOrEmpty(userId))
-                    return ErrorResponse("User ID is required");
+                if (string.IsNullOrEmpty(basketId))
+                    return ErrorResponse("Basket ID is required");
 
                 if (quantity < 1)
                     return ErrorResponse("Количество должно быть не менее 1");
 
-                var cart = GetCartEntity(userId);
+                var cart = GetCartEntity(basketId);
                 var item = cart.Items.FirstOrDefault(item => item.DishId.ToString() == dishId);
 
                 if (item == null)
                     return ErrorResponse("Товар не найден в корзине");
 
                 item.Quantity = quantity;
-                SaveCartEntity(userId, cart);
-                return MapToResponse(cart, includeItems: true);
+                SaveCartEntity(basketId, cart);
+                return MapToResponse(cart, basketId, includeItems: true);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error updating quantity for user {UserId}", userId);
+                _logger.LogError(ex, "Error updating quantity for basket {BasketId}", basketId);
                 return ErrorResponse($"Ошибка при обновлении количества: {ex.Message}");
             }
         }
 
-        public CartSummaryResponse ClearCart(string userId)
+        public CartSummaryResponse ClearCart(string basketId)
         {
             try
             {
-                if (string.IsNullOrEmpty(userId))
-                    return ErrorResponse("User ID is required");
+                if (string.IsNullOrEmpty(basketId))
+                    return ErrorResponse("Basket ID is required");
 
-                var cartKey = GetCartSessionKey(userId);
+                var cartKey = GetCartSessionKey(basketId);
                 Session.Remove(cartKey);
 
                 return new CartSummaryResponse
                 {
                     Success = true,
+                    BasketId = basketId,
                     ItemCount = 0,
                     Total = 0,
                     Items = new List<CartItemResponse>()
@@ -213,48 +229,55 @@ namespace hitsApplication.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error clearing cart for user {UserId}", userId);
+                _logger.LogError(ex, "Error clearing cart for basket {BasketId}", basketId);
                 return ErrorResponse($"Ошибка при очистке корзины: {ex.Message}");
             }
         }
 
-        public CartSummaryResponse GetCartSummary(string userId)
+        public CartSummaryResponse GetCartSummary(string basketId)
         {
             try
             {
-                if (string.IsNullOrEmpty(userId))
-                    return ErrorResponse("User ID is required");
+                if (string.IsNullOrEmpty(basketId))
+                    return ErrorResponse("Basket ID is required");
 
-                var cart = GetCartEntity(userId);
-                return MapToResponse(cart, includeItems: false);
+                var cart = GetCartEntity(basketId);
+                return MapToResponse(cart, basketId, includeItems: false);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error getting cart summary for user {UserId}", userId);
+                _logger.LogError(ex, "Error getting cart summary for basket {BasketId}", basketId);
                 return ErrorResponse($"Ошибка при получении корзины: {ex.Message}");
             }
         }
 
-        public bool IsInCart(string userId, string dishId)
+        public bool IsInCart(string basketId, string dishId)
         {
             try
             {
-                if (string.IsNullOrEmpty(userId))
+                if (string.IsNullOrEmpty(basketId))
                     return false;
 
-                var cart = GetCartEntity(userId);
+                var cart = GetCartEntity(basketId);
                 return cart.Items.Any(item => item.DishId.ToString() == dishId);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error checking if item is in cart for user {UserId}", userId);
+                _logger.LogError(ex, "Error checking if item is in cart for basket {BasketId}", basketId);
                 return false;
             }
         }
-        public async Task<OrderCreationResponse> CreateOrderFromCart(string userId, CreateOrderRequest request)
+
+        public async Task<OrderCreationResponse> CreateOrderFromCart(string basketId, string userId, CreateOrderRequest request)
         {
             try
             {
+                if (string.IsNullOrEmpty(basketId))
+                    return new OrderCreationResponse
+                    {
+                        Success = false,
+                        ErrorMessage = "Basket ID is required"
+                    };
 
                 if (string.IsNullOrEmpty(userId) ||
                     string.IsNullOrEmpty(request.PhoneNumber) ||
@@ -286,7 +309,7 @@ namespace hitsApplication.Services
                     };
                 }
 
-                var cart = GetCartEntity(userId);
+                var cart = GetCartEntity(basketId);
 
                 if (cart.Items.Count == 0)
                 {
@@ -300,6 +323,7 @@ namespace hitsApplication.Services
                 _logger.LogInformation(
                     "НОВЫЙ ЗАКАЗ ДЛЯ СОЗДАНИЯ В JAVA-СИСТЕМЕ\n" +
                     "Пользователь: {UserId}\n" +
+                    "Корзина: {BasketId}\n" +
                     "Телефон: {PhoneNumber}\n" +
                     "Адрес: {Address}\n" +
                     "Способ оплаты: {PaymentMethod}\n" +
@@ -308,6 +332,7 @@ namespace hitsApplication.Services
                     "Общая сумма: {Total} руб.\n" +
                     "Состав заказа:\n{OrderItems}",
                     userId,
+                    basketId,
                     request.PhoneNumber,
                     request.Address,
                     request.PaymentMethod,
@@ -318,7 +343,7 @@ namespace hitsApplication.Services
                         $"{index + 1}. {item.Name} - {item.Quantity} x {item.Price} руб. = {item.Subtotal} руб."))
                 );
 
-                ClearCart(userId);
+                ClearCart(basketId);
 
                 return new OrderCreationResponse
                 {
@@ -328,7 +353,7 @@ namespace hitsApplication.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Ошибка при создании заказа для пользователя {UserId}", userId);
+                _logger.LogError(ex, "Ошибка при создании заказа для корзины {BasketId}", basketId);
                 return new OrderCreationResponse
                 {
                     Success = false,
@@ -359,10 +384,10 @@ namespace hitsApplication.Services
                 return false;
 
             var validMethods = new[] {
-        "card_online",   
-        "card_courier",    
-        "cash_courier"    
-    };
+                "card_online",
+                "card_courier",
+                "cash_courier"
+            };
 
             return validMethods.Contains(paymentMethod);
         }
