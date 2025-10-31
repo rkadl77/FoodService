@@ -9,6 +9,26 @@
     {
       "AbsoluteMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|c:\\users\\rkadl\\source\\repos\\hitsapplication\\hitsapplication\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|solutionrelative:hitsapplication\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|c:\\users\\rkadl\\source\\repos\\hitsapplication\\hitsapplication\\services\\cartservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|solutionrelative:hitsapplication\\services\\cartservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|c:\\users\\rkadl\\source\\repos\\hitsapplication\\hitsapplication\\data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|solutionrelative:hitsapplication\\data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|c:\\users\\rkadl\\source\\repos\\hitsapplication\\hitsapplication\\models\\entities\\cartitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|solutionrelative:hitsapplication\\models\\entities\\cartitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|c:\\users\\rkadl\\source\\repos\\hitsapplication\\hitsapplication\\models\\entities\\cart.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|solutionrelative:hitsapplication\\models\\entities\\cart.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|c:\\users\\rkadl\\source\\repos\\hitsapplication\\hitsapplication\\services\\interfaces\\icartservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|solutionrelative:hitsapplication\\services\\interfaces\\icartservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -18,8 +38,60 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 4,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "CartItem.cs",
+              "DocumentMoniker": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Models\\Entities\\CartItem.cs",
+              "RelativeDocumentMoniker": "hitsApplication\\Models\\Entities\\CartItem.cs",
+              "ToolTip": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Models\\Entities\\CartItem.cs",
+              "RelativeToolTip": "hitsApplication\\Models\\Entities\\CartItem.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAA9AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-31T08:59:54.09Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Cart.cs",
+              "DocumentMoniker": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Models\\Entities\\Cart.cs",
+              "RelativeDocumentMoniker": "hitsApplication\\Models\\Entities\\Cart.cs",
+              "ToolTip": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Models\\Entities\\Cart.cs",
+              "RelativeToolTip": "hitsApplication\\Models\\Entities\\Cart.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-31T08:59:52.647Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ApplicationDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Data\\ApplicationDbContext.cs",
+              "RelativeDocumentMoniker": "hitsApplication\\Data\\ApplicationDbContext.cs",
+              "ToolTip": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Data\\ApplicationDbContext.cs",
+              "RelativeToolTip": "hitsApplication\\Data\\ApplicationDbContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-31T08:58:47.091Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "CartService.cs",
+              "DocumentMoniker": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Services\\CartService.cs",
+              "RelativeDocumentMoniker": "hitsApplication\\Services\\CartService.cs",
+              "ToolTip": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Services\\CartService.cs",
+              "RelativeToolTip": "hitsApplication\\Services\\CartService.cs",
+              "ViewState": "AgIAAFcBAAAAAAAAAAAqwIsBAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-31T08:48:06.553Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
@@ -28,9 +100,9 @@
               "RelativeDocumentMoniker": "hitsApplication\\Controllers\\CartController.cs",
               "ToolTip": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Controllers\\CartController.cs",
               "RelativeToolTip": "hitsApplication\\Controllers\\CartController.cs",
-              "ViewState": "AgIAAEYBAAAAAAAAAADwv4cAAAAoAAAAAAAAAA==",
+              "ViewState": "AgIAAEoBAAAAAAAAAAAYwGcBAABNAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-30T19:15:15.484Z",
+              "WhenOpened": "2025-10-30T20:33:28.858Z",
               "EditorCaption": ""
             },
             {
@@ -41,9 +113,22 @@
               "RelativeDocumentMoniker": "hitsApplication\\Program.cs",
               "ToolTip": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Program.cs",
               "RelativeToolTip": "hitsApplication\\Program.cs",
-              "ViewState": "AgIAACcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAABIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-30T14:33:22.355Z",
+              "WhenOpened": "2025-10-30T20:28:02.481Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "ICartService.cs",
+              "DocumentMoniker": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Services\\Interfaces\\ICartService.cs",
+              "RelativeDocumentMoniker": "hitsApplication\\Services\\Interfaces\\ICartService.cs",
+              "ToolTip": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Services\\Interfaces\\ICartService.cs",
+              "RelativeToolTip": "hitsApplication\\Services\\Interfaces\\ICartService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-30T20:17:06.098Z",
               "EditorCaption": ""
             }
           ]

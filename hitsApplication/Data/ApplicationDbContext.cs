@@ -1,7 +1,5 @@
 ﻿using hitsApplication.Models.Entities;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Reflection.Emit;
 
 namespace hitsApplication.Data
 {
@@ -25,7 +23,7 @@ namespace hitsApplication.Data
                 entity.HasKey(e => e.Id);
 
                 entity.HasIndex(e => e.UserId);
-                entity.HasIndex(e => e.SessionId);
+                entity.HasIndex(e => e.BasketId); 
                 entity.HasIndex(e => e.DishId);
 
                 entity.Property(e => e.Price)
@@ -37,7 +35,7 @@ namespace hitsApplication.Data
                 entity.Property(e => e.Quantity)
                     .HasDefaultValue(1);
 
-                entity.HasIndex(e => new { e.UserId, e.SessionId, e.DishId })
+                entity.HasIndex(e => new { e.BasketId, e.DishId })
                     .IsUnique();
             });
         }

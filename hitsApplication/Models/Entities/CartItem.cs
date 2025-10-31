@@ -12,7 +12,7 @@ namespace hitsApplication.Models.Entities
         public Guid? UserId { get; set; }
 
         [Required]
-        public string SessionId { get; set; } = string.Empty;
+        public string BasketId { get; set; } = string.Empty; 
 
         public Guid DishId { get; set; }
 

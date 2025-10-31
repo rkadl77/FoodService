@@ -28,20 +28,6 @@ namespace hitsApplication.Services
             _context = context;
         }
 
-        private string GetSessionId()
-        {
-            var session = _httpContextAccessor.HttpContext?.Session;
-            var sessionId = session?.GetString("CartSessionId");
-
-            if (string.IsNullOrEmpty(sessionId))
-            {
-                sessionId = Guid.NewGuid().ToString();
-                session?.SetString("CartSessionId", sessionId);
-            }
-
-            return sessionId;
-        }
-
         private string GenerateBasketId()
         {
             return $"basket_{Guid.NewGuid().ToString("N").Substring(0, 12)}";
@@ -97,9 +83,8 @@ namespace hitsApplication.Services
                     };
                 }
 
-                var sessionId = GetSessionId();
                 var cartItems = await _context.CartItems
-                    .Where(x => x.SessionId == sessionId)
+                    .Where(x => x.BasketId == basketId)
                     .ToListAsync();
 
                 return MapToResponse(cartItems, basketId, includeItems: true);
@@ -121,9 +106,8 @@ namespace hitsApplication.Services
                 if (request.Quantity < 1)
                     return ErrorResponse("Количество должно быть не менее 1");
 
-                var sessionId = GetSessionId();
                 var existingItem = await _context.CartItems
-                    .FirstOrDefaultAsync(x => x.SessionId == sessionId && x.DishId == request.DishId);
+                    .FirstOrDefaultAsync(x => x.BasketId == basketId && x.DishId == request.DishId);
 
                 if (existingItem != null)
                 {
@@ -135,7 +119,7 @@ namespace hitsApplication.Services
                     var newItem = new CartItem
                     {
                         Id = Guid.NewGuid(),
-                        SessionId = sessionId,
+                        BasketId = basketId,
                         DishId = request.DishId,
                         Name = request.Name,
                         Price = request.Price,
@@ -150,7 +134,7 @@ namespace hitsApplication.Services
                 await _context.SaveChangesAsync();
 
                 var cartItems = await _context.CartItems
-                    .Where(x => x.SessionId == sessionId)
+                    .Where(x => x.BasketId == basketId)
                     .ToListAsync();
 
                 return MapToResponse(cartItems, basketId, includeItems: true);
@@ -172,9 +156,8 @@ namespace hitsApplication.Services
                 if (!Guid.TryParse(dishId, out var dishGuid))
                     return ErrorResponse("Неверный формат DishId");
 
-                var sessionId = GetSessionId();
                 var itemToRemove = await _context.CartItems
-                    .FirstOrDefaultAsync(x => x.SessionId == sessionId && x.DishId == dishGuid);
+                    .FirstOrDefaultAsync(x => x.BasketId == basketId && x.DishId == dishGuid);
 
                 if (itemToRemove == null)
                     return ErrorResponse("Товар не найден в корзине");
@@ -183,7 +166,7 @@ namespace hitsApplication.Services
                 await _context.SaveChangesAsync();
 
                 var cartItems = await _context.CartItems
-                    .Where(x => x.SessionId == sessionId)
+                    .Where(x => x.BasketId == basketId)
                     .ToListAsync();
 
                 return MapToResponse(cartItems, basketId, includeItems: true);
@@ -208,9 +191,8 @@ namespace hitsApplication.Services
                 if (!Guid.TryParse(dishId, out var dishGuid))
                     return ErrorResponse("Неверный формат DishId");
 
-                var sessionId = GetSessionId();
                 var item = await _context.CartItems
-                    .FirstOrDefaultAsync(x => x.SessionId == sessionId && x.DishId == dishGuid);
+                    .FirstOrDefaultAsync(x => x.BasketId == basketId && x.DishId == dishGuid);
 
                 if (item == null)
                     return ErrorResponse("Товар не найден в корзине");
@@ -220,7 +202,7 @@ namespace hitsApplication.Services
                 await _context.SaveChangesAsync();
 
                 var cartItems = await _context.CartItems
-                    .Where(x => x.SessionId == sessionId)
+                    .Where(x => x.BasketId == basketId)
                     .ToListAsync();
 
                 return MapToResponse(cartItems, basketId, includeItems: true);
@@ -239,9 +221,8 @@ namespace hitsApplication.Services
                 if (string.IsNullOrEmpty(basketId))
                     return ErrorResponse("Basket ID is required");
 
-                var sessionId = GetSessionId();
                 var itemsToRemove = await _context.CartItems
-                    .Where(x => x.SessionId == sessionId)
+                    .Where(x => x.BasketId == basketId)
                     .ToListAsync();
 
                 _context.CartItems.RemoveRange(itemsToRemove);
@@ -270,9 +251,8 @@ namespace hitsApplication.Services
                 if (string.IsNullOrEmpty(basketId))
                     return ErrorResponse("Basket ID is required");
 
-                var sessionId = GetSessionId();
                 var cartItems = await _context.CartItems
-                    .Where(x => x.SessionId == sessionId)
+                    .Where(x => x.BasketId == basketId)
                     .ToListAsync();
 
                 return MapToResponse(cartItems, basketId, includeItems: false);
@@ -291,9 +271,8 @@ namespace hitsApplication.Services
                 if (string.IsNullOrEmpty(basketId) || !Guid.TryParse(dishId, out var dishGuid))
                     return false;
 
-                var sessionId = GetSessionId();
                 return await _context.CartItems
-                    .AnyAsync(x => x.SessionId == sessionId && x.DishId == dishGuid);
+                    .AnyAsync(x => x.BasketId == basketId && x.DishId == dishGuid);
             }
             catch (Exception ex)
             {
@@ -343,9 +322,8 @@ namespace hitsApplication.Services
                     };
                 }
 
-                var sessionId = GetSessionId();
                 var cartItems = await _context.CartItems
-                    .Where(x => x.SessionId == sessionId)
+                    .Where(x => x.BasketId == basketId)
                     .ToListAsync();
 
                 if (cartItems.Count == 0)

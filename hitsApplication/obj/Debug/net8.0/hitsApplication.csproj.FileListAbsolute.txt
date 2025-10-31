@@ -115,3 +115,4 @@ C:\Users\rkadl\source\repos\hitsApplication\hitsApplication\obj\Debug\net8.0\ref
 C:\Users\rkadl\source\repos\hitsApplication\hitsApplication\obj\Debug\net8.0\hitsApplication.pdb
 C:\Users\rkadl\source\repos\hitsApplication\hitsApplication\obj\Debug\net8.0\hitsApplication.genruntimeconfig.cache
 C:\Users\rkadl\source\repos\hitsApplication\hitsApplication\obj\Debug\net8.0\ref\hitsApplication.dll
+C:\Users\rkadl\source\repos\hitsApplication\hitsApplication\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
