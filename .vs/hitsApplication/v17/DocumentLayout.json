@@ -3,22 +3,6 @@
   "WorkspaceRootPath": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|c:\\users\\rkadl\\source\\repos\\hitsapplication\\hitsapplication\\authservices\\jwttokenservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|solutionrelative:hitsapplication\\authservices\\jwttokenservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|c:\\users\\rkadl\\source\\repos\\hitsapplication\\hitsapplication\\authservices\\ijwttokenservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|solutionrelative:hitsapplication\\authservices\\ijwttokenservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|c:\\users\\rkadl\\source\\repos\\hitsapplication\\hitsapplication\\enums\\tokenstatus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|solutionrelative:hitsapplication\\enums\\tokenstatus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|c:\\users\\rkadl\\source\\repos\\hitsapplication\\hitsapplication\\models\\dtos\\responses\\ordercreationresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|solutionrelative:hitsapplication\\models\\dtos\\responses\\ordercreationresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|c:\\users\\rkadl\\source\\repos\\hitsapplication\\hitsapplication\\services\\cartservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|solutionrelative:hitsapplication\\services\\cartservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -47,71 +31,19 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "JwtTokenService.cs",
-              "DocumentMoniker": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\AuthServices\\JwtTokenService.cs",
-              "RelativeDocumentMoniker": "hitsApplication\\AuthServices\\JwtTokenService.cs",
-              "ToolTip": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\AuthServices\\JwtTokenService.cs",
-              "RelativeToolTip": "hitsApplication\\AuthServices\\JwtTokenService.cs",
-              "ViewState": "AgIAAMQAAAAAAAAAAAAYwAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-01T16:41:03.481Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "IJwtTokenService.cs",
-              "DocumentMoniker": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\AuthServices\\IJwtTokenService.cs",
-              "RelativeDocumentMoniker": "hitsApplication\\AuthServices\\IJwtTokenService.cs",
-              "ToolTip": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\AuthServices\\IJwtTokenService.cs",
-              "RelativeToolTip": "hitsApplication\\AuthServices\\IJwtTokenService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-01T16:41:02.435Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "OrderCreationResponse.cs",
-              "DocumentMoniker": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Models\\DTOs\\Responses\\OrderCreationResponse.cs",
-              "RelativeDocumentMoniker": "hitsApplication\\Models\\DTOs\\Responses\\OrderCreationResponse.cs",
-              "ToolTip": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Models\\DTOs\\Responses\\OrderCreationResponse.cs",
-              "RelativeToolTip": "hitsApplication\\Models\\DTOs\\Responses\\OrderCreationResponse.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAABAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-01T15:48:18.022Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "TokenStatus.cs",
-              "DocumentMoniker": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Enums\\TokenStatus.cs",
-              "RelativeDocumentMoniker": "hitsApplication\\Enums\\TokenStatus.cs",
-              "ToolTip": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Enums\\TokenStatus.cs",
-              "RelativeToolTip": "hitsApplication\\Enums\\TokenStatus.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAKAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-01T15:40:57.387Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
               "Title": "CartService.cs",
               "DocumentMoniker": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Services\\CartService.cs",
               "RelativeDocumentMoniker": "hitsApplication\\Services\\CartService.cs",
               "ToolTip": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Services\\CartService.cs",
               "RelativeToolTip": "hitsApplication\\Services\\CartService.cs",
-              "ViewState": "AgIAABYBAAAAAAAAAADwv48BAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAJoBAAAAAAAAAAAiwLEBAABwAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-31T08:48:06.553Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 1,
               "Title": "CartController.cs",
               "DocumentMoniker": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Controllers\\CartController.cs",
               "RelativeDocumentMoniker": "hitsApplication\\Controllers\\CartController.cs",
@@ -119,12 +51,11 @@
               "RelativeToolTip": "hitsApplication\\Controllers\\CartController.cs",
               "ViewState": "AgIAAG4AAAAAAAAAAAAiwKIAAAA2AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-30T20:33:28.858Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-30T20:33:28.858Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 2,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Program.cs",
               "RelativeDocumentMoniker": "hitsApplication\\Program.cs",
@@ -136,7 +67,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 3,
               "Title": "ICartService.cs",
               "DocumentMoniker": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Services\\Interfaces\\ICartService.cs",
               "RelativeDocumentMoniker": "hitsApplication\\Services\\Interfaces\\ICartService.cs",

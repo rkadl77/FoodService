@@ -397,6 +397,7 @@ namespace hitsApplication.Services
                 {
                     authorizationHeader = "Bearer " + authorizationHeader;
                 }
+
                 var javaPaymentMethod = request.PaymentMethod?.ToUpperInvariant();
 
                 var javaOrderRequest = new
@@ -408,6 +409,7 @@ namespace hitsApplication.Services
                     total = (double)cartItems.Sum(x => x.Price * x.Quantity),
                     items = cartItems.Select(item => new
                     {
+                        id = item.DishId, 
                         name = item.Name,
                         price = (double)item.Price,
                         imageUrl = !string.IsNullOrEmpty(item.ImageUrl)
