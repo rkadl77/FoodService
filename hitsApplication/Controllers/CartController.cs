@@ -1,11 +1,12 @@
 ﻿using hitsApplication.AuthServices;
+using hitsApplication.Enums;
+using hitsApplication.Filters;
 using hitsApplication.Models.DTOs.Requests;
 using hitsApplication.Models.DTOs.Responses;
 using hitsApplication.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Text;
 using System.Text.Json;
-using hitsApplication.Filters;
 
 namespace hitsApplication.Controllers
 {
@@ -94,59 +95,139 @@ namespace hitsApplication.Controllers
             [FromBody] CreateOrderRequest request,
             [FromHeader] string basketId)
         {
+            const string methodName = nameof(CreateOrderFromCart);
+
             try
             {
-                if (!ModelState.IsValid)
+                var validationResult = ValidateCreateOrderRequest(request, basketId);
+                if (!validationResult.IsValid)
                 {
+                    _logger.LogWarning("CART CONTROLLER - Validation failed in {Method}: {Error}",
+                        methodName, validationResult.ErrorMessage);
                     return BadRequest(new OrderCreationResponse
                     {
                         Success = false,
-                        ErrorMessage = "Invalid request data"
-                    });
-                }
-
-                if (string.IsNullOrEmpty(basketId))
-                {
-                    return BadRequest(new OrderCreationResponse
-                    {
-                        Success = false,
-                        ErrorMessage = "Basket ID is required"
+                        ErrorMessage = validationResult.ErrorMessage
                     });
                 }
 
                 var userId = GetUserIdFromHttpContext();
                 if (string.IsNullOrEmpty(userId))
                 {
+                    _logger.LogWarning("CART CONTROLLER - User ID not found in context for basket {BasketId}", basketId);
                     return Unauthorized(new OrderCreationResponse
                     {
                         Success = false,
-                        ErrorMessage = "User ID not found in context"
+                        ErrorMessage = "User authentication failed"
                     });
                 }
 
-                _logger.LogInformation("CART CONTROLLER - Creating order for basket: {BasketId}", basketId);
-                _logger.LogInformation("CART CONTROLLER - UserId: {UserId}", userId);
-                _logger.LogInformation("CART CONTROLLER - PaymentMethod received: '{PaymentMethod}'", request.PaymentMethod);
-                _logger.LogInformation("CART CONTROLLER - Phone: {Phone}, Address: {Address}",
-                    request.PhoneNumber, request.Address);
-                _logger.LogInformation("CART CONTROLLER - Comment: {Comment}", request.Comment);
+                var tokenStatus = await CheckTokenStatusAsync();
+                if (tokenStatus == TokenStatus.Expired)
+                {
+                    _logger.LogWarning("CART CONTROLLER - Token expired for user {UserId}, basket {BasketId}",
+                        userId, basketId);
+                    return Unauthorized(new OrderCreationResponse
+                    {
+                        Success = false,
+                        ErrorMessage = "Token has expired. Please log in again.",
+                        ErrorCode = "TOKEN_EXPIRED"
+                    });
+                }
+
+                LogOrderCreationDetails(basketId, userId, request);
 
                 var result = await _cartService.CreateOrderFromCart(basketId, userId, request);
 
-                _logger.LogInformation("CART CONTROLLER - Order creation result: {Success}, Message: {Message}",
-                    result.Success, result.ErrorMessage);
+                _logger.LogInformation(
+                    "CART CONTROLLER - Order creation completed for basket {BasketId}. Success: {Success}, Message: {Message}",
+                    basketId, result.Success, result.ErrorMessage ?? "No error");
 
-                return result.Success ? Ok(result) : BadRequest(result);
+                return result.Success
+                    ? Ok(result)
+                    : BadRequest(result);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error creating order from cart for basket {BasketId}", basketId);
+                _logger.LogError(ex,
+                    "CART CONTROLLER - Unexpected error in {Method} for basket {BasketId}",
+                    methodName, basketId);
+
                 return StatusCode(500, new OrderCreationResponse
                 {
                     Success = false,
                     ErrorMessage = "Internal server error when creating order"
                 });
             }
+        }
+        private (bool IsValid, string ErrorMessage) ValidateCreateOrderRequest(CreateOrderRequest request, string basketId)
+        {
+            if (!ModelState.IsValid)
+            {
+                var errors = string.Join("; ", ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage));
+                return (false, $"Invalid request data: {errors}");
+            }
+
+            if (string.IsNullOrEmpty(basketId))
+            {
+                return (false, "Basket ID is required");
+            }
+
+            if (string.IsNullOrEmpty(request.PhoneNumber))
+            {
+                return (false, "Phone number is required");
+            }
+
+            if (string.IsNullOrEmpty(request.Address))
+            {
+                return (false, "Address is required");
+            }
+
+            if (string.IsNullOrEmpty(request.PaymentMethod))
+            {
+                return (false, "Payment method is required");
+            }
+
+            return (true, null);
+        }
+
+        private async Task<TokenStatus> CheckTokenStatusAsync()
+        {
+            try
+            {
+                var authorizationHeader = HttpContext.Request.Headers["Authorization"].FirstOrDefault();
+                if (!string.IsNullOrEmpty(authorizationHeader))
+                {
+                    return _jwtTokenService.GetTokenStatus(authorizationHeader);
+                }
+                return TokenStatus.Missing;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "CART CONTROLLER - Error checking token status");
+                return TokenStatus.Invalid;
+            }
+        }
+
+        private void LogOrderCreationDetails(string basketId, string userId, CreateOrderRequest request)
+        {
+            _logger.LogInformation(
+                "CART CONTROLLER - Order creation started:\n" +
+                "  Basket: {BasketId}\n" +
+                "  User: {UserId}\n" +
+                "  Payment: {PaymentMethod}\n" +
+                "  Phone: {PhoneNumber}\n" +
+                "  Address: {Address}\n" +
+                "  Comment: {Comment}",
+                basketId,
+                userId,
+                request.PaymentMethod,
+                request.PhoneNumber,
+                request.Address,
+                request.Comment ?? "No comment"
+            );
         }
 
         [HttpPut("update")]
@@ -374,10 +455,5 @@ namespace hitsApplication.Controllers
                 return BadRequest(new { Error = ex.Message });
             }
         }
-    }
-
-    public class TokenTestRequest
-    {
-        public string Token { get; set; } = string.Empty;
     }
 }

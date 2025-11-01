@@ -1,8 +1,9 @@
 ﻿namespace hitsApplication.AuthServices
 {
+    using hitsApplication.Enums;
+    using Microsoft.IdentityModel.Tokens;
     using System.IdentityModel.Tokens.Jwt;
     using System.Security.Claims;
-    using Microsoft.IdentityModel.Tokens;
     using System.Text;
     using System.Text.Json;
 
@@ -71,18 +72,149 @@
         {
             try
             {
+                if (string.IsNullOrEmpty(token))
+                    return false;
+
+                if (token.StartsWith("Bearer "))
+                    token = token.Substring(7);
+
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var key = Encoding.ASCII.GetBytes(_jwtSecret);
+
+                tokenHandler.ValidateToken(token, new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateLifetime = true, 
+                    ClockSkew = TimeSpan.Zero
+                }, out SecurityToken validatedToken);
+
+                return true;
+            }
+            catch (SecurityTokenExpiredException ex)
+            {
+                _logger.LogWarning("Token expired: {Message}", ex.Message);
+                return false;
+            }
+            catch (SecurityTokenInvalidSignatureException ex)
+            {
+                _logger.LogWarning("Token signature invalid: {Message}", ex.Message);
+                return false;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning("Token validation failed: {Message}", ex.Message);
+                return false;
+            }
+        }
+
+        public bool IsTokenExpired(string token)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(token))
+                    return true;
+
+                if (token.StartsWith("Bearer "))
+                    token = token.Substring(7);
+
+                var expiration = GetTokenExpiration(token);
+                return expiration.HasValue && expiration.Value < DateTime.UtcNow;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error checking token expiration");
+                return true;
+            }
+        }
+
+        public DateTime? GetTokenExpiration(string token)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(token))
+                    return null;
+
                 if (token.StartsWith("Bearer "))
                     token = token.Substring(7);
 
                 var handler = new JwtSecurityTokenHandler();
+                var jwtToken = handler.ReadJwtToken(token);
 
-                handler.ReadJwtToken(token);
-
-                return true;
+                return jwtToken.ValidTo;
             }
-            catch
+            catch (Exception ex)
             {
-                return false;
+                _logger.LogError(ex, "Error getting token expiration");
+                return null;
+            }
+        }
+
+        public DateTime? GetTokenIssueDate(string token)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(token))
+                    return null;
+
+                if (token.StartsWith("Bearer "))
+                    token = token.Substring(7);
+
+                var handler = new JwtSecurityTokenHandler();
+                var jwtToken = handler.ReadJwtToken(token);
+
+                return jwtToken.ValidFrom;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting token issue date");
+                return null;
+            }
+        }
+
+        public TimeSpan? GetTokenRemainingLifetime(string token)
+        {
+            try
+            {
+                var expiration = GetTokenExpiration(token);
+                if (!expiration.HasValue) return null;
+
+                var remaining = expiration.Value - DateTime.UtcNow;
+                return remaining > TimeSpan.Zero ? remaining : TimeSpan.Zero;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error calculating token remaining lifetime");
+                return null;
+            }
+        }
+
+        public TokenStatus GetTokenStatus(string token)
+        {
+            if (string.IsNullOrEmpty(token))
+                return TokenStatus.Missing;
+
+            try
+            {
+                if (token.StartsWith("Bearer "))
+                    token = token.Substring(7);
+
+                if (!IsTokenValid(token))
+                {
+                    if (IsTokenExpired(token))
+                        return TokenStatus.Expired;
+                    else
+                        return TokenStatus.Invalid;
+                }
+
+                return TokenStatus.Valid;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error determining token status");
+                return TokenStatus.Invalid;
             }
         }
 

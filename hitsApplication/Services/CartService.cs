@@ -1,11 +1,12 @@
-﻿using hitsApplication.Services.Interfaces;
+﻿using hitsApplication.Data;
 using hitsApplication.Models.DTOs.Requests;
 using hitsApplication.Models.DTOs.Responses;
 using hitsApplication.Models.Entities;
-using hitsApplication.Data;
+using hitsApplication.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System.Text.Json;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace hitsApplication.Services
 {
@@ -396,6 +397,7 @@ namespace hitsApplication.Services
                 {
                     authorizationHeader = "Bearer " + authorizationHeader;
                 }
+                var javaPaymentMethod = request.PaymentMethod?.ToUpperInvariant();
 
                 var javaOrderRequest = new
                 {
@@ -406,23 +408,26 @@ namespace hitsApplication.Services
                     total = (double)cartItems.Sum(x => x.Price * x.Quantity),
                     items = cartItems.Select(item => new
                     {
-                        id = item.DishId,
                         name = item.Name,
                         price = (double)item.Price,
-                        imageUrl = item.ImageUrl,
+                        imageUrl = !string.IsNullOrEmpty(item.ImageUrl)
+                            ? new List<string> { item.ImageUrl }
+                            : new List<string>(),
                         quantity = item.Quantity
                     }).ToList(),
                     isEmpty = cartItems.Count == 0,
                     hasItems = cartItems.Count > 0,
                     phoneNumber = request.PhoneNumber,
                     address = request.Address,
-                    paymentMethod = request.PaymentMethod,
+                    paymentMethod = javaPaymentMethod,
                     comment = request.Comment
                 };
 
                 var options = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
                 var json = JsonSerializer.Serialize(javaOrderRequest, options);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                _logger.LogInformation("Sending to Java: {Json}", json);
 
                 var httpRequest = new HttpRequestMessage(HttpMethod.Post, "http://localhost:8096/order/create");
                 httpRequest.Content = content;
@@ -464,7 +469,7 @@ namespace hitsApplication.Services
                 .Replace(")", "");
 
             return cleaned.Length == 11 &&
-                   (cleaned.StartsWith("79") || cleaned.StartsWith("89"));
+                   (cleaned.StartsWith("7") || cleaned.StartsWith("8"));
         }
 
         private bool IsValidPaymentMethod(string paymentMethod)
@@ -473,12 +478,12 @@ namespace hitsApplication.Services
                 return false;
 
             var validMethods = new[] {
-                "card_online",
-                "card_courier",
-                "cash_courier"
-            };
+        "CARD_ONLINE",      
+        "CARD_COURIER",     
+        "CASH_COURIER"     
+    };
 
-            return validMethods.Contains(paymentMethod);
+            return validMethods.Contains(paymentMethod.ToUpperInvariant());
         }
     }
 }

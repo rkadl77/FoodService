@@ -173,7 +173,7 @@
     "Parameters": [
       {
         "Name": "request",
-        "Type": "hitsApplication.Controllers.TokenTestRequest",
+        "Type": "hitsApplication.Models.DTOs.Requests.TokenTestRequest",
         "IsRequired": true
       }
     ],
