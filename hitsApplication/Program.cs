@@ -1,8 +1,9 @@
 ﻿using hitsApplication.AuthServices;
+using hitsApplication.Data; 
+using hitsApplication.Filters;
+using hitsApplication.Models;
 using hitsApplication.Services;
 using hitsApplication.Services.Interfaces;
-using hitsApplication.Filters;
-using hitsApplication.Data; 
 using Microsoft.EntityFrameworkCore; 
 using Microsoft.OpenApi.Models;
 
@@ -25,6 +26,9 @@ builder.Services.AddHttpClient();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.Configure<FeatureFlags>(builder.Configuration.GetSection("FeatureFlags"));
+builder.Services.AddScoped<BuggyFeaturesService>();
 
 builder.Services.AddSwaggerGen(c =>
 {
@@ -86,3 +90,4 @@ app.UseSession();
 app.MapControllers();
 
 app.Run();
+public partial class Program { }

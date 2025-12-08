@@ -315,6 +315,47 @@
           }
         }
       }
+    },
+    "/api/Features/flags": {
+      "get": {
+        "tags": [
+          "Features"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Features/bugs/{bugName}/toggle": {
+      "post": {
+        "tags": [
+          "Features"
+        ],
+        "parameters": [
+          {
+            "name": "bugName",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "enable",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
     }
   },
   "components": {

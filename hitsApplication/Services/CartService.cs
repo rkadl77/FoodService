@@ -1,32 +1,40 @@
 ﻿using hitsApplication.Data;
+using hitsApplication.Models;
 using hitsApplication.Models.DTOs.Requests;
 using hitsApplication.Models.DTOs.Responses;
 using hitsApplication.Models.Entities;
 using hitsApplication.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace hitsApplication.Services
 {
-    public class CartService : ICartService
+    public partial class CartService : ICartService
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ILogger<CartService> _logger;
         private readonly HttpClient _httpClient;
         private readonly ApplicationDbContext _context;
+        private readonly BuggyFeaturesService _buggyService;
+        private readonly FeatureFlags _featureFlags;
 
         public CartService(
             IHttpContextAccessor httpContextAccessor,
             ILogger<CartService> logger,
             IHttpClientFactory httpClientFactory,
-            ApplicationDbContext context)
+            ApplicationDbContext context,
+            BuggyFeaturesService buggyService,
+            IOptions<FeatureFlags> featureFlags)
         {
             _httpContextAccessor = httpContextAccessor;
             _logger = logger;
             _httpClient = httpClientFactory.CreateClient();
             _context = context;
+            _buggyService = buggyService;
+            _featureFlags = featureFlags.Value;
         }
 
         private string GenerateBasketId()
@@ -107,25 +115,42 @@ namespace hitsApplication.Services
                 if (request.Quantity < 1)
                     return ErrorResponse("Количество должно быть не менее 1");
 
+                var modifiedRequest = _buggyService.ApplyBugsToRequest(request);
+
+                if (_buggyService.ShouldSkipValidation(request.DishId.ToString()))
+                {
+                    _logger.LogWarning("Validation skipped for product {DishId}", request.DishId);
+                }
+
                 var existingItem = await _context.CartItems
-                    .FirstOrDefaultAsync(x => x.BasketId == basketId && x.DishId == request.DishId);
+                    .FirstOrDefaultAsync(x => x.BasketId == basketId && x.DishId == modifiedRequest.DishId);
 
                 if (existingItem != null)
                 {
-                    existingItem.Quantity += request.Quantity;
+
+                    var quantityToAdd = _buggyService.ApplyQuantityBug(modifiedRequest.Quantity);
+
+                    if (existingItem.Quantity + quantityToAdd > _featureFlags.CartItemLimit)
+                    {
+                        quantityToAdd = Math.Max(1, _featureFlags.CartItemLimit - existingItem.Quantity);
+                    }
+
+                    existingItem.Quantity += quantityToAdd;
                     existingItem.UpdatedAt = DateTime.UtcNow;
                 }
                 else
                 {
+                    var imageUrl = _buggyService.ApplyImageUrlBug(modifiedRequest.ImageUrl);
+
                     var newItem = new CartItem
                     {
                         Id = Guid.NewGuid(),
                         BasketId = basketId,
-                        DishId = request.DishId,
-                        Name = request.Name,
-                        Price = request.Price,
-                        ImageUrl = request.ImageUrl,
-                        Quantity = request.Quantity,
+                        DishId = modifiedRequest.DishId,
+                        Name = modifiedRequest.Name,
+                        Price = modifiedRequest.Price,
+                        ImageUrl = imageUrl,
+                        Quantity = modifiedRequest.Quantity,
                         CreatedAt = DateTime.UtcNow,
                         UpdatedAt = DateTime.UtcNow
                     };
@@ -138,15 +163,26 @@ namespace hitsApplication.Services
                     .Where(x => x.BasketId == basketId)
                     .ToListAsync();
 
-                return MapToResponse(cartItems, basketId, includeItems: true);
+                var response = MapToResponse(cartItems, basketId, includeItems: true);
+
+                return _buggyService.ApplyResponseBug(response);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error adding item to cart for basket {BasketId}", basketId);
+                if (_buggyService.ShouldLogSensitiveInfo())
+                {
+                    _logger.LogError(ex,
+                        "Error adding item to cart. Basket: {BasketId}, DishId: {DishId}",
+                        basketId, request.DishId);
+                }
+                else
+                {
+                    _logger.LogError(ex, "Error adding item to cart for basket {BasketId}", basketId);
+                }
+
                 return ErrorResponse($"Ошибка при добавлении в корзину: {ex.Message}");
             }
         }
-
         public async Task<CartSummaryResponse> RemoveFromCart(string basketId, string dishId)
         {
             try

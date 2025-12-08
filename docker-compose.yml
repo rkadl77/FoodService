@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: foodservice-postgres
+    environment:
+      POSTGRES_DB: hitsApplicationDb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - foodservice-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: foodservice-app
+    ports:
+      - "5000:8080"
+      - "5001:8081"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=hitsApplicationDb;Username=postgres;Password=root
+      - Jwt__Secret=hits2025972303hits2025972303hits20259723032025hits
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - foodservice-network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+
+networks:
+  foodservice-network:
+    driver: bridge

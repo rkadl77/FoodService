@@ -199,5 +199,36 @@
       }
     ],
     "ReturnTypes": []
+  },
+  {
+    "ContainingType": "hitsApplication.Controllers.FeaturesController",
+    "Method": "ToggleBug",
+    "RelativePath": "api/Features/bugs/{bugName}/toggle",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "bugName",
+        "Type": "System.String",
+        "IsRequired": true
+      },
+      {
+        "Name": "enable",
+        "Type": "System.Boolean",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "hitsApplication.Controllers.FeaturesController",
+    "Method": "GetFeatureFlags",
+    "RelativePath": "api/Features/flags",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
   }
 ]
