@@ -1,11 +1,6 @@
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
-<<<<<<< HEAD
-EXPOSE 8080
-EXPOSE 8081
-=======
 EXPOSE 5621
->>>>>>> d25676b2f4062118d24d1c88cb0368d5399ae279
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
