@@ -466,8 +466,8 @@ namespace hitsApplication.Services
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 
                 _logger.LogInformation("Sending to Java: {Json}", json);
-
-                var httpRequest = new HttpRequestMessage(HttpMethod.Post, "http://localhost:8096/order/create");
+                //var httpRequest = new HttpRequestMessage(HttpMethod.Post, "http://localhost:8096/order/create");
+                var httpRequest = new HttpRequestMessage(HttpMethod.Post, "http://order-service:8096/order/create");
                 httpRequest.Content = content;
                 httpRequest.Headers.Add("Authorization", authorizationHeader);
 
