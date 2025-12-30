@@ -4,6 +4,18 @@ namespace hitsApplication.Models
 {
     public class FeatureFlags
     {
+        [Display(Name = "Ломать создание заказа")]
+        public bool BreakOrderCreation { get; set; } = true;  // Для бага 1
+
+        [Display(Name = "Не изменять количество при добавлении")]
+        public bool NoQuantityChangeOnAdd { get; set; } = true;  // Для бага 3
+
+        [Display(Name = "Не изменять количество при удалении")]
+        public bool NoQuantityChangeOnRemove { get; set; } = true;  // Для бага 4
+
+        [Display(Name = "Не очищать корзину после заказа")]
+        public bool NoCartClearAfterOrder { get; set; } = true;  // Для бага 5
+
         [Display(Name = "Включить баг с расчетом цены")]
         public bool EnableCalculationBug { get; set; } = false;
 

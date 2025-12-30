@@ -4,14 +4,29 @@ using hitsApplication.Models.DTOs.Responses;
 using Microsoft.Extensions.Options;
 
 namespace hitsApplication.Services
+
 {
+    // Enum для типов багов
+    public enum OrderServiceBugType
+    {
+        None = 0,
+        ReturnFalseImmediately = 1,      // Просто возвращает false
+        ThrowException = 2,              // Бросает исключение
+        InfiniteTimeout = 3,             // Бесконечная задержка
+        WrongUrl = 4,                    // Неправильный URL
+        InvalidData = 5,                 // Неправильные данные
+        FakeSuccess = 6,                 // Фейковый успех
+        WrongHttpMethod = 7,             // Неправильный HTTP метод
+        WrongHeaders = 8,                // Неправильные заголовки
+        HideErrors = 9                   // Прячет ошибки
+    }
     public class BuggyFeaturesService
     {
         private readonly FeatureFlags _flags;
 
         public BuggyFeaturesService(IOptions<FeatureFlags> flags)
         {
-            _flags = flags?.Value ?? new FeatureFlags(); 
+            _flags = flags?.Value ?? new FeatureFlags();
         }
 
         public AddToCartRequest ApplyBugsToRequest(AddToCartRequest original)
@@ -23,7 +38,7 @@ namespace hitsApplication.Services
             {
                 DishId = original.DishId,
                 Name = original.Name,
-                Price = original.Price + original.Quantity, 
+                Price = original.Price + original.Quantity,
                 ImageUrl = original.ImageUrl,
                 Quantity = original.Quantity
             };
@@ -59,7 +74,7 @@ namespace hitsApplication.Services
                 BasketId = response.BasketId,
                 ErrorMessage = response.ErrorMessage,
                 ItemCount = response.ItemCount,
-                Total = response.Total * 1.1m, 
+                Total = response.Total * 1.1m,
                 Items = response.Items?.Select(item => new CartItemResponse
                 {
                     DishId = item.DishId,
@@ -83,5 +98,57 @@ namespace hitsApplication.Services
 
             return dishId.EndsWith("9", StringComparison.Ordinal);
         }
+
+        public bool ShouldBreakOrderCreation()
+        {
+            return _flags?.BreakOrderCreation == true;
+        }
+
+        // БАГ 3: Не изменять количество при добавлении
+        public bool ShouldNotChangeQuantityOnAdd()
+        {
+            return _flags?.NoQuantityChangeOnAdd == true;
+        }
+
+        // БАГ 4: Не изменять количество при удалении
+        public bool ShouldNotChangeQuantityOnRemove()
+        {
+            return _flags?.NoQuantityChangeOnRemove == true;
+        }
+
+        // БАГ 5: Не очищать корзину
+        public bool ShouldNotClearCartAfterOrder()
+        {
+            return _flags?.NoCartClearAfterOrder == true;
+        }
+
+        public string ApplyOrderServiceBug(string originalUrl)
+        {
+            if (_flags?.BreakOrderCreation != true)
+                return originalUrl;
+
+            // Разные варианты сломаного URL:
+            var bugType = new Random().Next(1, 6);
+
+            return bugType switch
+            {
+                1 => "http://non-existent-service:9999/broken-endpoint", // Несуществующий сервис
+                2 => "http://order-service-wrong:8096/order/create",     // Неправильное имя хоста
+                3 => "http://order-service:9999/order/create",           // Неправильный порт
+                4 => "http://order-service:8096/wrong-endpoint",         // Неправильный эндпоинт
+                5 => "https://order-service:8096/order/create",          // HTTPS вместо HTTP
+                _ => "invalid-url-without-protocol"                       // Совсем неправильный URL
+            };
+        }
+        public OrderServiceBugType GetOrderServiceBugType()
+        {
+            if (_flags?.BreakOrderCreation != true)
+                return OrderServiceBugType.None;
+
+            var random = new Random();
+            var values = Enum.GetValues(typeof(OrderServiceBugType));
+            return (OrderServiceBugType)values.GetValue(random.Next(values.Length));
+        }
+        
     }
 }
