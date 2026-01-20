@@ -45,14 +45,18 @@ namespace hitsApplication.Services
 
         private CartSummaryResponse MapToResponse(List<CartItem> cartItems, string basketId, bool includeItems = true)
         {
+            // БАГ c: Получаем неправильный basketId при включенном флаге
+            var actualBasketId = _buggyService.GetWrongBasketId(basketId);
+
             var cart = new Cart { Items = cartItems };
+            var total = cart.Total;
 
             return new CartSummaryResponse
             {
                 Success = true,
-                BasketId = basketId,
+                BasketId = actualBasketId, // Используем обработанный basketId
                 ItemCount = cart.TotalItems,
-                Total = cart.Total,
+                Total = total,
                 Items = includeItems ? cartItems.Select(item => new CartItemResponse
                 {
                     DishId = item.DishId.ToString(),
@@ -93,8 +97,11 @@ namespace hitsApplication.Services
                     };
                 }
 
+                // БАГ c: Используем неправильный basketId для запроса
+                var actualBasketId = _buggyService.GetWrongBasketId(basketId);
+
                 var cartItems = await _context.CartItems
-                    .Where(x => x.BasketId == basketId)
+                    .Where(x => x.BasketId == actualBasketId)
                     .ToListAsync();
 
                 return MapToResponse(cartItems, basketId, includeItems: true);
@@ -113,8 +120,12 @@ namespace hitsApplication.Services
                 if (string.IsNullOrEmpty(basketId))
                     return ErrorResponse("Basket ID is required");
 
-                if (request.Quantity < 1)
-                    return ErrorResponse("Количество должно быть не менее 1");
+                // БАГ e: Разрешаем невалидные количества
+                if (!_buggyService.AllowInvalidQuantities(request.Quantity))
+                {
+                    if (request.Quantity < 1)
+                        return ErrorResponse("Количество должно быть не менее 1");
+                }
 
                 var modifiedRequest = _buggyService.ApplyBugsToRequest(request);
 
@@ -123,36 +134,13 @@ namespace hitsApplication.Services
                     _logger.LogWarning("Validation skipped for product {DishId}", request.DishId);
                 }
 
-                var existingItem = await _context.CartItems
-                    .FirstOrDefaultAsync(x => x.BasketId == basketId && x.DishId == modifiedRequest.DishId);
-
-                if (existingItem != null)
+                // БАГ a: Создаем дубликат вместо увеличения количества
+                if (_buggyService.ShouldCreateDuplicateCartItem())
                 {
-                    // баг с карзиной ,где кол-во не меняется при добавлении 
-                    if (_buggyService.ShouldNotChangeQuantityOnAdd())
-                    {
-                        _logger.LogWarning("Cartbug: Quantity NOT changed for existing item {DishId}",
-                            modifiedRequest.DishId);
+                    _logger.LogWarning("DuplicateCartItemBug: Creating duplicate for DishId {DishId}",
+                        modifiedRequest.DishId);
 
-                        // тут я просто время обновляю вместо изменение кол-ва
-                        existingItem.UpdatedAt = DateTime.UtcNow;
-                    }
-                    else
-                    {
-                        // ориг логика 
-                        var quantityToAdd = _buggyService.ApplyQuantityBug(modifiedRequest.Quantity);
-
-                        if (existingItem.Quantity + quantityToAdd > _featureFlags.CartItemLimit)
-                        {
-                            quantityToAdd = Math.Max(1, _featureFlags.CartItemLimit - existingItem.Quantity);
-                        }
-
-                        existingItem.Quantity += quantityToAdd;
-                        existingItem.UpdatedAt = DateTime.UtcNow;
-                    }
-                }
-                else
-                {
+                    // Просто создаем новую запись, даже если товар уже есть в корзине
                     var imageUrl = _buggyService.ApplyImageUrlBug(modifiedRequest.ImageUrl);
 
                     var newItem = new CartItem
@@ -168,6 +156,55 @@ namespace hitsApplication.Services
                         UpdatedAt = DateTime.UtcNow
                     };
                     _context.CartItems.Add(newItem);
+                }
+                else
+                {
+                    var existingItem = await _context.CartItems
+                        .FirstOrDefaultAsync(x => x.BasketId == basketId && x.DishId == modifiedRequest.DishId);
+
+                    if (existingItem != null)
+                    {
+                        // БАГ: баг с корзиной, где кол-во не меняется при добавлении 
+                        if (_buggyService.ShouldNotChangeQuantityOnAdd())
+                        {
+                            _logger.LogWarning("Cartbug: Quantity NOT changed for existing item {DishId}",
+                                modifiedRequest.DishId);
+
+                            // тут я просто время обновляю вместо изменение кол-ва
+                            existingItem.UpdatedAt = DateTime.UtcNow;
+                        }
+                        else
+                        {
+                            // ориг логика 
+                            var quantityToAdd = _buggyService.ApplyQuantityBug(modifiedRequest.Quantity);
+
+                            if (existingItem.Quantity + quantityToAdd > _featureFlags.CartItemLimit)
+                            {
+                                quantityToAdd = Math.Max(1, _featureFlags.CartItemLimit - existingItem.Quantity);
+                            }
+
+                            existingItem.Quantity += quantityToAdd;
+                            existingItem.UpdatedAt = DateTime.UtcNow;
+                        }
+                    }
+                    else
+                    {
+                        var imageUrl = _buggyService.ApplyImageUrlBug(modifiedRequest.ImageUrl);
+
+                        var newItem = new CartItem
+                        {
+                            Id = Guid.NewGuid(),
+                            BasketId = basketId,
+                            DishId = modifiedRequest.DishId,
+                            Name = modifiedRequest.Name,
+                            Price = modifiedRequest.Price,
+                            ImageUrl = imageUrl,
+                            Quantity = modifiedRequest.Quantity,
+                            CreatedAt = DateTime.UtcNow,
+                            UpdatedAt = DateTime.UtcNow
+                        };
+                        _context.CartItems.Add(newItem);
+                    }
                 }
 
                 await _context.SaveChangesAsync();
@@ -196,6 +233,7 @@ namespace hitsApplication.Services
                 return ErrorResponse($"Ошибка при добавлении в корзину: {ex.Message}");
             }
         }
+
         public async Task<CartSummaryResponse> RemoveFromCart(string basketId, string dishId)
         {
             try
@@ -250,8 +288,12 @@ namespace hitsApplication.Services
                 if (string.IsNullOrEmpty(basketId))
                     return ErrorResponse("Basket ID is required");
 
-                if (quantity < 1)
-                    return ErrorResponse("Количество должно быть не менее 1");
+                // БАГ e: Разрешаем невалидные количества
+                if (!_buggyService.AllowInvalidQuantities(quantity))
+                {
+                    if (quantity < 1)
+                        return ErrorResponse("Количество должно быть не менее 1");
+                }
 
                 if (!Guid.TryParse(dishId, out var dishGuid))
                     return ErrorResponse("Неверный формат DishId");
@@ -270,7 +312,25 @@ namespace hitsApplication.Services
                     .Where(x => x.BasketId == basketId)
                     .ToListAsync();
 
-                return MapToResponse(cartItems, basketId, includeItems: true);
+                // БАГ b: Применяем неправильный расчет суммы
+                var cart = new Cart { Items = cartItems };
+                var total = _buggyService.ApplyQuantityUpdateBug(cart.Total / cartItems.Count, cart.TotalItems);
+
+                return new CartSummaryResponse
+                {
+                    Success = true,
+                    BasketId = basketId,
+                    ItemCount = cart.TotalItems,
+                    Total = total,
+                    Items = cartItems.Select(item => new CartItemResponse
+                    {
+                        DishId = item.DishId.ToString(),
+                        Name = item.Name,
+                        Price = item.Price,
+                        ImageUrl = item.ImageUrl,
+                        Quantity = item.Quantity
+                    }).ToList()
+                };
             }
             catch (Exception ex)
             {
@@ -290,7 +350,33 @@ namespace hitsApplication.Services
                     .Where(x => x.BasketId == basketId)
                     .ToListAsync();
 
-                _context.CartItems.RemoveRange(itemsToRemove);
+                if (itemsToRemove.Any())
+                {
+                    // БАГ d: Частичная очистка корзины (только четные DishId)
+                    if (_buggyService.EnablePartialClearBug)
+                    {
+                        _logger.LogWarning("PartialClearBug: Removing only items with even DishId");
+
+                        // Фильтруем только товары с четными DishId для удаления
+                        var itemsToDelete = itemsToRemove
+                            .Where(item => !_buggyService.ShouldSkipOddDishIdOnClear(item.DishId.GetHashCode()))
+                            .ToList();
+
+                        _context.CartItems.RemoveRange(itemsToDelete);
+
+                        _logger.LogInformation("Cleared {ClearedCount} items (even DishId only), " +
+                                             "kept {KeptCount} items (odd DishId)",
+                                             itemsToDelete.Count,
+                                             itemsToRemove.Count - itemsToDelete.Count);
+                    }
+                    else
+                    {
+                        _context.CartItems.RemoveRange(itemsToRemove);
+                        _logger.LogInformation("Cleared all {Count} items from basket {BasketId}",
+                            itemsToRemove.Count, basketId);
+                    }
+                }
+
                 await _context.SaveChangesAsync();
 
                 return new CartSummaryResponse
@@ -316,8 +402,11 @@ namespace hitsApplication.Services
                 if (string.IsNullOrEmpty(basketId))
                     return ErrorResponse("Basket ID is required");
 
+                // БАГ c: Используем неправильный basketId для запроса
+                var actualBasketId = _buggyService.GetWrongBasketId(basketId);
+
                 var cartItems = await _context.CartItems
-                    .Where(x => x.BasketId == basketId)
+                    .Where(x => x.BasketId == actualBasketId)
                     .ToListAsync();
 
                 return MapToResponse(cartItems, basketId, includeItems: false);
@@ -336,8 +425,11 @@ namespace hitsApplication.Services
                 if (string.IsNullOrEmpty(basketId) || !Guid.TryParse(dishId, out var dishGuid))
                     return false;
 
+                // БАГ c: Используем неправильный basketId для запроса
+                var actualBasketId = _buggyService.GetWrongBasketId(basketId);
+
                 return await _context.CartItems
-                    .AnyAsync(x => x.BasketId == basketId && x.DishId == dishGuid);
+                    .AnyAsync(x => x.BasketId == actualBasketId && x.DishId == dishGuid);
             }
             catch (Exception ex)
             {
@@ -397,6 +489,31 @@ namespace hitsApplication.Services
                     {
                         Success = false,
                         ErrorMessage = "Корзина пуста"
+                    };
+                }
+
+                // БАГ e: Проверка наличия на складе
+                bool allItemsAvailable = true;
+                if (!_buggyService.ShouldSkipStockValidation())
+                {
+                    foreach (var item in cartItems)
+                    {
+                        var isAvailable = _buggyService.SimulateStockCheck(item.DishId.GetHashCode(), item.Quantity);
+                        if (!isAvailable)
+                        {
+                            _logger.LogWarning("Item {DishId} is not available in stock (requested: {Quantity})",
+                                item.DishId, item.Quantity);
+                            allItemsAvailable = false;
+                        }
+                    }
+                }
+
+                if (!allItemsAvailable)
+                {
+                    return new OrderCreationResponse
+                    {
+                        Success = false,
+                        ErrorMessage = "Некоторые товары отсутствуют на складе"
                     };
                 }
 
@@ -776,10 +893,10 @@ namespace hitsApplication.Services
                 return false;
 
             var validMethods = new[] {
-        "CARD_ONLINE",      
-        "CARD_COURIER",     
-        "CASH_COURIER"     
-    };
+                "CARD_ONLINE",
+                "CARD_COURIER",
+                "CASH_COURIER"
+            };
 
             return validMethods.Contains(paymentMethod.ToUpperInvariant());
         }

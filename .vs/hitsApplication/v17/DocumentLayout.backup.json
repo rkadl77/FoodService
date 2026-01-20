@@ -1,62 +1,70 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\",
+  "WorkspaceRootPath": "C:\\Users\\rkadl\\source\\repos\\FoodService\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|c:\\users\\rkadl\\source\\repos\\hitsapplication\\hitsapplication\\tests\\featureflagstests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|solutionrelative:hitsapplication\\tests\\featureflagstests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|c:\\users\\rkadl\\source\\repos\\hitsapplication\\hitsapplication\\tests\\cartendpointstests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|solutionrelative:hitsapplication\\tests\\cartendpointstests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|c:\\users\\rkadl\\source\\repos\\hitsapplication\\hitsapplication\\hitsapplication.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
-      "RelativeMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|solutionrelative:hitsapplication\\hitsapplication.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|c:\\users\\rkadl\\source\\repos\\hitsapplication\\hitsapplication\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|solutionrelative:hitsapplication\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|c:\\users\\rkadl\\source\\repos\\hitsapplication\\hitsapplication\\controllers\\cartcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|solutionrelative:hitsapplication\\controllers\\cartcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|c:\\users\\rkadl\\source\\repos\\hitsapplication\\hitsapplication\\controllers\\featurescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|solutionrelative:hitsapplication\\controllers\\featurescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|c:\\users\\rkadl\\source\\repos\\hitsapplication\\hitsapplication\\models\\featureflags.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|solutionrelative:hitsapplication\\models\\featureflags.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|c:\\users\\rkadl\\source\\repos\\hitsapplication\\hitsapplication\\services\\bugs\\buggyfeaturesservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|solutionrelative:hitsapplication\\services\\bugs\\buggyfeaturesservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|c:\\users\\rkadl\\source\\repos\\hitsapplication\\hitsapplication\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|solutionrelative:hitsapplication\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|c:\\users\\rkadl\\source\\repos\\hitsapplication\\hitsapplication\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|solutionrelative:hitsapplication\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|c:\\users\\rkadl\\source\\repos\\hitsapplication\\hitsapplication\\services\\cartservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|c:\\users\\rkadl\\source\\repos\\foodservice\\hitsapplication\\services\\cartservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|solutionrelative:hitsapplication\\services\\cartservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|c:\\users\\rkadl\\source\\repos\\hitsapplication\\hitsapplication\\services\\interfaces\\icartservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|solutionrelative:hitsapplication\\services\\interfaces\\icartservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|c:\\users\\rkadl\\source\\repos\\foodservice\\hitsapplication\\services\\bugs\\buggyfeaturesservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|solutionrelative:hitsapplication\\services\\bugs\\buggyfeaturesservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|c:\\users\\rkadl\\source\\repos\\hitsapplication\\hitsapplication\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|solutionrelative:hitsapplication\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+      "AbsoluteMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|c:\\users\\rkadl\\source\\repos\\foodservice\\hitsapplication\\tests\\featureflagstests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|solutionrelative:hitsapplication\\tests\\featureflagstests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|c:\\users\\rkadl\\source\\repos\\hitsapplication\\hitsapplication\\hitsapplication.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}",
-      "RelativeMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|solutionrelative:hitsapplication\\hitsapplication.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}"
+      "AbsoluteMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|c:\\users\\rkadl\\source\\repos\\foodservice\\hitsapplication\\tests\\cartendpointstests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|solutionrelative:hitsapplication\\tests\\cartendpointstests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|c:\\users\\rkadl\\source\\repos\\foodservice\\hitsapplication\\models\\featureflags.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|solutionrelative:hitsapplication\\models\\featureflags.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8F918C80-E767-444A-9A39-B37BAB953606}|hitsApplication.Tests\\hitsApplication.Tests.csproj|c:\\users\\rkadl\\source\\repos\\foodservice\\hitsapplication.tests\\services\\cartserviceintegrationtests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8F918C80-E767-444A-9A39-B37BAB953606}|hitsApplication.Tests\\hitsApplication.Tests.csproj|solutionrelative:hitsapplication.tests\\services\\cartserviceintegrationtests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8F918C80-E767-444A-9A39-B37BAB953606}|hitsApplication.Tests\\hitsApplication.Tests.csproj|c:\\users\\rkadl\\source\\repos\\foodservice\\hitsapplication.tests\\run-tests.bat||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{8F918C80-E767-444A-9A39-B37BAB953606}|hitsApplication.Tests\\hitsApplication.Tests.csproj|solutionrelative:hitsapplication.tests\\run-tests.bat||{3B902123-F8A7-4915-9F01-361F908088D0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8F918C80-E767-444A-9A39-B37BAB953606}|hitsApplication.Tests\\hitsApplication.Tests.csproj|c:\\users\\rkadl\\source\\repos\\foodservice\\hitsapplication.tests\\hitsapplication.tests.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{8F918C80-E767-444A-9A39-B37BAB953606}|hitsApplication.Tests\\hitsApplication.Tests.csproj|solutionrelative:hitsapplication.tests\\hitsapplication.tests.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8F918C80-E767-444A-9A39-B37BAB953606}|hitsApplication.Tests\\hitsApplication.Tests.csproj|c:\\users\\rkadl\\source\\repos\\foodservice\\hitsapplication.tests\\services\\cartservicebug2tests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8F918C80-E767-444A-9A39-B37BAB953606}|hitsApplication.Tests\\hitsApplication.Tests.csproj|solutionrelative:hitsapplication.tests\\services\\cartservicebug2tests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8F918C80-E767-444A-9A39-B37BAB953606}|hitsApplication.Tests\\hitsApplication.Tests.csproj|c:\\users\\rkadl\\source\\repos\\foodservice\\hitsapplication.tests\\services\\cartservicebug1tests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8F918C80-E767-444A-9A39-B37BAB953606}|hitsApplication.Tests\\hitsApplication.Tests.csproj|solutionrelative:hitsapplication.tests\\services\\cartservicebug1tests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8F918C80-E767-444A-9A39-B37BAB953606}|hitsApplication.Tests\\hitsApplication.Tests.csproj|c:\\users\\rkadl\\source\\repos\\foodservice\\hitsapplication.tests\\services\\cartservicebug5tests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8F918C80-E767-444A-9A39-B37BAB953606}|hitsApplication.Tests\\hitsApplication.Tests.csproj|solutionrelative:hitsapplication.tests\\services\\cartservicebug5tests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8F918C80-E767-444A-9A39-B37BAB953606}|hitsApplication.Tests\\hitsApplication.Tests.csproj|c:\\users\\rkadl\\source\\repos\\foodservice\\hitsapplication.tests\\services\\cartservicebug4tests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8F918C80-E767-444A-9A39-B37BAB953606}|hitsApplication.Tests\\hitsApplication.Tests.csproj|solutionrelative:hitsapplication.tests\\services\\cartservicebug4tests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8F918C80-E767-444A-9A39-B37BAB953606}|hitsApplication.Tests\\hitsApplication.Tests.csproj|c:\\users\\rkadl\\source\\repos\\foodservice\\hitsapplication.tests\\services\\cartservicebug3tests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8F918C80-E767-444A-9A39-B37BAB953606}|hitsApplication.Tests\\hitsApplication.Tests.csproj|solutionrelative:hitsapplication.tests\\services\\cartservicebug3tests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8F918C80-E767-444A-9A39-B37BAB953606}|hitsApplication.Tests\\hitsApplication.Tests.csproj|c:\\users\\rkadl\\source\\repos\\foodservice\\hitsapplication.tests\\services\\buggyfeaturesservicetests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8F918C80-E767-444A-9A39-B37BAB953606}|hitsApplication.Tests\\hitsApplication.Tests.csproj|solutionrelative:hitsapplication.tests\\services\\buggyfeaturesservicetests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8F918C80-E767-444A-9A39-B37BAB953606}|hitsApplication.Tests\\hitsApplication.Tests.csproj|c:\\users\\rkadl\\source\\repos\\foodservice\\hitsapplication.tests\\services\\cartservicetestbase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8F918C80-E767-444A-9A39-B37BAB953606}|hitsApplication.Tests\\hitsApplication.Tests.csproj|solutionrelative:hitsapplication.tests\\services\\cartservicetestbase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|c:\\users\\rkadl\\source\\repos\\foodservice\\hitsapplication\\hitsapplication.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|solutionrelative:hitsapplication\\hitsapplication.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
     }
   ],
   "DocumentGroupContainers": [
@@ -66,187 +74,208 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 4,
           "Children": [
             {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "FeatureFlagsTests.cs",
-              "DocumentMoniker": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Tests\\FeatureFlagsTests.cs",
-              "RelativeDocumentMoniker": "hitsApplication\\Tests\\FeatureFlagsTests.cs",
-              "ToolTip": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Tests\\FeatureFlagsTests.cs",
-              "RelativeToolTip": "hitsApplication\\Tests\\FeatureFlagsTests.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAD0AAAA9AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-08T14:46:01.619Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "CartEndpointsTests.cs",
-              "DocumentMoniker": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Tests\\CartEndpointsTests.cs",
-              "RelativeDocumentMoniker": "hitsApplication\\Tests\\CartEndpointsTests.cs",
-              "ToolTip": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Tests\\CartEndpointsTests.cs",
-              "RelativeToolTip": "hitsApplication\\Tests\\CartEndpointsTests.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACAAAAA4AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-08T14:44:25.842Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "FeaturesController.cs",
-              "DocumentMoniker": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Controllers\\FeaturesController.cs",
-              "RelativeDocumentMoniker": "hitsApplication\\Controllers\\FeaturesController.cs",
-              "ToolTip": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Controllers\\FeaturesController.cs",
-              "RelativeToolTip": "hitsApplication\\Controllers\\FeaturesController.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAACQAAABIAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-08T14:09:49.601Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "FeatureFlags.cs",
-              "DocumentMoniker": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Models\\FeatureFlags.cs",
-              "RelativeDocumentMoniker": "hitsApplication\\Models\\FeatureFlags.cs",
-              "ToolTip": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Models\\FeatureFlags.cs",
-              "RelativeToolTip": "hitsApplication\\Models\\FeatureFlags.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB8AAAA0AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-08T14:01:06.014Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "BuggyFeaturesService.cs",
-              "DocumentMoniker": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Services\\Bugs\\BuggyFeaturesService.cs",
-              "RelativeDocumentMoniker": "hitsApplication\\Services\\Bugs\\BuggyFeaturesService.cs",
-              "ToolTip": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Services\\Bugs\\BuggyFeaturesService.cs",
-              "RelativeToolTip": "hitsApplication\\Services\\Bugs\\BuggyFeaturesService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB8AAAA5AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-08T13:58:58.099Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "launchSettings.json",
-              "DocumentMoniker": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Properties\\launchSettings.json",
-              "RelativeDocumentMoniker": "hitsApplication\\Properties\\launchSettings.json",
-              "ToolTip": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Properties\\launchSettings.json",
-              "RelativeToolTip": "hitsApplication\\Properties\\launchSettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB0AAAAHAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-12-01T20:11:59.328Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": "hitsApplication.http",
-              "DocumentMoniker": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\hitsApplication.http",
-              "RelativeDocumentMoniker": "hitsApplication\\hitsApplication.http",
-              "ToolTip": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\hitsApplication.http",
-              "RelativeToolTip": "hitsApplication\\hitsApplication.http",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAA0AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003502|",
-              "WhenOpened": "2025-12-01T20:02:16.698Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "appsettings.Development.json",
-              "DocumentMoniker": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\appsettings.Development.json",
-              "RelativeDocumentMoniker": "hitsApplication\\appsettings.Development.json",
-              "ToolTip": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\appsettings.Development.json",
-              "RelativeToolTip": "hitsApplication\\appsettings.Development.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAARAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-12-01T19:59:59.213Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "appsettings.json",
-              "DocumentMoniker": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\appsettings.json",
-              "RelativeDocumentMoniker": "hitsApplication\\appsettings.json",
-              "ToolTip": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\appsettings.json",
-              "RelativeToolTip": "hitsApplication\\appsettings.json",
-              "ViewState": "AgIAAAwAAAAAAAAAAAAAAAgAAAATAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-11-28T08:27:20.205Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "hitsApplication.csproj",
-              "DocumentMoniker": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\hitsApplication.csproj",
-              "RelativeDocumentMoniker": "hitsApplication\\hitsApplication.csproj",
-              "ToolTip": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\hitsApplication.csproj",
-              "RelativeToolTip": "hitsApplication\\hitsApplication.csproj",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABsAAAAKAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2025-11-28T08:26:17.563Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "CartService.cs",
-              "DocumentMoniker": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Services\\CartService.cs",
-              "RelativeDocumentMoniker": "hitsApplication\\Services\\CartService.cs",
-              "ToolTip": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Services\\CartService.cs",
-              "RelativeToolTip": "hitsApplication\\Services\\CartService.cs",
-              "ViewState": "AgIAAIkAAAAAAAAAAAAIwG4AAAANAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-31T08:48:06.553Z",
-              "EditorCaption": ""
+              "$type": "Bookmark",
+              "Name": "ST:1:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
             },
             {
               "$type": "Document",
               "DocumentIndex": 4,
-              "Title": "CartController.cs",
-              "DocumentMoniker": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Controllers\\CartController.cs",
-              "RelativeDocumentMoniker": "hitsApplication\\Controllers\\CartController.cs",
-              "ToolTip": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Controllers\\CartController.cs",
-              "RelativeToolTip": "hitsApplication\\Controllers\\CartController.cs",
-              "ViewState": "AgIAAHwBAAAAAAAAAAAqwMoBAAABAAAAAAAAAA==",
+              "Title": "FeatureFlags.cs",
+              "DocumentMoniker": "C:\\Users\\rkadl\\source\\repos\\FoodService\\hitsApplication\\Models\\FeatureFlags.cs",
+              "RelativeDocumentMoniker": "hitsApplication\\Models\\FeatureFlags.cs",
+              "ToolTip": "C:\\Users\\rkadl\\source\\repos\\FoodService\\hitsApplication\\Models\\FeatureFlags.cs",
+              "RelativeToolTip": "hitsApplication\\Models\\FeatureFlags.cs",
+              "ViewState": "AgIAACMAAAAAAAAAAAAkwC4AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-30T20:33:28.858Z",
+              "WhenOpened": "2026-01-20T09:14:20.214Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Program.cs",
-              "RelativeDocumentMoniker": "hitsApplication\\Program.cs",
-              "ToolTip": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Program.cs",
-              "RelativeToolTip": "hitsApplication\\Program.cs",
-              "ViewState": "AgIAAA0AAAAAAAAAAAAwwFwAAAAgAAAAAAAAAA==",
+              "Title": "CartEndpointsTests.cs",
+              "DocumentMoniker": "C:\\Users\\rkadl\\source\\repos\\FoodService\\hitsApplication\\Tests\\CartEndpointsTests.cs",
+              "RelativeDocumentMoniker": "hitsApplication\\Tests\\CartEndpointsTests.cs",
+              "ToolTip": "C:\\Users\\rkadl\\source\\repos\\FoodService\\hitsApplication\\Tests\\CartEndpointsTests.cs",
+              "RelativeToolTip": "hitsApplication\\Tests\\CartEndpointsTests.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-30T20:28:02.481Z",
+              "WhenOpened": "2026-01-20T09:12:22.503Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "ICartService.cs",
-              "DocumentMoniker": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Services\\Interfaces\\ICartService.cs",
-              "RelativeDocumentMoniker": "hitsApplication\\Services\\Interfaces\\ICartService.cs",
-              "ToolTip": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Services\\Interfaces\\ICartService.cs",
-              "RelativeToolTip": "hitsApplication\\Services\\Interfaces\\ICartService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAABAAAAAAAAAA==",
+              "DocumentIndex": 2,
+              "Title": "FeatureFlagsTests.cs",
+              "DocumentMoniker": "C:\\Users\\rkadl\\source\\repos\\FoodService\\hitsApplication\\Tests\\FeatureFlagsTests.cs",
+              "RelativeDocumentMoniker": "hitsApplication\\Tests\\FeatureFlagsTests.cs",
+              "ToolTip": "C:\\Users\\rkadl\\source\\repos\\FoodService\\hitsApplication\\Tests\\FeatureFlagsTests.cs",
+              "RelativeToolTip": "hitsApplication\\Tests\\FeatureFlagsTests.cs",
+              "ViewState": "AgIAAD0AAAAAAAAAAAAwwAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-30T20:17:06.098Z",
+              "WhenOpened": "2026-01-20T09:11:47.682Z",
               "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "CartService.cs",
+              "DocumentMoniker": "C:\\Users\\rkadl\\source\\repos\\FoodService\\hitsApplication\\Services\\CartService.cs",
+              "RelativeDocumentMoniker": "hitsApplication\\Services\\CartService.cs",
+              "ToolTip": "C:\\Users\\rkadl\\source\\repos\\FoodService\\hitsApplication\\Services\\CartService.cs",
+              "RelativeToolTip": "hitsApplication\\Services\\CartService.cs",
+              "ViewState": "AgIAADIAAAAAAAAAAAAwwFgAAAAyAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-16T12:22:28.219Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "BuggyFeaturesService.cs",
+              "DocumentMoniker": "C:\\Users\\rkadl\\source\\repos\\FoodService\\hitsApplication\\Services\\Bugs\\BuggyFeaturesService.cs",
+              "RelativeDocumentMoniker": "hitsApplication\\Services\\Bugs\\BuggyFeaturesService.cs",
+              "ToolTip": "C:\\Users\\rkadl\\source\\repos\\FoodService\\hitsApplication\\Services\\Bugs\\BuggyFeaturesService.cs",
+              "RelativeToolTip": "hitsApplication\\Services\\Bugs\\BuggyFeaturesService.cs",
+              "ViewState": "AgIAABgAAAAAAAAAAAA5wBwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-16T12:22:46.786Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "run-tests.bat",
+              "DocumentMoniker": "C:\\Users\\rkadl\\source\\repos\\FoodService\\hitsApplication.Tests\\run-tests.bat",
+              "RelativeDocumentMoniker": "hitsApplication.Tests\\run-tests.bat",
+              "ToolTip": "C:\\Users\\rkadl\\source\\repos\\FoodService\\hitsApplication.Tests\\run-tests.bat",
+              "RelativeToolTip": "hitsApplication.Tests\\run-tests.bat",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB8AAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000614|",
+              "WhenOpened": "2025-12-30T10:46:39.223Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "CartServiceIntegrationTests.cs",
+              "DocumentMoniker": "C:\\Users\\rkadl\\source\\repos\\FoodService\\hitsApplication.Tests\\Services\\CartServiceIntegrationTests.cs",
+              "RelativeDocumentMoniker": "hitsApplication.Tests\\Services\\CartServiceIntegrationTests.cs",
+              "ToolTip": "C:\\Users\\rkadl\\source\\repos\\FoodService\\hitsApplication.Tests\\Services\\CartServiceIntegrationTests.cs",
+              "RelativeToolTip": "hitsApplication.Tests\\Services\\CartServiceIntegrationTests.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEUAAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-30T10:44:34.599Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "CartServiceBug2Tests.cs",
+              "DocumentMoniker": "C:\\Users\\rkadl\\source\\repos\\FoodService\\hitsApplication.Tests\\Services\\CartServiceBug2Tests.cs",
+              "RelativeDocumentMoniker": "hitsApplication.Tests\\Services\\CartServiceBug2Tests.cs",
+              "ToolTip": "C:\\Users\\rkadl\\source\\repos\\FoodService\\hitsApplication.Tests\\Services\\CartServiceBug2Tests.cs",
+              "RelativeToolTip": "hitsApplication.Tests\\Services\\CartServiceBug2Tests.cs",
+              "ViewState": "AgIAAFsAAAAAAAAAAAAcwHIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-30T10:43:15.028Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "CartServiceBug1Tests.cs",
+              "DocumentMoniker": "C:\\Users\\rkadl\\source\\repos\\FoodService\\hitsApplication.Tests\\Services\\CartServiceBug1Tests.cs",
+              "RelativeDocumentMoniker": "hitsApplication.Tests\\Services\\CartServiceBug1Tests.cs",
+              "ToolTip": "C:\\Users\\rkadl\\source\\repos\\FoodService\\hitsApplication.Tests\\Services\\CartServiceBug1Tests.cs",
+              "RelativeToolTip": "hitsApplication.Tests\\Services\\CartServiceBug1Tests.cs",
+              "ViewState": "AgIAAIIAAAAAAAAAAAAmwBEAAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-30T10:41:58.504Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "CartServiceBug5Tests.cs",
+              "DocumentMoniker": "C:\\Users\\rkadl\\source\\repos\\FoodService\\hitsApplication.Tests\\Services\\CartServiceBug5Tests.cs",
+              "RelativeDocumentMoniker": "hitsApplication.Tests\\Services\\CartServiceBug5Tests.cs",
+              "ToolTip": "C:\\Users\\rkadl\\source\\repos\\FoodService\\hitsApplication.Tests\\Services\\CartServiceBug5Tests.cs",
+              "RelativeToolTip": "hitsApplication.Tests\\Services\\CartServiceBug5Tests.cs",
+              "ViewState": "AgIAAJ0AAAAAAAAAAAAcwLoAAABKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-30T10:38:01.306Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "CartServiceBug4Tests.cs",
+              "DocumentMoniker": "C:\\Users\\rkadl\\source\\repos\\FoodService\\hitsApplication.Tests\\Services\\CartServiceBug4Tests.cs",
+              "RelativeDocumentMoniker": "hitsApplication.Tests\\Services\\CartServiceBug4Tests.cs",
+              "ToolTip": "C:\\Users\\rkadl\\source\\repos\\FoodService\\hitsApplication.Tests\\Services\\CartServiceBug4Tests.cs",
+              "RelativeToolTip": "hitsApplication.Tests\\Services\\CartServiceBug4Tests.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAFwAAAAPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-30T10:35:48.386Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "CartServiceBug3Tests.cs",
+              "DocumentMoniker": "C:\\Users\\rkadl\\source\\repos\\FoodService\\hitsApplication.Tests\\Services\\CartServiceBug3Tests.cs",
+              "RelativeDocumentMoniker": "hitsApplication.Tests\\Services\\CartServiceBug3Tests.cs",
+              "ToolTip": "C:\\Users\\rkadl\\source\\repos\\FoodService\\hitsApplication.Tests\\Services\\CartServiceBug3Tests.cs",
+              "RelativeToolTip": "hitsApplication.Tests\\Services\\CartServiceBug3Tests.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAG8AAABIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-30T10:32:56.09Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "hitsApplication.Tests.csproj",
+              "DocumentMoniker": "C:\\Users\\rkadl\\Source\\Repos\\FoodService\\hitsApplication.Tests\\hitsApplication.Tests.csproj",
+              "RelativeDocumentMoniker": "hitsApplication.Tests\\hitsApplication.Tests.csproj",
+              "ToolTip": "C:\\Users\\rkadl\\Source\\Repos\\FoodService\\hitsApplication.Tests\\hitsApplication.Tests.csproj",
+              "RelativeToolTip": "hitsApplication.Tests\\hitsApplication.Tests.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACMAAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-12-30T10:12:36.346Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "BuggyFeaturesServiceTests.cs",
+              "DocumentMoniker": "C:\\Users\\rkadl\\source\\repos\\FoodService\\hitsApplication.Tests\\Services\\BuggyFeaturesServiceTests.cs",
+              "RelativeDocumentMoniker": "hitsApplication.Tests\\Services\\BuggyFeaturesServiceTests.cs",
+              "ToolTip": "C:\\Users\\rkadl\\source\\repos\\FoodService\\hitsApplication.Tests\\Services\\BuggyFeaturesServiceTests.cs",
+              "RelativeToolTip": "hitsApplication.Tests\\Services\\BuggyFeaturesServiceTests.cs",
+              "ViewState": "AgIAABsAAAAAAAAAAAAowD8AAABAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-30T10:32:14.324Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "CartServiceTestBase.cs",
+              "DocumentMoniker": "C:\\Users\\rkadl\\source\\repos\\FoodService\\hitsApplication.Tests\\Services\\CartServiceTestBase.cs",
+              "RelativeDocumentMoniker": "hitsApplication.Tests\\Services\\CartServiceTestBase.cs",
+              "ToolTip": "C:\\Users\\rkadl\\source\\repos\\FoodService\\hitsApplication.Tests\\Services\\CartServiceTestBase.cs",
+              "RelativeToolTip": "hitsApplication.Tests\\Services\\CartServiceTestBase.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-30T10:31:28.168Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "hitsApplication.csproj",
+              "DocumentMoniker": "C:\\Users\\rkadl\\Source\\Repos\\FoodService\\hitsApplication\\hitsApplication.csproj",
+              "RelativeDocumentMoniker": "hitsApplication\\hitsApplication.csproj",
+              "ToolTip": "C:\\Users\\rkadl\\Source\\Repos\\FoodService\\hitsApplication\\hitsApplication.csproj",
+              "RelativeToolTip": "hitsApplication\\hitsApplication.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAAuAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-12-30T10:18:33.646Z"
             }
           ]
         }

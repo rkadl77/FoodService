@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\hitsApplication.csproj": {}
+    "C:\\Users\\rkadl\\Source\\Repos\\FoodService\\hitsApplication\\hitsApplication.csproj": {}
   },
   "projects": {
-    "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\hitsApplication.csproj": {
+    "C:\\Users\\rkadl\\Source\\Repos\\FoodService\\hitsApplication\\hitsApplication.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\hitsApplication.csproj",
+        "projectUniqueName": "C:\\Users\\rkadl\\Source\\Repos\\FoodService\\hitsApplication\\hitsApplication.csproj",
         "projectName": "hitsApplication",
-        "projectPath": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\hitsApplication.csproj",
+        "projectPath": "C:\\Users\\rkadl\\Source\\Repos\\FoodService\\hitsApplication\\hitsApplication.csproj",
         "packagesPath": "C:\\Users\\rkadl\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\obj\\",
+        "outputPath": "C:\\Users\\rkadl\\Source\\Repos\\FoodService\\hitsApplication\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -114,7 +114,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.305/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.304/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

@@ -42,6 +42,26 @@ namespace hitsApplication.Models
 
         [Display(Name = "Лимит товаров в корзине")]
         public int CartItemLimit { get; set; } = 50;
+
         public string JavaServiceUrl { get; set; } = "http://localhost:8096";
+
+
+        [Display(Name = "Дублировать товары в корзине")]
+        public bool EnableDuplicateCartItemBug { get; set; } = false;  // Для бага a)
+
+        [Display(Name = "Неправильный расчет суммы при обновлении")]
+        public bool EnableQuantityUpdateBug { get; set; } = false;  // Для бага b)
+
+        [Display(Name = "Смешивание данных корзин пользователей")]
+        public bool EnableWrongBasketBug { get; set; } = false;  // Для бага c)
+
+        [Display(Name = "Частичная очистка корзины")]
+        public bool EnablePartialClearBug { get; set; } = false;  // Для бага d)
+
+        [Display(Name = "Пропуск проверки наличия на складе")]
+        public bool EnableSkipStockValidationBug { get; set; } = false;  // Для бага e)
+
+        [Display(Name = "Разрешить невалидные количества")]
+        public bool EnableInvalidQuantityBug { get; set; } = false;  // Для бага e)
     }
 }
