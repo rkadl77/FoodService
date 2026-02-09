@@ -9,6 +9,7 @@ using Microsoft.Extensions.Options;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using static hitsApplication.Services.BuggyFeaturesService;
 
 namespace hitsApplication.Services
 {
@@ -44,14 +45,18 @@ namespace hitsApplication.Services
 
         private CartSummaryResponse MapToResponse(List<CartItem> cartItems, string basketId, bool includeItems = true)
         {
+            // БАГ c: Получаем неправильный basketId при включенном флаге
+            var actualBasketId = _buggyService.GetWrongBasketId(basketId);
+
             var cart = new Cart { Items = cartItems };
+            var total = cart.Total;
 
             return new CartSummaryResponse
             {
                 Success = true,
-                BasketId = basketId,
+                BasketId = actualBasketId, // Используем обработанный basketId
                 ItemCount = cart.TotalItems,
-                Total = cart.Total,
+                Total = total,
                 Items = includeItems ? cartItems.Select(item => new CartItemResponse
                 {
                     DishId = item.DishId.ToString(),
@@ -92,8 +97,11 @@ namespace hitsApplication.Services
                     };
                 }
 
+                // БАГ c: Используем неправильный basketId для запроса
+                var actualBasketId = _buggyService.GetWrongBasketId(basketId);
+
                 var cartItems = await _context.CartItems
-                    .Where(x => x.BasketId == basketId)
+                    .Where(x => x.BasketId == actualBasketId)
                     .ToListAsync();
 
                 return MapToResponse(cartItems, basketId, includeItems: true);
@@ -112,8 +120,12 @@ namespace hitsApplication.Services
                 if (string.IsNullOrEmpty(basketId))
                     return ErrorResponse("Basket ID is required");
 
-                if (request.Quantity < 1)
-                    return ErrorResponse("Количество должно быть не менее 1");
+                // БАГ e: Разрешаем невалидные количества
+                if (!_buggyService.AllowInvalidQuantities(request.Quantity))
+                {
+                    if (request.Quantity < 1)
+                        return ErrorResponse("Количество должно быть не менее 1");
+                }
 
                 var modifiedRequest = _buggyService.ApplyBugsToRequest(request);
 
@@ -122,24 +134,13 @@ namespace hitsApplication.Services
                     _logger.LogWarning("Validation skipped for product {DishId}", request.DishId);
                 }
 
-                var existingItem = await _context.CartItems
-                    .FirstOrDefaultAsync(x => x.BasketId == basketId && x.DishId == modifiedRequest.DishId);
-
-                if (existingItem != null)
+                // БАГ a: Создаем дубликат вместо увеличения количества
+                if (_buggyService.ShouldCreateDuplicateCartItem())
                 {
+                    _logger.LogWarning("DuplicateCartItemBug: Creating duplicate for DishId {DishId}",
+                        modifiedRequest.DishId);
 
-                    var quantityToAdd = _buggyService.ApplyQuantityBug(modifiedRequest.Quantity);
-
-                    if (existingItem.Quantity + quantityToAdd > _featureFlags.CartItemLimit)
-                    {
-                        quantityToAdd = Math.Max(1, _featureFlags.CartItemLimit - existingItem.Quantity);
-                    }
-
-                    existingItem.Quantity += quantityToAdd;
-                    existingItem.UpdatedAt = DateTime.UtcNow;
-                }
-                else
-                {
+                    // Просто создаем новую запись, даже если товар уже есть в корзине
                     var imageUrl = _buggyService.ApplyImageUrlBug(modifiedRequest.ImageUrl);
 
                     var newItem = new CartItem
@@ -155,6 +156,55 @@ namespace hitsApplication.Services
                         UpdatedAt = DateTime.UtcNow
                     };
                     _context.CartItems.Add(newItem);
+                }
+                else
+                {
+                    var existingItem = await _context.CartItems
+                        .FirstOrDefaultAsync(x => x.BasketId == basketId && x.DishId == modifiedRequest.DishId);
+
+                    if (existingItem != null)
+                    {
+                        // БАГ: баг с корзиной, где кол-во не меняется при добавлении 
+                        if (_buggyService.ShouldNotChangeQuantityOnAdd())
+                        {
+                            _logger.LogWarning("Cartbug: Quantity NOT changed for existing item {DishId}",
+                                modifiedRequest.DishId);
+
+                            // тут я просто время обновляю вместо изменение кол-ва
+                            existingItem.UpdatedAt = DateTime.UtcNow;
+                        }
+                        else
+                        {
+                            // ориг логика 
+                            var quantityToAdd = _buggyService.ApplyQuantityBug(modifiedRequest.Quantity);
+
+                            if (existingItem.Quantity + quantityToAdd > _featureFlags.CartItemLimit)
+                            {
+                                quantityToAdd = Math.Max(1, _featureFlags.CartItemLimit - existingItem.Quantity);
+                            }
+
+                            existingItem.Quantity += quantityToAdd;
+                            existingItem.UpdatedAt = DateTime.UtcNow;
+                        }
+                    }
+                    else
+                    {
+                        var imageUrl = _buggyService.ApplyImageUrlBug(modifiedRequest.ImageUrl);
+
+                        var newItem = new CartItem
+                        {
+                            Id = Guid.NewGuid(),
+                            BasketId = basketId,
+                            DishId = modifiedRequest.DishId,
+                            Name = modifiedRequest.Name,
+                            Price = modifiedRequest.Price,
+                            ImageUrl = imageUrl,
+                            Quantity = modifiedRequest.Quantity,
+                            CreatedAt = DateTime.UtcNow,
+                            UpdatedAt = DateTime.UtcNow
+                        };
+                        _context.CartItems.Add(newItem);
+                    }
                 }
 
                 await _context.SaveChangesAsync();
@@ -183,6 +233,7 @@ namespace hitsApplication.Services
                 return ErrorResponse($"Ошибка при добавлении в корзину: {ex.Message}");
             }
         }
+
         public async Task<CartSummaryResponse> RemoveFromCart(string basketId, string dishId)
         {
             try
@@ -199,7 +250,22 @@ namespace hitsApplication.Services
                 if (itemToRemove == null)
                     return ErrorResponse("Товар не найден в корзине");
 
-                _context.CartItems.Remove(itemToRemove);
+                // 4 баг товар не удаляется
+                if (_buggyService.ShouldNotChangeQuantityOnRemove())
+                {
+                    _logger.LogWarning("Removebug: Item {DishId} NOT removed from basket {BasketId}",
+                        dishId, basketId);
+
+                    //  не удаляю товар, просто обновляем время
+                    itemToRemove.UpdatedAt = DateTime.UtcNow;
+                }
+                else
+                {
+                    // ориг. логика
+                    _context.CartItems.Remove(itemToRemove);
+                    _logger.LogInformation("Item {DishId} removed from basket {BasketId}", dishId, basketId);
+                }
+
                 await _context.SaveChangesAsync();
 
                 var cartItems = await _context.CartItems
@@ -222,8 +288,12 @@ namespace hitsApplication.Services
                 if (string.IsNullOrEmpty(basketId))
                     return ErrorResponse("Basket ID is required");
 
-                if (quantity < 1)
-                    return ErrorResponse("Количество должно быть не менее 1");
+                // БАГ e: Разрешаем невалидные количества
+                if (!_buggyService.AllowInvalidQuantities(quantity))
+                {
+                    if (quantity < 1)
+                        return ErrorResponse("Количество должно быть не менее 1");
+                }
 
                 if (!Guid.TryParse(dishId, out var dishGuid))
                     return ErrorResponse("Неверный формат DishId");
@@ -242,7 +312,25 @@ namespace hitsApplication.Services
                     .Where(x => x.BasketId == basketId)
                     .ToListAsync();
 
-                return MapToResponse(cartItems, basketId, includeItems: true);
+                // БАГ b: Применяем неправильный расчет суммы
+                var cart = new Cart { Items = cartItems };
+                var total = _buggyService.ApplyQuantityUpdateBug(cart.Total / cartItems.Count, cart.TotalItems);
+
+                return new CartSummaryResponse
+                {
+                    Success = true,
+                    BasketId = basketId,
+                    ItemCount = cart.TotalItems,
+                    Total = total,
+                    Items = cartItems.Select(item => new CartItemResponse
+                    {
+                        DishId = item.DishId.ToString(),
+                        Name = item.Name,
+                        Price = item.Price,
+                        ImageUrl = item.ImageUrl,
+                        Quantity = item.Quantity
+                    }).ToList()
+                };
             }
             catch (Exception ex)
             {
@@ -262,7 +350,33 @@ namespace hitsApplication.Services
                     .Where(x => x.BasketId == basketId)
                     .ToListAsync();
 
-                _context.CartItems.RemoveRange(itemsToRemove);
+                if (itemsToRemove.Any())
+                {
+                    // БАГ d: Частичная очистка корзины (только четные DishId)
+                    if (_buggyService.EnablePartialClearBug)
+                    {
+                        _logger.LogWarning("PartialClearBug: Removing only items with even DishId");
+
+                        // Фильтруем только товары с четными DishId для удаления
+                        var itemsToDelete = itemsToRemove
+                            .Where(item => !_buggyService.ShouldSkipOddDishIdOnClear(item.DishId.GetHashCode()))
+                            .ToList();
+
+                        _context.CartItems.RemoveRange(itemsToDelete);
+
+                        _logger.LogInformation("Cleared {ClearedCount} items (even DishId only), " +
+                                             "kept {KeptCount} items (odd DishId)",
+                                             itemsToDelete.Count,
+                                             itemsToRemove.Count - itemsToDelete.Count);
+                    }
+                    else
+                    {
+                        _context.CartItems.RemoveRange(itemsToRemove);
+                        _logger.LogInformation("Cleared all {Count} items from basket {BasketId}",
+                            itemsToRemove.Count, basketId);
+                    }
+                }
+
                 await _context.SaveChangesAsync();
 
                 return new CartSummaryResponse
@@ -288,8 +402,11 @@ namespace hitsApplication.Services
                 if (string.IsNullOrEmpty(basketId))
                     return ErrorResponse("Basket ID is required");
 
+                // БАГ c: Используем неправильный basketId для запроса
+                var actualBasketId = _buggyService.GetWrongBasketId(basketId);
+
                 var cartItems = await _context.CartItems
-                    .Where(x => x.BasketId == basketId)
+                    .Where(x => x.BasketId == actualBasketId)
                     .ToListAsync();
 
                 return MapToResponse(cartItems, basketId, includeItems: false);
@@ -308,8 +425,11 @@ namespace hitsApplication.Services
                 if (string.IsNullOrEmpty(basketId) || !Guid.TryParse(dishId, out var dishGuid))
                     return false;
 
+                // БАГ c: Используем неправильный basketId для запроса
+                var actualBasketId = _buggyService.GetWrongBasketId(basketId);
+
                 return await _context.CartItems
-                    .AnyAsync(x => x.BasketId == basketId && x.DishId == dishGuid);
+                    .AnyAsync(x => x.BasketId == actualBasketId && x.DishId == dishGuid);
             }
             catch (Exception ex)
             {
@@ -372,6 +492,31 @@ namespace hitsApplication.Services
                     };
                 }
 
+                // БАГ e: Проверка наличия на складе
+                bool allItemsAvailable = true;
+                if (!_buggyService.ShouldSkipStockValidation())
+                {
+                    foreach (var item in cartItems)
+                    {
+                        var isAvailable = _buggyService.SimulateStockCheck(item.DishId.GetHashCode(), item.Quantity);
+                        if (!isAvailable)
+                        {
+                            _logger.LogWarning("Item {DishId} is not available in stock (requested: {Quantity})",
+                                item.DishId, item.Quantity);
+                            allItemsAvailable = false;
+                        }
+                    }
+                }
+
+                if (!allItemsAvailable)
+                {
+                    return new OrderCreationResponse
+                    {
+                        Success = false,
+                        ErrorMessage = "Некоторые товары отсутствуют на складе"
+                    };
+                }
+
                 _logger.LogInformation(
                     "НОВЫЙ ЗАКАЗ ДЛЯ СОЗДАНИЯ В JAVA-СИСТЕМЕ\n" +
                     "Пользователь: {UserId}\n" +
@@ -391,7 +536,21 @@ namespace hitsApplication.Services
 
                 if (javaSuccess)
                 {
-                    await ClearCart(basketId);
+                    // 5 баг корзина не очищается
+                    if (_buggyService.ShouldNotClearCartAfterOrder())
+                    {
+                        _logger.LogWarning("🚨 CART CLEAR BUG: Basket {BasketId} NOT cleared after order", basketId);
+
+                        // не очищаем корзину
+                        // просто логируем, но ничего не делаем
+                    }
+                    else
+                    {
+                        // ориг. логика
+                        await ClearCart(basketId);
+                        _logger.LogInformation("Basket {BasketId} cleared after successful order", basketId);
+                    }
+
                     return new OrderCreationResponse
                     {
                         Success = true,
@@ -422,6 +581,56 @@ namespace hitsApplication.Services
         {
             try
             {
+                if (_buggyService.ShouldBreakOrderCreation())
+                {
+                    _logger.LogWarning("Simulating order service failure for basket {BasketId}", basketId);
+
+                    // Используем метод GetOrderServiceBugType для выбора типа бага
+                    var bugType = _buggyService.GetOrderServiceBugType();
+
+                    return bugType switch
+                    {
+                        // Просто ничего не делаем и возвращаем false (быстрый отказ)
+                        OrderServiceBugType.ReturnFalseImmediately =>
+                            await HandleReturnFalseBug(basketId),
+
+                        // Бросаем исключение (симуляция ошибки сервиса)
+                        OrderServiceBugType.ThrowException =>
+                            await HandleThrowExceptionBug(basketId),
+
+                        // Делаем бесконечную задержку (симуляция таймаута)
+                        OrderServiceBugType.InfiniteTimeout =>
+                            await HandleInfiniteTimeoutBug(basketId),
+
+                        // Отправляем запрос на несуществующий URL
+                        OrderServiceBugType.WrongUrl =>
+                            await HandleWrongUrlBug(basketId),
+
+                        // Отправляем неверные данные (неправильный формат)
+                        OrderServiceBugType.InvalidData =>
+                            await HandleInvalidDataBug(basketId, userId, request, cartItems),
+
+                        // Симуляция успеха, но без реального запроса (самый коварный!)
+                        OrderServiceBugType.FakeSuccess =>
+                            await HandleFakeSuccessBug(basketId),
+
+                        // Неправильный HTTP метод
+                        OrderServiceBugType.WrongHttpMethod =>
+                            await HandleWrongHttpMethodBug(basketId, userId, request, cartItems),
+
+                        // Неправильные заголовки
+                        OrderServiceBugType.WrongHeaders =>
+                            await HandleWrongHeadersBug(basketId, userId, request, cartItems),
+
+                        // Прячем ошибки
+                        OrderServiceBugType.HideErrors =>
+                            await HandleHideErrorsBug(basketId, userId, request, cartItems),
+
+                        _ => await HandleDefaultBug(basketId)
+                    };
+                }
+
+                // Логика основная метода 
                 var authorizationHeader = _httpContextAccessor.HttpContext?.Request.Headers["Authorization"].FirstOrDefault();
                 if (string.IsNullOrEmpty(authorizationHeader))
                 {
@@ -445,7 +654,7 @@ namespace hitsApplication.Services
                     total = (double)cartItems.Sum(x => x.Price * x.Quantity),
                     items = cartItems.Select(item => new
                     {
-                        id = item.DishId, 
+                        id = item.DishId,
                         name = item.Name,
                         price = (double)item.Price,
                         imageUrl = !string.IsNullOrEmpty(item.ImageUrl)
@@ -466,7 +675,7 @@ namespace hitsApplication.Services
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 
                 _logger.LogInformation("Sending to Java: {Json}", json);
-                //var httpRequest = new HttpRequestMessage(HttpMethod.Post, "http://localhost:8096/order/create");
+
                 var httpRequest = new HttpRequestMessage(HttpMethod.Post, "http://order-service:8096/order/create");
                 httpRequest.Content = content;
                 httpRequest.Headers.Add("Authorization", authorizationHeader);
@@ -493,6 +702,174 @@ namespace hitsApplication.Services
                 return false;
             }
         }
+        // Обработка багов
+        private async Task<bool> HandleReturnFalseBug(string basketId)
+        {
+            _logger.LogWarning("1: Returning false immediately for basket {BasketId}", basketId);
+            await Task.Delay(100);
+            return false;
+        }
+
+        private async Task<bool> HandleThrowExceptionBug(string basketId)
+        {
+            _logger.LogWarning("2: Throwing exception for basket {BasketId}", basketId);
+            throw new HttpRequestException($"Order service is unavailable (bug simulated) for basket {basketId}");
+        }
+
+        private async Task<bool> HandleInfiniteTimeoutBug(string basketId)
+        {
+            _logger.LogWarning("3: Simulating infinite timeout for basket {BasketId}", basketId);
+            var cts = new CancellationTokenSource();
+            cts.CancelAfter(TimeSpan.FromSeconds(10)); // На самом деле не бесконечно, но долго
+            try
+            {
+                await Task.Delay(Timeout.InfiniteTimeSpan, cts.Token);
+            }
+            catch (OperationCanceledException)
+            {
+
+            }
+            return false;
+        }
+
+        private async Task<bool> HandleWrongUrlBug(string basketId)
+        {
+            _logger.LogWarning("4: Sending to wrong URL for basket {BasketId}", basketId);
+            var brokenUrl = _buggyService.ApplyOrderServiceBug("http://order-service:8096/order/create");
+
+            try
+            {
+                var dummyRequest = new HttpRequestMessage(HttpMethod.Post, brokenUrl);
+                await _httpClient.SendAsync(dummyRequest);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning("Expected error for wrong URL: {Message}", ex.Message);
+            }
+
+            return false;
+        }
+
+        private async Task<bool> HandleInvalidDataBug(string basketId, string userId, CreateOrderRequest request, List<CartItem> cartItems)
+        {
+            _logger.LogWarning("5: Sending invalid data for basket {BasketId}", basketId);
+
+            // Создаем неправильные данные
+            var invalidOrderRequest = new
+            {
+                invalidField = "this is invalid",
+                wrongUserId = "not-a-guid",
+                brokenItems = new[] { new { bad = "data" } }
+            };
+
+            var options = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
+            var invalidJson = JsonSerializer.Serialize(invalidOrderRequest, options);
+            var content = new StringContent(invalidJson, Encoding.UTF8, "application/json");
+
+            try
+            {
+                var httpRequest = new HttpRequestMessage(HttpMethod.Post, "http://order-service:8096/order/create");
+                httpRequest.Content = content;
+                var response = await _httpClient.SendAsync(httpRequest);
+                return response.IsSuccessStatusCode;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        private async Task<bool> HandleFakeSuccessBug(string basketId)
+        {
+            _logger.LogWarning("6: Simulating fake success for basket {BasketId}", basketId);
+            await Task.Delay(200); // Имитируем обработку
+            return true; // тут ложный успех сделал
+        }
+
+        private async Task<bool> HandleWrongHttpMethodBug(string basketId, string userId, CreateOrderRequest request, List<CartItem> cartItems)
+        {
+            _logger.LogWarning("7: Using wrong HTTP method for basket {BasketId}", basketId);
+
+            try
+            {
+                var javaOrderRequest = new { test = "data" };
+                var options = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
+                var json = JsonSerializer.Serialize(javaOrderRequest, options);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                // Используем GET вместо POST
+                var httpRequest = new HttpRequestMessage(HttpMethod.Get, "http://order-service:8096/order/create");
+                httpRequest.Content = content; // Контент в GET запросе - это уже ошибка
+
+                var response = await _httpClient.SendAsync(httpRequest);
+                return response.IsSuccessStatusCode;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        private async Task<bool> HandleWrongHeadersBug(string basketId, string userId, CreateOrderRequest request, List<CartItem> cartItems)
+        {
+            _logger.LogWarning("8: Using wrong headers for basket {BasketId}", basketId);
+
+            try
+            {
+                var javaOrderRequest = new { test = "data" };
+                var options = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
+                var json = JsonSerializer.Serialize(javaOrderRequest, options);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var httpRequest = new HttpRequestMessage(HttpMethod.Post, "http://order-service:8096/order/create");
+                httpRequest.Content = content;
+
+                // Неправильные заголовки
+                httpRequest.Headers.Add("Content-Type", "text/plain"); // Должно быть application/json
+                httpRequest.Headers.Add("X-Buggy-Header", "This will break everything");
+
+                var response = await _httpClient.SendAsync(httpRequest);
+                return response.IsSuccessStatusCode;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        private async Task<bool> HandleHideErrorsBug(string basketId, string userId, CreateOrderRequest request, List<CartItem> cartItems)
+        {
+            _logger.LogWarning(" 9: Hiding errors for basket {BasketId}", basketId);
+
+            try
+            {
+                // Пытаемся отправить, но не логируем ошибки
+                var javaOrderRequest = new { test = "data" };
+                var options = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
+                var json = JsonSerializer.Serialize(javaOrderRequest, options);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var httpRequest = new HttpRequestMessage(HttpMethod.Post, "http://order-service:8096/order/create");
+                httpRequest.Content = content;
+
+                var response = await _httpClient.SendAsync(httpRequest);
+
+                // Даже если ошибка, не логируем ее
+                return response.IsSuccessStatusCode;
+            }
+            catch
+            {
+                // Не логируем исключение
+                return false;
+            }
+        }
+
+        private async Task<bool> HandleDefaultBug(string basketId)
+        {
+            _logger.LogWarning("get default баг :Generic failure for basket {BasketId}", basketId);
+            await Task.Delay(150);
+            return false;
+        }
 
         private bool IsValidRussianPhoneNumber(string phoneNumber)
         {
@@ -516,10 +893,10 @@ namespace hitsApplication.Services
                 return false;
 
             var validMethods = new[] {
-        "CARD_ONLINE",      
-        "CARD_COURIER",     
-        "CASH_COURIER"     
-    };
+                "CARD_ONLINE",
+                "CARD_COURIER",
+                "CASH_COURIER"
+            };
 
             return validMethods.Contains(paymentMethod.ToUpperInvariant());
         }
