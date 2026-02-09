@@ -1,6 +1,7 @@
 {
   "format": 1,
   "restore": {
+<<<<<<< Updated upstream
     "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\hitsApplication.csproj": {}
   },
   "projects": {
@@ -12,6 +13,19 @@
         "projectPath": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\hitsApplication.csproj",
         "packagesPath": "C:\\Users\\rkadl\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\obj\\",
+=======
+    "C:\\Users\\rkadl\\Source\\Repos\\FoodServiceWithBugs\\hitsApplication\\hitsApplication.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\rkadl\\Source\\Repos\\FoodServiceWithBugs\\hitsApplication\\hitsApplication.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\rkadl\\Source\\Repos\\FoodServiceWithBugs\\hitsApplication\\hitsApplication.csproj",
+        "projectName": "hitsApplication",
+        "projectPath": "C:\\Users\\rkadl\\Source\\Repos\\FoodServiceWithBugs\\hitsApplication\\hitsApplication.csproj",
+        "packagesPath": "C:\\Users\\rkadl\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\rkadl\\Source\\Repos\\FoodServiceWithBugs\\hitsApplication\\obj\\",
+>>>>>>> Stashed changes
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

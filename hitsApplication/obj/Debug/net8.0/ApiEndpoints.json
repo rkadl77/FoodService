@@ -1,5 +1,247 @@
 [
   {
+    "ContainingType": "hitsApplication.Controllers.LoggingController",
+    "Method": "ChangeLogPath",
+    "RelativePath": "api/admin/logging/change-path",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "hitsApplication.Controllers.ChangeLogPathRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 400
+      }
+    ]
+  },
+  {
+    "ContainingType": "hitsApplication.Controllers.LoggingController",
+    "Method": "CleanupOldLogs",
+    "RelativePath": "api/admin/logging/cleanup",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "hitsApplication.Controllers.LoggingController",
+    "Method": "GetLogContent",
+    "RelativePath": "api/admin/logging/content",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "maxLines",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 404
+      }
+    ]
+  },
+  {
+    "ContainingType": "hitsApplication.Controllers.LoggingController",
+    "Method": "GetLogs",
+    "RelativePath": "api/admin/logging/logs",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "lines",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "reverse",
+        "Type": "System.Boolean",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 404
+      }
+    ]
+  },
+  {
+    "ContainingType": "hitsApplication.Controllers.LoggingController",
+    "Method": "RotateLogs",
+    "RelativePath": "api/admin/logging/rotate",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "hitsApplication.Controllers.LoggingController",
+    "Method": "SearchLogs",
+    "RelativePath": "api/admin/logging/search",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "searchTerm",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "maxResults",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 400
+      }
+    ]
+  },
+  {
+    "ContainingType": "hitsApplication.Controllers.LoggingController",
+    "Method": "GetLoggingSettings",
+    "RelativePath": "api/admin/logging/settings",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "hitsApplication.Controllers.LoggingController",
+    "Method": "GetLogStats",
+    "RelativePath": "api/admin/logging/stats",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "timeframe",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "hitsApplication.Controllers.LoggingController",
+    "Method": "TestLogging",
+    "RelativePath": "api/admin/logging/test",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "count",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "hitsApplication.Controllers.LoggingController",
+    "Method": "ToggleLogging",
+    "RelativePath": "api/admin/logging/toggle/{enable}",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "enable",
+        "Type": "System.Boolean",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "hitsApplication.Controllers.CartController",
     "Method": "GetCart",
     "RelativePath": "api/Cart",
@@ -161,6 +403,16 @@
         "IsRequired": false
       }
     ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "hitsApplication.Controllers.CartController",
+    "Method": "TestLogging",
+    "RelativePath": "api/Cart/test-logging",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
     "ReturnTypes": []
   },
   {

@@ -17,15 +17,18 @@ namespace hitsApplication.Controllers
         private readonly ICartService _cartService;
         private readonly IJwtTokenService _jwtTokenService;
         private readonly ILogger<CartController> _logger;
+        private readonly IBugCaseLoggingService _bugCaseLogger; 
 
         public CartController(
             ICartService cartService,
             IJwtTokenService jwtTokenService,
-            ILogger<CartController> logger)
+            ILogger<CartController> logger,
+            IBugCaseLoggingService bugCaseLogger) 
         {
             _cartService = cartService;
             _jwtTokenService = jwtTokenService;
             _logger = logger;
+            _bugCaseLogger = bugCaseLogger; 
         }
 
         private string GetUserIdFromHttpContext()
@@ -33,17 +36,32 @@ namespace hitsApplication.Controllers
             return HttpContext.Items["UserId"]?.ToString();
         }
 
+        private string GetUserIdForLogging()
+        {
+            var userId = GetUserIdFromHttpContext();
+            return string.IsNullOrEmpty(userId) ? "anonymous" : userId;
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetCart([FromQuery] string basketId = null)
         {
+            const string endpoint = "/api/cart";
+            var userId = GetUserIdForLogging();
+
             try
             {
                 var result = await _cartService.GetCart(basketId);
+
+                _bugCaseLogger.LogBackendRequest("GET", endpoint, 200, userId);
+
                 return Ok(result);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error getting cart for basket {BasketId}", basketId);
+
+                _bugCaseLogger.LogBackendRequest("GET", endpoint, 500, userId);
+
                 return StatusCode(500, new CartSummaryResponse
                 {
                     Success = false,
@@ -55,10 +73,14 @@ namespace hitsApplication.Controllers
         [HttpPost("add")]
         public async Task<IActionResult> AddToCart([FromBody] AddToCartRequest request, [FromHeader] string basketId)
         {
+            const string endpoint = "/api/cart/add";
+            var userId = GetUserIdForLogging();
+
             try
             {
                 if (!ModelState.IsValid)
                 {
+                    _bugCaseLogger.LogBackendRequest("POST", endpoint, 400, userId);
                     return BadRequest(new CartSummaryResponse
                     {
                         Success = false,
@@ -68,6 +90,7 @@ namespace hitsApplication.Controllers
 
                 if (string.IsNullOrEmpty(basketId))
                 {
+                    _bugCaseLogger.LogBackendRequest("POST", endpoint, 400, userId);
                     return BadRequest(new CartSummaryResponse
                     {
                         Success = false,
@@ -76,11 +99,17 @@ namespace hitsApplication.Controllers
                 }
 
                 var result = await _cartService.AddToCart(basketId, request);
+
+                _bugCaseLogger.LogBackendRequest("POST", endpoint,
+                    result.Success ? 200 : 400, userId);
+
                 return result.Success ? Ok(result) : BadRequest(result);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error adding item to cart for basket {BasketId}", basketId);
+                _bugCaseLogger.LogBackendRequest("POST", endpoint, 500, userId);
+
                 return BadRequest(new CartSummaryResponse
                 {
                     Success = false,
@@ -96,6 +125,8 @@ namespace hitsApplication.Controllers
             [FromHeader] string basketId)
         {
             const string methodName = nameof(CreateOrderFromCart);
+            const string endpoint = "/api/cart/create-order";
+            var userId = GetUserIdForLogging();
 
             try
             {
@@ -104,6 +135,9 @@ namespace hitsApplication.Controllers
                 {
                     _logger.LogWarning("CART CONTROLLER - Validation failed in {Method}: {Error}",
                         methodName, validationResult.ErrorMessage);
+
+                    _bugCaseLogger.LogBackendRequest("POST", endpoint, 400, userId);
+
                     return BadRequest(new OrderCreationResponse
                     {
                         Success = false,
@@ -111,10 +145,12 @@ namespace hitsApplication.Controllers
                     });
                 }
 
-                var userId = GetUserIdFromHttpContext();
-                if (string.IsNullOrEmpty(userId))
+                if (string.IsNullOrEmpty(userId) || userId == "anonymous")
                 {
                     _logger.LogWarning("CART CONTROLLER - User ID not found in context for basket {BasketId}", basketId);
+
+                    _bugCaseLogger.LogBackendRequest("POST", endpoint, 401, "anonymous");
+
                     return Unauthorized(new OrderCreationResponse
                     {
                         Success = false,
@@ -127,6 +163,9 @@ namespace hitsApplication.Controllers
                 {
                     _logger.LogWarning("CART CONTROLLER - Token expired for user {UserId}, basket {BasketId}",
                         userId, basketId);
+
+                    _bugCaseLogger.LogBackendRequest("POST", endpoint, 401, userId);
+
                     return Unauthorized(new OrderCreationResponse
                     {
                         Success = false,
@@ -143,6 +182,9 @@ namespace hitsApplication.Controllers
                     "CART CONTROLLER - Order creation completed for basket {BasketId}. Success: {Success}, Message: {Message}",
                     basketId, result.Success, result.ErrorMessage ?? "No error");
 
+                _bugCaseLogger.LogBackendRequest("POST", endpoint,
+                    result.Success ? 200 : 400, userId);
+
                 return result.Success
                     ? Ok(result)
                     : BadRequest(result);
@@ -153,6 +195,8 @@ namespace hitsApplication.Controllers
                     "CART CONTROLLER - Unexpected error in {Method} for basket {BasketId}",
                     methodName, basketId);
 
+                _bugCaseLogger.LogBackendRequest("POST", endpoint, 500, userId);
+
                 return StatusCode(500, new OrderCreationResponse
                 {
                     Success = false,
@@ -160,6 +204,7 @@ namespace hitsApplication.Controllers
                 });
             }
         }
+
         private (bool IsValid, string ErrorMessage) ValidateCreateOrderRequest(CreateOrderRequest request, string basketId)
         {
             if (!ModelState.IsValid)
@@ -233,10 +278,14 @@ namespace hitsApplication.Controllers
         [HttpPut("update")]
         public async Task<IActionResult> UpdateQuantity([FromBody] UpdateQuantityRequest request, [FromHeader] string basketId)
         {
+            const string endpoint = "/api/cart/update";
+            var userId = GetUserIdForLogging();
+
             try
             {
                 if (!ModelState.IsValid)
                 {
+                    _bugCaseLogger.LogBackendRequest("PUT", endpoint, 400, userId);
                     return BadRequest(new CartSummaryResponse
                     {
                         Success = false,
@@ -246,6 +295,7 @@ namespace hitsApplication.Controllers
 
                 if (string.IsNullOrEmpty(basketId))
                 {
+                    _bugCaseLogger.LogBackendRequest("PUT", endpoint, 400, userId);
                     return BadRequest(new CartSummaryResponse
                     {
                         Success = false,
@@ -254,11 +304,17 @@ namespace hitsApplication.Controllers
                 }
 
                 var result = await _cartService.UpdateQuantity(basketId, request.DishId.ToString(), request.Quantity);
+
+                _bugCaseLogger.LogBackendRequest("PUT", endpoint,
+                    result.Success ? 200 : 400, userId);
+
                 return result.Success ? Ok(result) : BadRequest(result);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error updating quantity for basket {BasketId}", basketId);
+                _bugCaseLogger.LogBackendRequest("PUT", endpoint, 500, userId);
+
                 return BadRequest(new CartSummaryResponse
                 {
                     Success = false,
@@ -270,10 +326,14 @@ namespace hitsApplication.Controllers
         [HttpDelete("remove/{dishId}")]
         public async Task<IActionResult> RemoveFromCart(string dishId, [FromHeader] string basketId)
         {
+            var endpoint = $"/api/cart/remove/{dishId}";
+            var userId = GetUserIdForLogging();
+
             try
             {
                 if (string.IsNullOrEmpty(basketId))
                 {
+                    _bugCaseLogger.LogBackendRequest("DELETE", endpoint, 400, userId);
                     return BadRequest(new CartSummaryResponse
                     {
                         Success = false,
@@ -282,11 +342,17 @@ namespace hitsApplication.Controllers
                 }
 
                 var result = await _cartService.RemoveFromCart(basketId, dishId);
+
+                _bugCaseLogger.LogBackendRequest("DELETE", endpoint,
+                    result.Success ? 200 : 400, userId);
+
                 return result.Success ? Ok(result) : BadRequest(result);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error removing item from cart for basket {BasketId}", basketId);
+                _bugCaseLogger.LogBackendRequest("DELETE", endpoint, 500, userId);
+
                 return BadRequest(new CartSummaryResponse
                 {
                     Success = false,
@@ -298,10 +364,14 @@ namespace hitsApplication.Controllers
         [HttpDelete("clear")]
         public async Task<IActionResult> ClearCart([FromHeader] string basketId)
         {
+            const string endpoint = "/api/cart/clear";
+            var userId = GetUserIdForLogging();
+
             try
             {
                 if (string.IsNullOrEmpty(basketId))
                 {
+                    _bugCaseLogger.LogBackendRequest("DELETE", endpoint, 400, userId);
                     return BadRequest(new CartSummaryResponse
                     {
                         Success = false,
@@ -310,11 +380,17 @@ namespace hitsApplication.Controllers
                 }
 
                 var result = await _cartService.ClearCart(basketId);
+
+                _bugCaseLogger.LogBackendRequest("DELETE", endpoint,
+                    result.Success ? 200 : 400, userId);
+
                 return result.Success ? Ok(result) : BadRequest(result);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error clearing cart for basket {BasketId}", basketId);
+                _bugCaseLogger.LogBackendRequest("DELETE", endpoint, 500, userId);
+
                 return BadRequest(new CartSummaryResponse
                 {
                     Success = false,
@@ -326,10 +402,14 @@ namespace hitsApplication.Controllers
         [HttpGet("summary")]
         public async Task<IActionResult> GetCartSummary([FromHeader] string basketId)
         {
+            const string endpoint = "/api/cart/summary";
+            var userId = GetUserIdForLogging();
+
             try
             {
                 if (string.IsNullOrEmpty(basketId))
                 {
+                    _bugCaseLogger.LogBackendRequest("GET", endpoint, 400, userId);
                     return BadRequest(new CartSummaryResponse
                     {
                         Success = false,
@@ -338,11 +418,16 @@ namespace hitsApplication.Controllers
                 }
 
                 var result = await _cartService.GetCartSummary(basketId);
+
+                _bugCaseLogger.LogBackendRequest("GET", endpoint, 200, userId);
+
                 return Ok(result);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error getting cart summary for basket {BasketId}", basketId);
+                _bugCaseLogger.LogBackendRequest("GET", endpoint, 500, userId);
+
                 return Ok(new CartSummaryResponse { Success = false });
             }
         }
@@ -350,19 +435,28 @@ namespace hitsApplication.Controllers
         [HttpGet("check/{dishId}")]
         public async Task<IActionResult> IsInCart(string dishId, [FromHeader] string basketId)
         {
+            var endpoint = $"/api/cart/check/{dishId}";
+            var userId = GetUserIdForLogging();
+
             try
             {
                 if (string.IsNullOrEmpty(basketId))
                 {
+                    _bugCaseLogger.LogBackendRequest("GET", endpoint, 400, userId);
                     return BadRequest(new { IsInCart = false, Message = "Basket ID is required" });
                 }
 
                 var isInCart = await _cartService.IsInCart(basketId, dishId);
+
+                _bugCaseLogger.LogBackendRequest("GET", endpoint, 200, userId);
+
                 return Ok(new { IsInCart = isInCart });
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error checking if item is in cart for basket {BasketId}", basketId);
+                _bugCaseLogger.LogBackendRequest("GET", endpoint, 500, userId);
+
                 return Ok(new { IsInCart = false });
             }
         }
@@ -370,14 +464,20 @@ namespace hitsApplication.Controllers
         [HttpGet("debug-cart")]
         public async Task<IActionResult> DebugCart([FromHeader] string basketId)
         {
+            const string endpoint = "/api/cart/debug-cart";
+            var userId = GetUserIdForLogging();
+
             try
             {
                 if (string.IsNullOrEmpty(basketId))
                 {
+                    _bugCaseLogger.LogBackendRequest("GET", endpoint, 400, userId);
                     return BadRequest(new { Success = false, ErrorMessage = "Basket ID is required" });
                 }
 
                 var cart = await _cartService.GetCart(basketId);
+
+                _bugCaseLogger.LogBackendRequest("GET", endpoint, 200, userId);
 
                 return Ok(new
                 {
@@ -394,6 +494,8 @@ namespace hitsApplication.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error debugging cart for basket {BasketId}", basketId);
+                _bugCaseLogger.LogBackendRequest("GET", endpoint, 500, userId);
+
                 return StatusCode(500, new { Success = false, ErrorMessage = ex.Message });
             }
         }
@@ -401,21 +503,27 @@ namespace hitsApplication.Controllers
         [HttpPost("test-parse")]
         public IActionResult TestTokenParse([FromBody] TokenTestRequest request)
         {
+            const string endpoint = "/api/cart/test-parse";
+            var userId = GetUserIdForLogging();
+
             try
             {
                 if (string.IsNullOrEmpty(request.Token))
                 {
+                    _bugCaseLogger.LogBackendRequest("POST", endpoint, 400, userId);
                     return BadRequest(new { Error = "Token is required" });
                 }
 
-                var userId = _jwtTokenService.GetUserIdFromToken(request.Token);
+                var userIdFromToken = _jwtTokenService.GetUserIdFromToken(request.Token);
                 var allClaims = _jwtTokenService.GetAllClaims(request.Token);
                 var isValid = _jwtTokenService.IsTokenValid(request.Token);
+
+                _bugCaseLogger.LogBackendRequest("POST", endpoint, 200, userId);
 
                 return Ok(new
                 {
                     IsValid = isValid,
-                    UserId = userId,
+                    UserId = userIdFromToken,
                     AllClaims = allClaims,
                     Message = "Token parsed successfully"
                 });
@@ -423,6 +531,8 @@ namespace hitsApplication.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error during token parsing");
+                _bugCaseLogger.LogBackendRequest("POST", endpoint, 500, userId);
+
                 return BadRequest(new { Error = ex.Message });
             }
         }
@@ -430,21 +540,27 @@ namespace hitsApplication.Controllers
         [HttpGet("debug-token")]
         public IActionResult DebugToken([FromHeader] string authorization)
         {
+            const string endpoint = "/api/cart/debug-token";
+            var userId = GetUserIdForLogging();
+
             try
             {
                 if (string.IsNullOrEmpty(authorization))
                 {
+                    _bugCaseLogger.LogBackendRequest("GET", endpoint, 400, userId);
                     return BadRequest(new { Error = "Authorization header is required" });
                 }
 
-                var userId = _jwtTokenService.GetUserIdFromToken(authorization);
+                var userIdFromToken = _jwtTokenService.GetUserIdFromToken(authorization);
                 var allClaims = _jwtTokenService.GetAllClaims(authorization);
                 var isValid = _jwtTokenService.IsTokenValid(authorization);
+
+                _bugCaseLogger.LogBackendRequest("GET", endpoint, 200, userId);
 
                 return Ok(new
                 {
                     IsValid = isValid,
-                    UserId = userId,
+                    UserId = userIdFromToken,
                     AllClaims = allClaims,
                     RawToken = authorization
                 });
@@ -452,8 +568,29 @@ namespace hitsApplication.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error during token debugging");
+                _bugCaseLogger.LogBackendRequest("GET", endpoint, 500, userId);
+
                 return BadRequest(new { Error = ex.Message });
             }
+        }
+
+        [HttpPost("test-logging")]
+        public IActionResult TestLogging()
+        {
+            const string endpoint = "/api/cart/test-logging";
+            var userId = GetUserIdForLogging();
+
+            _bugCaseLogger.LogBackendRequest("POST", endpoint, 200, userId);
+            _bugCaseLogger.LogBackendRequest("POST", endpoint, 400, userId);
+            _bugCaseLogger.LogBackendRequest("POST", endpoint, 500, userId);
+
+            return Ok(new
+            {
+                Success = true,
+                Message = "Test log entries created",
+                UserId = userId,
+                LogFilePath = "logs/backend_bugcase.log"
+            });
         }
     }
 }

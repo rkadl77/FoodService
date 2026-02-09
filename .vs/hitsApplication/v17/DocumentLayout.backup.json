@@ -1,5 +1,6 @@
 {
   "Version": 1,
+<<<<<<< Updated upstream
   "WorkspaceRootPath": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\",
   "Documents": [
     {
@@ -57,6 +58,29 @@
     {
       "AbsoluteMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|c:\\users\\rkadl\\source\\repos\\hitsapplication\\hitsapplication\\hitsapplication.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}",
       "RelativeMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|solutionrelative:hitsapplication\\hitsapplication.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}"
+=======
+  "WorkspaceRootPath": "C:\\Users\\rkadl\\source\\repos\\FoodServiceWithBugs\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|c:\\users\\rkadl\\source\\repos\\foodservicewithbugs\\hitsapplication\\controllers\\cartcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|solutionrelative:hitsapplication\\controllers\\cartcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|c:\\users\\rkadl\\source\\repos\\foodservicewithbugs\\hitsapplication\\controllers\\loggingcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|solutionrelative:hitsapplication\\controllers\\loggingcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|c:\\users\\rkadl\\source\\repos\\foodservicewithbugs\\hitsapplication\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|solutionrelative:hitsapplication\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|c:\\users\\rkadl\\source\\repos\\foodservicewithbugs\\hitsapplication\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|solutionrelative:hitsapplication\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|c:\\users\\rkadl\\source\\repos\\foodservicewithbugs\\hitsapplication\\models\\bugcaseloggingsettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A7763CB9-FEF1-4998-9860-DE07958CE880}|hitsApplication\\hitsApplication.csproj|solutionrelative:hitsapplication\\models\\bugcaseloggingsettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+>>>>>>> Stashed changes
     }
   ],
   "DocumentGroupContainers": [
@@ -66,6 +90,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
+<<<<<<< Updated upstream
           "SelectedChildIndex": 0,
           "Children": [
             {
@@ -79,11 +104,31 @@
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAD0AAAA9AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-12-08T14:46:01.619Z",
+=======
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:1:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "CartController.cs",
+              "DocumentMoniker": "C:\\Users\\rkadl\\source\\repos\\FoodServiceWithBugs\\hitsApplication\\Controllers\\CartController.cs",
+              "RelativeDocumentMoniker": "hitsApplication\\Controllers\\CartController.cs",
+              "ToolTip": "C:\\Users\\rkadl\\source\\repos\\FoodServiceWithBugs\\hitsApplication\\Controllers\\CartController.cs",
+              "RelativeToolTip": "hitsApplication\\Controllers\\CartController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEUAAAA6AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-09T12:16:03.944Z",
+>>>>>>> Stashed changes
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
+<<<<<<< Updated upstream
               "Title": "CartEndpointsTests.cs",
               "DocumentMoniker": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Tests\\CartEndpointsTests.cs",
               "RelativeDocumentMoniker": "hitsApplication\\Tests\\CartEndpointsTests.cs",
@@ -105,10 +150,21 @@
               "ViewState": "AgIAAAMAAAAAAAAAAAAAACQAAABIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-12-08T14:09:49.601Z",
+=======
+              "Title": "LoggingController.cs",
+              "DocumentMoniker": "C:\\Users\\rkadl\\source\\repos\\FoodServiceWithBugs\\hitsApplication\\Controllers\\LoggingController.cs",
+              "RelativeDocumentMoniker": "hitsApplication\\Controllers\\LoggingController.cs",
+              "ToolTip": "C:\\Users\\rkadl\\source\\repos\\FoodServiceWithBugs\\hitsApplication\\Controllers\\LoggingController.cs",
+              "RelativeToolTip": "hitsApplication\\Controllers\\LoggingController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAFEBAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-09T11:59:44.926Z",
+>>>>>>> Stashed changes
               "EditorCaption": ""
             },
             {
               "$type": "Document",
+<<<<<<< Updated upstream
               "DocumentIndex": 6,
               "Title": "FeatureFlags.cs",
               "DocumentMoniker": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Models\\FeatureFlags.cs",
@@ -220,11 +276,23 @@
               "ViewState": "AgIAAHwBAAAAAAAAAAAqwMoBAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-30T20:33:28.858Z",
+=======
+              "DocumentIndex": 2,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\rkadl\\source\\repos\\FoodServiceWithBugs\\hitsApplication\\Program.cs",
+              "RelativeDocumentMoniker": "hitsApplication\\Program.cs",
+              "ToolTip": "C:\\Users\\rkadl\\source\\repos\\FoodServiceWithBugs\\hitsApplication\\Program.cs",
+              "RelativeToolTip": "hitsApplication\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAzAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-09T11:49:47.044Z",
+>>>>>>> Stashed changes
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
+<<<<<<< Updated upstream
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Program.cs",
               "RelativeDocumentMoniker": "hitsApplication\\Program.cs",
@@ -233,10 +301,21 @@
               "ViewState": "AgIAAA0AAAAAAAAAAAAwwFwAAAAgAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-30T20:28:02.481Z",
+=======
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\rkadl\\source\\repos\\FoodServiceWithBugs\\hitsApplication\\appsettings.json",
+              "RelativeDocumentMoniker": "hitsApplication\\appsettings.json",
+              "ToolTip": "C:\\Users\\rkadl\\source\\repos\\FoodServiceWithBugs\\hitsApplication\\appsettings.json",
+              "RelativeToolTip": "hitsApplication\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-02-09T11:47:40.722Z",
+>>>>>>> Stashed changes
               "EditorCaption": ""
             },
             {
               "$type": "Document",
+<<<<<<< Updated upstream
               "DocumentIndex": 11,
               "Title": "ICartService.cs",
               "DocumentMoniker": "C:\\Users\\rkadl\\source\\repos\\hitsApplication\\hitsApplication\\Services\\Interfaces\\ICartService.cs",
@@ -246,6 +325,17 @@
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-30T20:17:06.098Z",
+=======
+              "DocumentIndex": 4,
+              "Title": "BugCaseLoggingSettings.cs",
+              "DocumentMoniker": "C:\\Users\\rkadl\\source\\repos\\FoodServiceWithBugs\\hitsApplication\\Models\\BugCaseLoggingSettings.cs",
+              "RelativeDocumentMoniker": "hitsApplication\\Models\\BugCaseLoggingSettings.cs",
+              "ToolTip": "C:\\Users\\rkadl\\source\\repos\\FoodServiceWithBugs\\hitsApplication\\Models\\BugCaseLoggingSettings.cs",
+              "RelativeToolTip": "hitsApplication\\Models\\BugCaseLoggingSettings.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-09T11:46:46.809Z",
+>>>>>>> Stashed changes
               "EditorCaption": ""
             }
           ]

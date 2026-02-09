@@ -11,7 +11,13 @@
 using System;
 using System.Reflection;
 
-[assembly: Microsoft.AspNetCore.Mvc.ApplicationParts.ApplicationPartAttribute("Swashbuckle.AspNetCore.SwaggerGen")]
+[assembly: System.Reflection.AssemblyCompanyAttribute("hitsApplication.Tests")]
+[assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
+[assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+af16af853e545494e2572e1828e7d7c149a094cb")]
+[assembly: System.Reflection.AssemblyProductAttribute("hitsApplication.Tests")]
+[assembly: System.Reflection.AssemblyTitleAttribute("hitsApplication.Tests")]
+[assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
 
 // Создано классом WriteCodeFragment MSBuild.
 
